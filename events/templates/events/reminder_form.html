@@ -1,0 +1,38 @@
+{% extends "events/base2.html" %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block content %}
+<div class = "container">
+    <br /><h3>Add To-do:</h3>
+    <form method = 'POST' action= '' enctype = "multipart/form-data" novalidate id = "reminder-form">{% csrf_token %}
+        
+        <div class="input-field ev-shortline">
+            <i class="material-icons prefix">comment</i>
+            {{ form.name|add_class:"validate" }}
+            {{ form.name.label_tag }}
+            <div class="error-text">{{ form.name.errors }}</div>
+            <span class="helper-text">{{ form.name.help_text }}</span>
+        </div> 
+        <div class="input-field ev-shortline ev-pop-up-date">
+            <i class="material-icons prefix">event</i>
+            {{ form.date|add_class:"validate" }}
+            {{ form.date.label_tag }}
+            <div class="error-text">{{ form.date.errors }}</div>
+            <span class="helper-text">{{ form.date.help_text }}</span>
+        </div>
+        
+        <button id="submitbtn2" type="submit" name="_submit"
+            class="btn z-depth-3">Submit</button>
+
+    </form>
+</div>
+
+
+{% endblock %}
+
+{% block scripts %}
+    <!-- custom js for the home page -->
+    <script src="{% static 'js/events2.js' %}"></script>
+{% endblock %}

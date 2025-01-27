@@ -1,0 +1,23 @@
+{% load humanize %}
+
+    <a href="/events/{{ event.id }}/edit" style="color: inherit">
+        <table class="collapsible-table evx-panelbackground evx-rounded-only z-depth-1" style="max-width:inherit;border:none !important;">
+            <tr>
+                <td class="truncate center evx-side-event" style="width: 260px; padding:7px 5px 0px 6px;">
+                    <span class="evx-side-date">{{ event.date|naturalday:'D n/j'|title }} : </span>
+                    <span class="evx-side-event"><b>{% if event.type == "HD" %}[HD] {% endif %}{{ event.name }}</b></span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="truncate center evx-side-subline" style="width: 260px;  padding:3px 5px 7px 6px;">
+                    {{ event.start_time|date:'g:i'|default:" " }} -
+                    {{ event.end_time|date:'g:i'|default:" " }} @ 
+                    {% if event.location %}
+                        {{ event.location }}
+                    {% else %}
+                        {{ event.location_name|default:" " }}
+                    {% endif %}
+                </td>
+        </table>
+        <div style="height:10px;">&nbsp;</div>
+    </a>

@@ -1,0 +1,140 @@
+{% extends 'events/base-new.html' %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block content %}
+
+    <input type="hidden" id="page_flag" value="email">
+
+    <br />
+    <h5>Choose an email template to edit:</h5><br /><br />
+    
+    <div class="container" style="width:auto">
+    
+        <div class="row">
+            <h6><b>Contract Templates:</b></h6>
+            <div class="col s12">
+                {% for form in forms_contract %}
+                    {% if "Automated Email" in form.description %}&nbsp;&bull;&nbsp;&nbsp;{% endif %}
+                    <a href="/events/editform/{{ form.id }}/" style="color: inherit">
+                        {{ form.description }}</a>
+                    <br />
+                {% endfor %}
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <h6><b>Deposit Templates:</b></h6>
+            <div class="col s12">
+                {% for form in forms_deposit %}
+                    {% if "Automated Email" in form.description %}&nbsp;&bull;&nbsp;&nbsp;{% endif %}
+                    <a href="/events/editform/{{ form.id }}/" style="color: inherit">
+                        {{ form.description }}</a>
+                    <br />
+                {% endfor %}
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <h6><b>Final/Full Payment Templates:</b></h6>
+            <div class="col s12">
+                {% for form in forms_final %}
+                    {% if "Automated Email" in form.description %}&nbsp;&bull;&nbsp;&nbsp;{% endif %}
+                    <a href="/events/editform/{{ form.id }}/" style="color: inherit">
+                        {{ form.description }}</a>
+                    <br />
+                {% endfor %}
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <h6><b>Extra Payment Templates:</b></h6>
+            <div class="col s12">
+                {% for form in forms_extra %}
+                    {% if "Automated Email" in form.description %}&nbsp;&bull;&nbsp;&nbsp;{% endif %}
+                    <a href="/events/editform/{{ form.id }}/" style="color: inherit">
+                        {{ form.description }}</a>
+                    <br />
+                {% endfor %}
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <h6><b>Music List Templates:</b></h6>
+            <div class="col s12">
+                {% for form in forms_musiclist %}
+                    {% if "Automated Email" in form.description %}&nbsp;&bull;&nbsp;&nbsp;{% endif %}
+                    <a href="/events/editform/{{ form.id }}/" style="color: inherit">
+                        {{ form.description }}</a>
+                    <br />
+                {% endfor %}
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <h6><b>Final Event Confirmation Templates:</b></h6>
+            <div class="col s12">
+                {% for form in forms_confirmation %}
+                    {% if "Automated Email" in form.description %}&nbsp;&bull;&nbsp;&nbsp;{% endif %}
+                    <a href="/events/editform/{{ form.id }}/" style="color: inherit">
+                        {{ form.description }}</a>
+                    <br />
+                {% endfor %}
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <h6><b>Hold Templates:</b></h6>
+            <div class="col s12">
+                {% for form in forms_hold %}
+                    {% if "Automated Email" in form.description %}&nbsp;&bull;&nbsp;&nbsp;{% endif %}
+                    <a href="/events/editform/{{ form.id }}/" style="color: inherit">
+                        {{ form.description }}</a>
+                    <br />
+                {% endfor %}
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <h6><b>Musicians Templates:</b></h6>
+            <div class="col s12">
+                {% for form in forms_musicians %}
+                    {% if "Automated Email" in form.description %}&nbsp;&bull;&nbsp;&nbsp;{% endif %}
+                    <a href="/events/editform/{{ form.id }}/" style="color: inherit">
+                        {{ form.description }}</a>
+                    <br />
+                {% endfor %}
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <h6><b>Other Templates:</b></h6>
+            <div class="col s12">
+                {% for form in forms_other %}
+                    {% if "Automated Email" in form.description %}&nbsp;&bull;&nbsp;&nbsp;{% endif %}
+                    <a href="/events/editform/{{ form.id }}/" style="color: inherit">
+                        {{ form.description }}</a>
+                    <br />
+                {% endfor %}
+            </div>
+        </div>
+        <br />
+
+        
+    </div>
+    <br />
+    <br />
+    <br />
+ 
+
+
+
+
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/events_popups.js' %}"></script>
+    <script src="{% static 'js/events_home.js' %}"></script>
+{% endblock %}

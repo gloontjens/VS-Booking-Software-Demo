@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+{% extends 'events/base4.html' %}
+{% load static %}
+{% load selectable_tags %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+    
+{% block content %}
+<form method = 'POST' action= ''  id="test_form" enctype = "multipart/form-data" novalidate>
+{% csrf_token %}
+
+
+{% if mode == 'reg' %}
+<div style="padding-left:0px;padding-right:0px;margin-left:-20px;margin-right:-20px;">
+    <br /><br />
+    <input id="goto_home" type="submit" name="goto_home" class="linkish" value="The Vanderbilt Strings">
+    <!-- <h4 class="mytitle">The Vanderbilt Strings</h4> -->
+    <br />
+</div>
+{% else %}
+<div style="padding-left:0px;padding-right:0px;margin-left:-20px;margin-right:-20px;">
+    <br /><br />
+    <div class="mytitle">The Vanderbilt Strings</div>
+    <!-- <br /> -->
+</div>
+{% endif %}
+<div class="mysignout">
+    {% if mode == 'reg' %}
+    <button id="goto_signout" type="submit" name="goto_signout"
+            class="btn mysmbtn">Sign Out
+    </button>
+    {% endif %}
+    <div class="show-on-medium-and-down hide-on-large-only"><br /></div>
+</div>
+
+
+<div class="col s12 center">
+    {% if mode == 'reg' or not pay_required or mode == 'contract' %}
+        <h5 class="mycol-indextext myindex">Contract - Step 2/2</h5><br />
+    {% else %}
+       <h5 class="mycol-indextext myindex">Contract - Step 2/3</h5><br />
+    {% endif %}
+</div>
+
+<button class="btn-floating mybtn-floating btn-large" type="submit" name="goto_questions">
+  <i class="material-icons large myicon-floating">email</i>
+  </button>
+<button class="btn-floating mybtn-floatingb btn-large tooltipped" data-position="left" data-tooltip="Contact Us" type="submit" name="goto_questions">      
+  <i class="material-icons large myicon-floatingb">edit</i>
+  </button>
+
+
+
+
+
+
+
+
+<br /><br />
+<div style="color: black">
+{% if error %}<a href="/events/client_home/{{event.id}}/">Click here to login please!</a>{% else %}
+
+
+
+
+    <div class="row">
+        <div class="col s12 center">
+            <div class="card mycol-panelplain">
+
+                <div class="">
+                    <!-- <span class="card-title cyan-text text-lighten-4"><h5><u>Review & Sign</u></h5></span> -->
+                    <br />
+                    <p class="mycol-panel-pad2">
+                      <span class="mycol-subtext mysize-norm">We're almost there!  Type your name where indicated,
+                          and sign using your touchscreen or mouse.<br />
+                          You will be able to download or print the contract afterwards.
+                      </span>
+                      <br />
+                      <br />
+                    </p>
+
+                    <div class="col s12 l12">
+
+                    <!-- <div class="tooltipped" data-position="right" data-tooltip="Print prior to signing"
+                        style="position: absolute; top: auto; left:auto; z-index: 1;">
+                    <button onclick="tinyPrint()"
+                            style="border: 1px solid #cccccc; background: transparent;">   
+                            <i style="color: #aaaaaa; margin-top: 3px;" class="material-icons prefix">print</i>
+                    </button>
+                    </div> -->
+
+                        
+                        {{form.contract_pdf|add_class:"contract-width"}}
+                        
+                        <input hidden type="text" name="signature" maxlength="2000" id="id_signature">
+                        <div class="col s12 m6 offset-m3"><br /><span class="mycol-subtext">Today's Date:</span>
+                            <input readonly class="mycol-subtext" type="text" name="signature_date" required="" 
+                                id="id_signature_date" value="{{today|date:'Y-m-d'}}">
+                        </div>
+                        <div class="col s12 m6 offset-m3"><br /><span class="mycol-subtext">Type your name here:</span>
+                            <div class="mycol-subtext client-signame">
+                                {{form.signature_name}}   
+                            </div>
+                        </div>
+                        <div class="col s12">&nbsp;</div>
+                    </div>   
+                        <div class="mycol-subtext">Draw Signature Here:<br /></div>
+                        <div id="signature" style="touch-action:none;"></div>
+                        <div class="">
+                            <button class="client-sigclear" type="button" onclick="$('#signature').jSignature('clear')">&nbsp;&nbsp;clear&nbsp;&nbsp;</button>
+                        </div>
+                        <br />
+                    <!-- </div> -->
+
+
+                    <div class="col s12"><br /></div>                   
+                    <button id="goto_sign_contract" type="submit" name="goto_sign_contract"
+                        class="btn btn-large ev-submitbtn z-depth-0 mybtn-back" style="text-transform:capitalize;">Back</button>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <button id="goto_sign_contract_complete" type="submit" name="goto_sign_contract_complete"
+                        class="btn btn-large ev-submitbtn z-depth-2 mybtn-submit">SUBMIT</button>
+                    <div class="row"><br /><br /></div>
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="" id="" style="display:none">
+        
+    </div>    
+
+
+
+
+
+
+
+
+
+
+
+
+{% endif %}
+</div>
+</form>
+
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/events_clients.js' %}"></script>
+<script src="{% static 'js/jSignatureMine.min.js' %}"></script>    
+{% endblock %}
+

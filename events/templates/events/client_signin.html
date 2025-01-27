@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+{% extends 'events/base4.html' %}
+{% load static %}
+{% load selectable_tags %}
+
+
+    
+{% block content %}
+
+{% if mode != 'payment' %}
+<div style="padding-left:0px;padding-right:0px;margin-left:-20px;margin-right:-20px;">
+    <br /><br />
+    <input id="goto_home" type="submit" name="goto_home" class="linkish" value="The Vanderbilt Strings">
+    <!-- <h4 class="mytitle">The Vanderbilt Strings</h4> -->
+    <br />
+</div>
+{% else %}
+<div style="padding-left:0px;padding-right:0px;margin-left:-20px;margin-right:-20px;">
+    <br /><br />
+    <div class="mytitle">The Vanderbilt Strings</div>
+    <!-- <br /> -->
+</div>
+{% endif %}
+
+<button class="btn-floating mybtn-floating btn-large" type="submit" name="goto_questions">
+  <i class="material-icons large myicon-floating">email</i>
+  </button>
+<button class="btn-floating mybtn-floatingb btn-large tooltipped" data-position="left" data-tooltip="Contact Us" type="submit" name="goto_questions">      
+  <i class="material-icons large myicon-floatingb">edit</i>
+  </button>
+
+
+
+
+
+<div style="line-height: 2px;">&nbsp;<br /></div>
+<!-- <h5 class="mycol-indextext myindex">Welcome</h5> -->
+<br />
+
+<form method = 'POST' action= ''  id="client-signin-form" enctype = "multipart/form-data" novalidate>
+{% csrf_token %}   
+<div class="mybackground-login row valign-wrapper">
+&nbsp;<br /><br /><br /><br />
+ <div class="card mycol-panel col s10 m10 l8 xl6 offset-s1 offset-m1 offset-l2 offset-xl3">
+  <div class="card-content mycol-subtext">
+    
+    <span class="mysize-norm">Welcome to your client page!  &nbsp;<br />Enter the month & day of your event:</span><br /><br />
+    <div class="row">
+    <div class="col m1">&nbsp;</div>
+    <div class="col s12 m10">
+        <table class="mysize-small">
+            <!-- <col width="15%"> -->
+            <col width="100%">
+            <tr style="border-bottom:none !important;">
+                <!-- <td class="mycol-notimptex"></td> -->
+                <td class="mycol-subtext mysize-large center">{{event.name}} {{event.event_type_name}}</td>
+            </tr>
+            <tr style="border-bottom:none !important;">
+                <!-- <td class="mycol-notimptext"></td> -->
+                <td class="mycol-subtext center mysize-norm">
+                    <!-- <input type="text" id="pin" name="pin" minlength="4" maxlength="4"
+                        required placeholder="(4 digits)" class="browser-default"
+                        style="text-align:center;width:110px; height:35px; font-size:25px !important;color:black;"> -->
+                    <select required class="browser-default" name="monthpin" id="monthpin"
+                        style="display:inline;text-align:center;width:140px; height:40px; font-size:22px !important;background-color:#f3f3f3;color:black;">
+                        <option value='' disabled selected>month...</option>
+                        <option value='01'>January</option>
+                        <option value='02'>February</option>
+                        <option value='03'>March</option>
+                        <option value='04'>April</option>
+                        <option value='05'>May</option>
+                        <option value='06'>June</option>
+                        <option value='07'>July</option>
+                        <option value='08'>August</option>
+                        <option value='09'>September</option>
+                        <option value='10'>October</option>
+                        <option value='11'>November</option>
+                        <option value='12'>December</option>
+                    </select>
+                    <select required class="browser-default" name="daypin" id="daypin"
+                        style="display:inline;text-align:center;width:90px; height:40px; font-size:22px !important;background-color:#f3f3f3;color:black;">
+                        <option value='' disabled selected>day...</option>
+                        <option value='01'>1</option>
+                        <option value='02'>2</option>
+                        <option value='03'>3</option>
+                        <option value='04'>4</option>
+                        <option value='05'>5</option>
+                        <option value='06'>6</option>
+                        <option value='07'>7</option>
+                        <option value='08'>8</option>
+                        <option value='09'>9</option>
+                        <option>10</option><option>11</option><option>12</option><option>13</option><option>14</option>
+                        <option>15</option><option>16</option><option>17</option><option>18</option><option>19</option>
+                        <option>20</option><option>21</option><option>22</option><option>23</option><option>24</option>
+                        <option>25</option><option>26</option><option>27</option><option>28</option><option>29</option>
+                        <option>30</option><option>31</option>
+                    </select>
+                        
+                    {% if error %}<div style="text-align:center;color:red">&nbsp;&nbsp;chosen date is incorrect, try again!</div>{% endif %}
+                </td>
+            </tr>
+        </table>
+        <br /><br />
+        <button id="signin" type="submit" name="signin"
+                class="btn mybtn-submit ev-submitbtn z-depth-1">&nbsp;&nbsp;Sign In&nbsp;&nbsp;
+        </button>
+    </div>
+    </div>
+  </div>
+ </div>
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+</div>
+
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/events_clients.js' %}"></script>
+<script src="{%  static 'js/jSignature.min.js' %}"></script>    
+{% endblock %}
+
+        
+<!-- <form method="POST" class="" id="submit_form" autocomplete="off">
+  <div>{{ form }}</div>
+  <div id="signature"></div>
+  <br /><br />
+  <button type="button" onclick="$('#signature').jSignature('clear')">Clear</button>
+  <button id="sigSave" type="submit" name="_submit">SAVE</button>
+  {% csrf_token %}
+</form> -->
+      

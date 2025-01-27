@@ -1,0 +1,41 @@
+{% extends 'events/base-new.html' %}
+{% load static %}
+
+
+
+{% block content %}
+<input type="hidden" id="page_flag" value="payments_due">
+
+<div>
+    {% if payments %}
+    <h4>Payments Due (Older)</h4>  <h5>Completed in last 6 months:</h5>
+    {% else %}
+    <h4>Payments Due (Older)</h4>  <h5>No payments completed in last 6 months.</h5>
+    {% endif %}
+</div>
+
+   
+{% for payment in payments %}
+    
+    {% include 'events/draw_payments_due_summary.html' %}
+
+{% endfor %}
+    
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
+
+
+{% block scripts %}
+    <!-- custom js for the home page -->
+    <script src="{% static 'js/events_home.js' %}"></script>
+{% endblock %}
+

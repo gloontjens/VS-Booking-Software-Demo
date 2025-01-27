@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+{% extends 'events/base4.html' %}
+{% load static %}
+{% load selectable_tags %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+    
+{% block content %}
+<form method = 'POST' action= ''  id="test-form" enctype = "multipart/form-data" novalidate>
+{% csrf_token %}
+
+{% if mode == 'reg' %}
+<div style="padding-left:0px;padding-right:0px;margin-left:-20px;margin-right:-20px;">
+    <br /><br />
+    <input id="goto_home" type="submit" name="goto_home" class="linkish" value="The Vanderbilt Strings">
+    <!-- <h4 class="mytitle">The Vanderbilt Strings</h4> -->
+    <br />
+</div>
+{% else %}
+<div style="padding-left:0px;padding-right:0px;margin-left:-20px;margin-right:-20px;">
+    <br /><br />
+    <div class="mytitle">The Vanderbilt Strings</div>
+    <!-- <br /> -->
+</div>
+{% endif %}
+<div class="mysignout">
+    {% if mode == 'reg' %}
+    <button id="goto_signout" type="submit" name="goto_signout"
+            class="btn mysmbtn">Sign Out
+    </button>
+    {% endif %}
+    <div class="show-on-medium-and-down hide-on-large-only"><br /></div>
+</div>
+
+
+<div class="col s12 center">
+    {% if mode == 'reg' or not pay_required or mode == 'contract' %}
+        <h5 class="mycol-indextext myindex">Contract - Step 1/2</h5><br />
+    {% else %}
+       <h5 class="mycol-indextext myindex">Contract - Step 1/3</h5><br />
+    {% endif %}
+</div>
+
+<button class="btn-floating mybtn-floating btn-large" type="submit" name="goto_questions">
+  <i class="material-icons large myicon-floating">email</i>
+  </button>
+<button class="btn-floating mybtn-floatingb btn-large tooltipped" data-position="left" data-tooltip="Contact Us" type="submit" name="goto_questions">      
+  <i class="material-icons large myicon-floatingb">edit</i>
+  </button>
+
+
+
+
+
+
+
+
+
+
+<br /><br />
+<div style="color: black">
+{% if error %}<a href="/events/client_home/{{event.id}}/">Click here to login please!</a>{% else %}
+
+
+
+
+    <div class="row">
+        <div class="col s12 center">
+            <div class="card mycol-panelplain">
+                <div class="mycol-panel-pad2">
+                    <!-- <span class="mycol-subtext mysize-large"> -->
+                    {% if mode != 'reg' %}
+                    <br />
+                    <span class="mycol-subtext mysize-large">Welcome, {{event.friendly_name}}!
+                        Let's prepare your contract.</span>
+                    <br />
+                    {% endif %}
+                    
+                    
+                    <!-- <h5><u>Event Information</u></h5></span> -->
+                    <p>
+                      <span class="mycol-subtext mysize-norm">Please complete this quick form.<br /></span>
+                      <span class="mycol-subtext mysize-small">If anything is unknown, leave it blank.<br /></span>
+                      <span class="mycol-subtext mysize-norm">When done, click Next.</span>
+                    </p>
+                    <br />
+                    <!-- <div class="col s12"><hr style="border: 6px solid white;margin-left:-40px;margin-right:-40px;"></div> -->
+    
+                    <div class="row mycol-panel-pad2">
+                        <div class="col s12 m8 l6 offset-l3 offset-m2">
+                            <div class="input-field ev-veryshortline2">
+                                <i class="material-icons prefix {% if not event.name or 'name' in clist %}clientblank{% else %}prefixclient{% endif %}">
+                                    account_circle</i>
+                                <input type="text" class="mycol-subtext nosubmit  {% if not event.name or 'name' in clist %}clientblankin{% else %}specialclientn{% endif %}" 
+                                    name="name" id="id_name" {% if event.name and not 'name' in clist %}disabled {% endif %}value="{{ event.name|default:'' }}">
+                                <label for="id_name" class="active clientfield">Event Name:</label>
+                            </div>
+                        </div>
+                        <div class="col s12 m8 l6 offset-l3 offset-m2">
+                            <div class="input-field ev-veryshortline2">
+                                <i class="material-icons prefix {% if not event.event_type_name or 'event_type_name' in clist %}clientblank{% else %}prefixclient{% endif %}">
+                                    stars</i>
+                                <input type="text" class="mycol-subtext nosubmit  {% if not event.event_type_name or 'event_type_name' in clist %}clientblankin{% else %}specialclientn{% endif %}" 
+                                    name="event_type" id="id_event_type" {% if event.event_type_name and not 'event_type_name' in clist %}disabled {% endif %}value="{{ event.event_type_name|default:'' }}">
+                                <label for="id_event_type" class="active clientfield">Event Type:</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mycol-panel-pad2">
+                        <div class="col s8 m5 l4 offset-l3 offset-m2">
+                            <div class="input-field ev-veryshortline2">
+                                <i class="material-icons prefix {% if not event.date or 'date' in clist %}clientblank{% else %}prefixclient{% endif %}">
+                                    event</i>
+                                <input type="text" class="mycol-subtext nosubmit datepicker {% if not event.date or 'date' in clist %}clientblankin{% else %}specialclientn{% endif %}" 
+                                    name="date" id="id_date" {% if event.date and not 'date' in clist %}disabled {% endif %}value="{{ event.date|default:''|date:"l F j, Y" }}">
+                                <label for="id_date" class="active clientfield">Date:</label>
+                            </div>
+                        </div>
+                        
+                        <div class="col s4 m3 l2"> <!-- number_guests select -->
+                            <div class="input-field ev-veryshortline2">
+                                <i class="material-icons prefix {% if not event.number_guests or 'number_guests' in clist %}clientblank{% else %}prefixclient{% endif %}" style="left:-10px;">people</i>
+                                <input type="number" class="mycol-subtext nosubmit {% if not event.number_guests or 'number_guests' in clist %}clientblankin{% else %}specialclientn{% endif %}"
+                                    name="number_guests" id="id_number_guests" {% if event.number_guests and not 'number_guests' in clist %} disabled {% endif %}
+                                    {% if event.number_guests == 0 %} value = "" {% else %} value="{{ event.number_guests|default:'' }}"{% endif %}>
+                                <label for="id_number_guests" ># Guests:</label>
+                            </div>
+                        </div>
+                        
+                        <div class="col s6 m4 l3 offset-l3 offset-m2">
+                            <div class="input-field ev-veryshortline2">
+                                <i class="material-icons prefix {% if not event.start_time or 'start_time' in clist %}clientblank{% else %}prefixclient{% endif %}">
+                                    access_time</i>
+                                <input type="text" class="mycol-subtext nosubmit timepicker  {% if not event.start_time or 'start_time' in clist %}clientblankin{% else %}specialclientn{% endif %}" 
+                                    name="start_time" id="id_start_time" {% if event.start_time and not 'start_time' in clist %}disabled {% endif %}value="{{ event.start_time|default:'' }}">
+                                <label for="id_start_time" class="active clientfield">Start:</label>
+                            </div>
+                        </div>
+                        <div class="col s6 m4 l3">
+                            <div class="input-field ev-veryshortline2">
+                                <i class="material-icons prefix {% if not event.end_time or 'end_time' in clist %}clientblank{% else %}prefixclient{% endif %}">
+                                    access_time</i>
+                                <input type="text" class="mycol-subtext nosubmit timepicker  {% if not event.end_time or 'end_time' in clist %}clientblankin{% else %}specialclientn{% endif %}" 
+                                    name="end_time" id="id_end_time" {% if event.end_time and not 'end_time' in clist %}disabled {% endif %}value="{{ event.end_time|default:'' }}">
+                                <label for="id_end_time" class="active clientfield">End:</label>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="col s4 l2">
+                        <div class="input-field ev-veryshortline2">
+                            <i class="material-icons prefix {% if not event.ceremony_time %}clientblank{% else %}prefixclient{% endif %}">
+                                access_time</i>
+                            <input type="text" class=" {% if not event.ceremony_time %}clientblankin{% else %}specialclientn{% endif %}" 
+                                name="ceremony_time" id="id_ceremony_time" {% if event.ceremony_time %}disabled {% endif %}value="{{ event.ceremony_time|default:'' }}">
+                            <label for="id_end_time" class="active clientfield">Ceremony:</label>
+                        </div>
+                    </div> -->
+                    
+                    <div class="row mycol-panel-pad2">
+                        <div class="col s6 m4 l3 offset-l3 offset-m2"> <!-- total fee -->
+                            <div class="input-field ev-veryshortline2">
+                                <i class="material-icons prefix prefixclient">
+                                    attach_money</i>
+                                <input type="text" class="mycol-subtext nosubmit  specialclientn" 
+                                    name="fee" id="id_fee" disabled value="${{ event.fee|floatformat:'2'|default:'' }}">
+                                <label for="id_fee" class="active clientfield">Total Event Fee:</label>
+                            </div>
+                        </div>
+                        <div class="col s6 m4 l3"> <!-- deposit amount -->
+                            <div class="input-field ev-veryshortline2">
+                                <i class="material-icons prefix prefixclient">
+                                    attach_money</i>
+                                <input type="text" class="mycol-subtext nosubmit  specialclientn" 
+                                    name="deposit_fee" id="id_deposit_fee" disabled 
+                                    {% if event.deposit_fee == 0 %}
+                                    value="${{ event.fee|floatformat:'2'|default:'' }}">
+                                    {% else %}
+                                    value="${{ event.deposit_fee|floatformat:'2'|default:'' }}">
+                                    {% endif %}
+                                <label for="id_deposit_fee" class="active clientfield">Deposit Due:</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                    <!-- <div class="col s12">&nbsp;</div> -->
+                    <div class="col s12"><hr style="border: 6px solid white;margin-left:-40px;margin-right:-40px;"></div>
+                    <!-- <div class="col s12">&nbsp;</div> -->
+                       
+                    <div class="row mycol-panel-pad2">
+                        {% if event.location %}
+                        <div class="col s8 m5 l4 offset-l3 offset-m2"> <!-- location name1 -->
+                            <div class="input-field ev-veryshortline2">
+                                <i class="material-icons prefix {% if not event.location.name or 'location_name' in clist %}clientblank{% else %}prefixclient{% endif %}">
+                                    add_location</i>
+                                <input type="text" class="mycol-subtext nosubmit  {% if not event.location.name or 'location_name' in clist %}clientblankin{% else %}specialclientn{% endif %}" 
+                                    name="location_name" id="id_location_name" {% if event.location.name and not 'location_name' in clist %}disabled {% endif %}value="{{ event.location.name|default:'' }}">
+                                <label for="id_location_name" class="active clientfield">Location:</label>
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="col s8 m5 l4 offset-l3 offset-m2"> <!-- location name2 -->
+                            <div class="input-field ev-veryshortline2">
+                                <i class="material-icons prefix {% if not event.location_name or 'location_name' in clist %}clientblank{% else %}prefixclient{% endif %}">
+                                    add_location</i>
+                                <input type="text" class=mycol-subtext "nosubmit  {% if not event.location_name or 'location_name' in clist %}clientblankin{% else %}specialclientn{% endif %}" 
+                                    name="location_name" id="id_location_name" {% if event.location_name and not 'location_name' in clist %}disabled {% endif %}value="{{ event.location_name|default:'' }}">
+                                <label for="id_location_name" class="active clientfield">Location:</label>
+                            </div>
+                        </div>
+                        {% endif %}                    
+                        <div class="col s4 m3 l2"> <!-- indoor/outdoor select -->
+                            <div class="input-field ev-veryshortline2 clientselect" style="top: -12px;">
+                                {% if event.location_outdoors %}
+                                <i id="indoorsicon" class="material-icons prefix clientblank clientselect" style="left:-10px;">wb_sunny</i>
+                                {% else %}
+                                <i id="indoorsicon" class="material-icons prefix clientblank clientselect" style="left:-10px;">store</i>
+                                {% endif %}
+                                <select class="mycol-subtext clientblankin clientselect browser-default" id="id_location_outdoors" name="location_outdoors"
+                                    style="padding-left: 20%; background-color: transparent !important; border-top:none; border-left:none;border-right:none;">
+                                    <option class="mycol-subtext clientselect" value="True" {% if event.location_outdoors %}selected{% endif %}>Outdoors</option>
+                                    <option class="mycol-subtext clientselect" value="False" {% if not event.location_outdoors %}selected{% endif %}>Indoors</option>
+                                </select>
+                                <label for="id_location_outdoors" class="clientfield"></label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mycol-panel-pad2" style="margin-top: -22px;">
+                        <div class="col s12 m8 l6 offset-l3 offset-m2"> <!-- location details -->
+                            <div class="input-field ev-veryshortline2">
+                                <i class="material-icons prefix {% if not event.location_details or 'location_details' in clist %}clientblank{% else %}prefixclient{% endif %}">
+                                    edit_location</i>
+                                <input type="text" class="mycol-subtext nosubmit  {% if not event.location_details or 'location_details' in clist %}clientblankin{% else %}specialclientn{% endif %}" 
+                                    name="location_details" id="id_location_details" {% if event.location_details and not 'location_details' in clist %}disabled {% endif %}value="{{ event.location_details|default:'' }}">
+                                <label for="id_location_details" class="active clientfield">Location Details (area, room, etc.):</label>
+                            </div>
+                        </div>
+                        {% if event.location %}
+                            {% if not event.location.address %}
+                                <!-- <div class="col s12 m8 l6 offset-l3 offset-m2">&nbsp;<div class="input-field ev-lesshortline">&nbsp;</div></div> -->
+                            {% else %}
+                            <div class="col s12 m8 l6 offset-l3 offset-m2"> <!-- location address -->
+                                <div class="input-field ev-veryshortline2" style="top:10px;">
+                                    <i class="material-icons prefix {% if not event.location.address or 'location_address' in clist %}clientblank{% else %}prefixclient{% endif %}">
+                                        location_city</i>
+                                    <input type="text" class="mycol-subtext nosubmit  {% if not event.location.address or 'location_address' in clist %}clientblankin{% else %}specialclientn{% endif %}" 
+                                        name="location_address" id="id_location_address" {% if event.location.address and not 'location_address' in clist %}disabled {% endif %}value="{{ event.location.address|default:'' }}">
+                                    <label for="id_location_address" class="active clientfield">Location Address:</label>
+                                </div>
+                            </div>
+                            {% endif %}
+                        {% else %}
+                        <div class="col s12 m8 l6 offset-l3 offset-m2"> <!-- location address2 -->
+                            <div class="input-field ev-veryshortline2" style="top:10px;">
+                                <i class="material-icons prefix {% if not event.location_address or 'location_address' in clist %}clientblank{% else %}prefixclient{% endif %}">
+                                    location_city</i>
+                                <input type="text" class="mycol-subtext nosubmit  {% if not event.location_address or 'location_address' in clist %}clientblankin{% else %}specialclientn{% endif %}" 
+                                    name="location_address" id="id_location_address" {% if event.location_address and not 'location_address' in clist %}disabled {% endif %}value="{{ event.location_address|default:'' }}">
+                                <label for="id_location_address" class="active clientfield">Location Address:</label>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>                    
+
+                    <!-- <div class="col s12">&nbsp;</div> -->
+                    <div class="col s12"><hr style="border: 6px solid white;margin-left:-40px;margin-right:-40px;"></div>
+                    <!-- <div class="col s12">&nbsp;</div> -->
+
+                  <div class="row mycol-panel-pad2">    
+                    {% if event.contact %}
+                    <div class="col s12 m8 l6 offset-l3 offset-m2"> <!-- contact name1 -->
+                        <div class="input-field ev-veryshortline2">
+                            <i class="material-icons prefix {% if not event.contact.name or 'contact_name' in clist %}clientblank{% else %}prefixclient{% endif %}">
+                                contacts</i>
+                            <input type="text" class="mycol-subtext nosubmit  {% if not event.contact.name or 'contact_name' in clist %}clientblankin{% else %}specialclientn{% endif %}" 
+                                name="contact_name" id="id_contact_name" {% if event.contact.name and not 'contact_name' in clist %}disabled {% endif %}value="{{ event.contact.name|default:'' }}">
+                            <label for="id_contact_name" class="active clientfield">Main Contact:</label>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="col s12 m8 l6 offset-l3 offset-m2"> <!-- contact name2 -->
+                        <div class="input-field ev-veryshortline2">
+                            <i class="material-icons prefix {% if not event.contact_name or 'contact_name' in clist %}clientblank{% else %}prefixclient{% endif %}">
+                                contacts</i>
+                            <input type="text" class="mycol-subtext nosubmit  {% if not event.contact_name or 'contact_name' in clist %}clientblankin{% else %}specialclientn{% endif %}" 
+                                name="contact_name" id="id_contact_name" {% if event.contact_name and not 'contact_name' in clist %}disabled {% endif %}value="{{ event.contact_name|default:'' }}">
+                            <label for="id_contact_name" class="active clientfield">Main Contact:</label>
+                        </div>
+                    </div>
+                    {% endif %}                    
+                    {% if event.contact %}
+                        {% if not event.contact.phone %}
+                            <!-- <div class="col s12 m8 l6 offset-l3 offset-m2">&nbsp;<div class="input-field ev-lesshortline">&nbsp;</div></div> -->
+                        {% else %}
+                        <div class="col s12 m8 l6 offset-l3 offset-m2"> <!-- contact phone1 -->
+                            <div class="input-field ev-veryshortline2">
+                                <i class="material-icons prefix {% if not event.contact.phone or 'contact_phone' in clist %}clientblank{% else %}prefixclient{% endif %}">
+                                    contact_phone</i>
+                                <input type="tel" maxlength="24" class="limitphone mycol-subtext nosubmit  {% if not event.contact.phone or 'contact_phone' in clist %}clientblankin{% else %}specialclientn{% endif %}" 
+                                    name="contact_phone" id="id_contact_phone" {% if event.contact.phone and not 'contact_phone' in clist %}disabled {% endif %}value="{{ event.contact.phone|default:'' }}">
+                                <label for="id_contact_phone" class="active clientfield">Contact Phone:</label>
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% else %}
+                    <div class="col s12 m8 l6 offset-l3 offset-m2"> <!-- contact phone2 -->
+                        <div class="input-field ev-veryshortline2">
+                            <i class="material-icons prefix {% if not event.contact_phone or 'contact_phone' in clist %}clientblank{% else %}prefixclient{% endif %}">
+                                contact_phone</i>
+                            <input type="tel" maxlength="24" class="limitphone mycol-subtext nosubmit  {% if not event.contact_phone or 'contact_phone' in clist %}clientblankin{% else %}specialclientn{% endif %}" 
+                                name="contact_phone" id="id_contact_phone" {% if event.contact_phone and not 'contact_phone' in clist %}disabled {% endif %}value="{{ event.contact_phone|default:'' }}">
+                            <label for="id_contact_phone" class="active clientfield">Contact Phone:</label>
+                        </div>
+                    </div>
+                    {% endif %}                    
+                    {% if event.contact %}
+                        {% if not event.contact.email %}
+                            <!-- <div class="col s12 m8 l6 offset-l3 offset-m2">&nbsp;<div class="input-field ev-lesshortline">&nbsp;</div></div> -->
+                        {% else %}
+                        <div class="col s12 m8 l6 offset-l3 offset-m2"> <!-- contact email1 -->
+                            <div class="input-field ev-veryshortline2">
+                                <i class="material-icons prefix {% if not event.contact.email or 'contact_email' in clist %}clientblank{% else %}prefixclient{% endif %}">
+                                    contact_mail</i>
+                                <input type="text" class="mycol-subtext nosubmit  {% if not event.contact.email or 'contact_email' in clist %}clientblankin{% else %}specialclientn{% endif %}" 
+                                    name="contact_email" id="id_contact_email" {% if event.contact.email and not 'contact_email' in clist %}disabled {% endif %}value="{{ event.contact.email|default:'' }}">
+                                <label for="id_contact_email" class="active clientfield">Contact Email:</label>
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% else %}
+                    <div class="col s12 m8 l6 offset-l3 offset-m2"> <!-- contact email2 -->
+                        <div class="input-field ev-veryshortline2">
+                            <i class="material-icons prefix {% if not event.contact_email or 'contact_email' in clist %}clientblank{% else %}prefixclient{% endif %}">
+                                contact_mail</i>
+                            <input type="text" class="mycol-subtext nosubmit  {% if not event.contact_email or 'contact_email' in clist %}clientblankin{% else %}specialclientn{% endif %}" 
+                                name="contact_email" id="id_contact_email" {% if event.contact_email and not 'contact_email' in clist %}disabled {% endif %}value="{{ event.contact_email|default:'' }}">
+                            <label for="id_contact_email" class="active clientfield">Contact Email:</label>
+                        </div>
+                    </div>
+                    {% endif %}  
+                                      
+                  </div>
+                  <div class="row mycol-panel-pad2">
+
+                    {% if event.dayofcontact %}
+                    <div class="col s12 m8 l6 offset-l3 offset-m2"> <!-- dayofcontact name1 -->
+                        <div class="input-field ev-veryshortline2">
+                            <i class="material-icons prefix {% if not event.dayofcontact.name or 'dayofcontact_name' in clist %}clientblank{% else %}prefixclient{% endif %}">
+                                contacts</i>
+                            <input type="text" class="mycol-subtext nosubmit  {% if not event.dayofcontact.name or 'dayofcontact_name' in clist %}clientblankin{% else %}specialclientn{% endif %}" 
+                                name="dayofcontact_name" id="id_dayofcontact_name" {% if event.dayofcontact.name and not 'dayofcontact_name' in clist %}disabled {% endif %}value="{{ event.dayofcontact.name|default:'' }}">
+                            <label for="id_dayofcontact_name" class="active clientfield">Planner:</label>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="col s12 m8 l6 offset-l3 offset-m2"> <!-- dayofcontact name2 -->
+                        <div class="input-field ev-veryshortline2">
+                            <i class="material-icons prefix {% if not event.dayofcontact_name or 'dayofcontact_name' in clist %}clientblank{% else %}prefixclient{% endif %}">
+                                contacts</i>
+                            <input type="text" class="mycol-subtext nosubmit  {% if not event.dayofcontact_name or 'dayofcontact_name' in clist %}clientblankin{% else %}specialclientn{% endif %}" 
+                                name="dayofcontact_name" id="id_dayofcontact_name" {% if event.dayofcontact_name and not 'dayofcontact_name' in clist %}disabled {% endif %}value="{{ event.dayofcontact_name|default:'' }}">
+                            <label for="id_dayofcontact_name" class="active clientfield">Planner:</label>
+                        </div>
+                    </div>
+                    {% endif %}                    
+                    {% if event.dayofcontact %}
+                        {% if not event.dayofcontact.phone %}
+                            <!-- <div class="col s12 m8 l6 offset-l3 offset-m2">&nbsp;<div class="input-field ev-lesshortline">&nbsp;</div></div> -->
+                        {% else %}
+                        <div class="col s12 m8 l6 offset-l3 offset-m2"> <!-- dayofcontact phone1 -->
+                            <div class="input-field ev-veryshortline2">
+                                <i class="material-icons prefix {% if not event.dayofcontact.phone or 'dayofcontact_phone' in clist %}clientblank{% else %}prefixclient{% endif %}">
+                                    contact_phone</i>
+                                <input type="tel" maxlength="24" class="limitphone mycol-subtext nosubmit  {% if not event.dayofcontact.phone or 'dayofcontact_phone' in clist %}clientblankin{% else %}specialclientn{% endif %}" 
+                                    name="dayofcontact_phone" id="id_dayofcontact_phone" {% if event.dayofcontact.phone and not 'dayofcontact_phone' in clist %}disabled {% endif %}value="{{ event.dayofcontact.phone|default:'' }}">
+                                <label for="id_dayofcontact_phone" class="active clientfield">Planner Phone:</label>
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% else %}
+                    <div class="col s12 m8 l6 offset-l3 offset-m2"> <!-- dayofcontact phone2 -->
+                        <div class="input-field ev-veryshortline2">
+                            <i class="material-icons prefix {% if not event.dayofcontact_phone or 'dayofcontact_phone' in clist %}clientblank{% else %}prefixclient{% endif %}">
+                                contact_phone</i>
+                            <input type="tel" maxlength="24" class="limitphone mycol-subtext nosubmit  {% if not event.dayofcontact_phone or 'dayofcontact_phone' in clist %}clientblankin{% else %}specialclientn{% endif %}" 
+                                name="dayofcontact_phone" id="id_dayofcontact_phone" {% if event.dayofcontact_phone and not 'dayofcontact_phone' in clist %}disabled {% endif %}value="{{ event.dayofcontact_phone|default:'' }}">
+                            <label for="id_dayofcontact_phone" class="active clientfield">Planner Phone:</label>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    {% if event.dayofcontact %}
+                        {% if not event.dayofcontact.email %}
+                            <!-- <div class="col s12 m8 l6 offset-l3 offset-m2">&nbsp;<div class="input-field ev-lesshortline">&nbsp;</div></div> -->
+                        {% else %}
+                        <div class="col s12 m8 l6 offset-l3 offset-m2"> <!-- dayofcontact email1 -->
+                            <div class="input-field ev-veryshortline2">
+                                <i class="material-icons prefix {% if not event.dayofcontact.email or 'dayofcontact_email' in clist %}clientblank{% else %}prefixclient{% endif %}">
+                                    contact_mail</i>
+                                <input type="text" class="mycol-subtext nosubmit  {% if not event.dayofcontact.email or 'dayofcontact_email' in clist %}clientblankin{% else %}specialclientn{% endif %}" 
+                                    name="dayofcontact_email" id="id_dayofcontact_email" {% if event.dayofcontact.email and not 'dayofcontact_email' in clist %}disabled {% endif %}value="{{ event.dayofcontact.email|default:'' }}">
+                                <label for="id_dayofcontact_email" class="active clientfield">Planner Email:</label>
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% else %}
+                    <div class="col s12 m8 l6 offset-l3 offset-m2"> <!-- dayofcontact email2 -->
+                        <div class="input-field ev-veryshortline2">
+                            <i class="material-icons prefix {% if not event.dayofcontact_email or 'dayofcontact_email' in clist %}clientblank{% else %}prefixclient{% endif %}">
+                                contact_mail</i>
+                            <input type="text" class="mycol-subtext nosubmit  {% if not event.dayofcontact_email or 'dayofcontact_email' in clist %}clientblankin{% else %}specialclientn{% endif %}" 
+                                name="dayofcontact_email" id="id_dayofcontact_email" {% if event.dayofcontact_email and not 'dayofcontact_email' in clist %}disabled {% endif %}value="{{ event.dayofcontact_email|default:'' }}">
+                            <label for="id_dayofcontact_email" class="active clientfield">Planner Email:</label>
+                        </div>
+                    </div>
+                    {% endif %}  
+                    
+                    <div class="col s8 m6 l4 offset-l3 offset-m2"> <!-- dayofcontact_alone name -->
+                        <div class="input-field ev-veryshortline2">
+                            <i class="material-icons prefix {% if not event.dayofcontact_alone_name or 'dayofcontact_alone_name' in clist %}clientblank{% else %}prefixclient{% endif %}">
+                                contacts</i>
+                            <input type="text" class="mycol-subtext nosubmit  {% if not event.dayofcontact_alone_name or 'dayofcontact_alone_name' in clist %}clientblankin{% else %}specialclientn{% endif %}" 
+                                name="dayofcontact_alone_name" id="id_dayofcontact_alone_name" {% if event.dayofcontact_alone_name and not 'dayofcontact_alone_name' in clist %}disabled {% endif %}value="{{ event.dayofcontact_alone_name|default:'' }}">
+                            <label for="id_dayofcontact_alone_name" class="active clientfield">Day-of Contact (if no planner):</label>
+                        </div>
+                    </div>
+                    <div class="col s4 m2 l2"> <!-- dayofcontact_alone phone -->
+                        <div class="input-field ev-veryshortline2">
+                            <!-- <i class="material-icons prefix {% if not event.dayofcontact_alone_phone %}clientblank{% else %}prefixclient{% endif %}">
+                                contact_phone</i> -->
+                            <input type="tel" maxlength="24" class="limitphone mycol-subtext nosubmit  {% if not event.dayofcontact_alone_phone or 'dayofcontact_alone_phone' in clist %}clientblankin{% else %}specialclientn{% endif %}" 
+                                name="dayofcontact_alone_phone" id="id_dayofcontact_alone_phone" {% if event.dayofcontact_alone_phone and not 'dayofcontact_alone_phone' in clist %}disabled {% endif %}value="{{ event.dayofcontact_alone_phone|default:'' }}">
+                            <label for="id_dayofcontact_alone_phone" class="active clientfield">Phone:</label>
+                        </div>
+                    </div>
+                    
+                    {% if do_ceremony %}                   
+                    <div class="col s12 m8 l6 offset-l3 offset-m2"> <!-- officiant info -->
+                        <div class="input-field ev-veryshortline2">
+                            <i class="material-icons prefix {% if not event.officiant_info or 'officiant_info' in clist %}clientblank{% else %}prefixclient{% endif %}">
+                                account_circle</i>
+                            <input type="text" class="mycol-subtext nosubmit  {% if not event.officiant_info or 'officiant_info' in clist %}clientblankin{% else %}specialclientn{% endif %}" 
+                                name="officiant_info" id="id_officiant_info" {% if event.officiant_info and not 'officiant_info' in clist %}disabled {% endif %}value="{{ event.officiant_info|default:'' }}">
+                            <label for="id_officiant_info" class="active clientfield">Officiant's Name & phone/email:</label>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="col s12 m8 l6 offset-l3 offset-m2"> <!-- officiant info2 -->
+                        <div class="input-field ev-veryshortline2">
+                            <i class="client-noshow material-icons prefix {% if not event.officiant_info or 'officiant_info' in clist %}clientblank{% else %}prefixclient{% endif %}">
+                                account_circle</i>
+                            <input type="text" class="mycol-subtext nosubmit client-noshow  {% if not event.officiant_info or 'officiant_info' in clist %}clientblankin{% else %}specialclientn{% endif %}" 
+                                name="officiant_info" id="id_officiant_info" {% if event.officiant_info and not 'officiant_info' in clist %}disabled {% endif %}value="{{ event.officiant_info|default:'' }}">
+                            <label for="id_officiant_info" class="client-noshow active clientfield">Officiant's Name & phone/email:</label>
+                        </div>
+                    </div>
+                    {% endif %}
+                  </div>
+                    
+                    
+                    <div class="col s12">&nbsp;</div>
+                    <!-- <div class="col s12">&nbsp;</div> -->
+
+                                        
+                        <!-- <button id="goto_questions_contract" type="submit" name="goto_questions_contract"
+                            class="btn btn-large ev-submitbtn z-depth-2 ev-col12" style="text-transform:capitalize;">Contact Us</button> -->
+                        <button id="goto_sign_contract_sign" type="submit" name="goto_sign_contract_sign"
+                            class="btn btn-large ev-submitbtn z-depth-2 mybtn-submit">NEXT</button>
+                    <div class="row"><br /><br /></div>
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endif %}
+</div>
+</form>
+
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/events_clients.js' %}"></script>
+<script src="{%  static 'js/jSignature.min.js' %}"></script> 
+{% if emessage %}
+    <script>
+        alert('{{ message }}');  
+    </script> 
+{% endif %}   
+{% endblock %}
+

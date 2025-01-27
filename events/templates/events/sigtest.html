@@ -1,0 +1,43 @@
+{% extends 'events/base.html' %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load static %}
+
+
+
+{% block content %}
+
+    <input type="hidden" id="page_flag" value="email">
+    <br />
+
+    <form action="." method="POST">
+        {{ form.name }}
+        {{ form.date }}
+        {{ form.sig }}
+        <div id="signature"></div>
+        <br /><br />
+        <button type="button" onclick="$('#signature').jSignature('clear')">Clear</button>
+        <input type="submit" id="sigSave" value="Save"/>
+        {% csrf_token %}
+    </form>
+    
+    
+    
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/events_home.js' %}"></script>
+    <!-- you load jquery somewhere before jSignature ... -->
+    <script src="{%  static 'js/jSignature.min.js' %}"></script>
+    <script>
+        $(document).ready(function() {
+            $("#signature").jSignature({UndoButton:true, 
+                                        width:600,
+                                        lineWidth:4})
+        })
+    </script>
+{% endblock %}    
+    
+    
+    
+    

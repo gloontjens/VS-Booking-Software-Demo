@@ -1,0 +1,854 @@
+<!-- start of an edit button for each reminder that's not done yet -->
+                    <span style="">
+                        {% if not reminder.done %}
+                            <a id="temp" style="cursor: pointer; cursor: hand;">
+                            <img style="width:14px;height:14px;"
+                             src = "{% static 'images/icon-changelink.svg' %}"></a>
+                        {% endif %}
+                    </span>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<form method="POST" class="" autocomplete="off">
+    <input type="hidden" name="csrfmiddlewaretoken" value="rKcMTGPkEL2nnqvuMQQXtsDPdHPCwdptORlGviaeYHSpBB8lxDjAIprx0gw9jFaO">
+    
+    <label for="id_body">Body:</label><div class="fr-box fr-basic fr-top" role="application">
+        
+    <div class="fr-toolbar fr-desktop fr-top fr-basic fr-sticky-off" data-sticky-offset="true"
+        data-top="0px" data-bottom="auto" style="top: 0px;"><div class="fr-btn-grp fr-float-left">
+            
+        <button id="bold-1" type="button" tabindex="-1" role="button" aria-pressed="false" title="Bold (Ctrl+B)"
+        class="fr-command fr-btn" data-cmd="bold">
+            
+        <svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            
+        <path d="M15.25,11.8h0A3.68,3.68,0,0,0,17,9a3.93,3.93,0,0,0-3.86-4H6.65V19h7a3.74,3.74,0,0,0,3.7-3.78V15.1A3.64,3.64,0,0,0,15.25,11.8ZM8.65,7h4.2a2.09,2.09,0,0,1,2,1.3,2.09,2.09,0,0,1-1.37,2.61,2.23,2.23,0,0,1-.63.09H8.65Zm4.6,10H8.65V13h4.6a2.09,2.09,0,0,1,2,1.3,2.09,2.09,0,0,1-1.37,2.61A2.23,2.23,0,0,1,13.25,17Z">
+            
+        </path></svg><span class="fr-sr-only">Bold</span></button><button id="italic-1" type="button" tabindex="-1"
+        role="button" aria-pressed="false" title="Italic (Ctrl+I)" class="fr-command fr-btn" data-cmd="italic">
+            
+        <svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M11.76,9h2l-2.2,10h-2Zm1.68-4a1,1,0,1,0,1,1,1,1,0,0,0-1-1Z">
+</path>
+</svg>
+<span class="fr-sr-only">Italic</span>
+</button>
+<button id="underline-1" type="button" tabindex="-1" role="button" aria-pressed="false" title="Underline (Ctrl+U)" class="fr-command fr-btn" data-cmd="underline">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M19,20v2H5V20Zm-3-6.785a4,4,0,0,1-5.74,3.4A3.75,3.75,0,0,1,8,13.085V5.005H6v8.21a6,6,0,0,0,8,5.44,5.851,5.851,0,0,0,4-5.65v-8H16ZM16,5v0h2V5ZM8,5H6v0H8Z">
+</path>
+</svg>
+<span class="fr-sr-only">Underline</span>
+</button>
+<button id="moreText-1" data-group-name="moreText-1" type="button" tabindex="-1" role="button" title="More Text" class="fr-command fr-btn" data-cmd="moreText">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M13.55,19h2l-5-14h-2l-5,14h2l1.4-4h5.1Zm-5.9-6,1.9-5.2,1.9,5.2Zm12.8,4.5a1.5,1.5,0,1,1-1.5-1.5A1.5,1.5,0,0,1,20.45,17.5Zm0-4a1.5,1.5,0,1,1-1.5-1.5A1.5,1.5,0,0,1,20.45,13.5Zm0-4A1.5,1.5,0,1,1,18.95,8,1.5,1.5,0,0,1,20.45,9.5Z">
+</path>
+</svg>
+<span class="fr-sr-only">More Text</span>
+</button>
+</div>
+<div class="fr-btn-grp fr-float-left">
+<button id="alignLeft-1" type="button" tabindex="-1" role="button" title="Align Left" class="fr-command fr-btn" data-cmd="alignLeft">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M3,18h6v-2H3V18z M3,11v2h12v-2H3z M3,6v2h18V6H3z">
+</path>
+</svg>
+<span class="fr-sr-only">Align Left</span>
+</button>
+<button id="alignCenter-1" type="button" tabindex="-1" role="button" title="Align Center" class="fr-command fr-btn" data-cmd="alignCenter">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M9,18h6v-2H9V18z M6,11v2h12v-2H6z M3,6v2h18V6H3z">
+</path>
+</svg>
+<span class="fr-sr-only">Align Center</span>
+</button>
+<button id="formatOLSimple-1" type="button" tabindex="-1" role="button" title="Ordered List" class="fr-command fr-btn" data-cmd="formatOLSimple">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M2.5,16h2v.5h-1v1h1V18h-2v1h3V15h-3Zm1-7h1V5h-2V6h1Zm-1,2H4.3L2.5,13.1V14h3V13H3.7l1.8-2.1V10h-3Zm5-5V8h14V6Zm0,12h14V16H7.5Zm0-5h14V11H7.5Z">
+</path>
+</svg>
+<span class="fr-sr-only">Ordered List</span>
+</button>
+<button id="moreParagraph-1" data-group-name="moreParagraph-1" type="button" tabindex="-1" role="button" title="More Paragraph" class="fr-command fr-btn" data-cmd="moreParagraph">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M7.682,5a4.11,4.11,0,0,0-4.07,3.18,4,4,0,0,0,3.11,4.725h0l.027.005a3.766,3.766,0,0,0,.82.09v6h2V7h2V19h2V7h2V5ZM5.532,9a2,2,0,0,1,2-2v4A2,2,0,0,1,5.532,9Zm14.94,8.491a1.5,1.5,0,1,1-1.5-1.5A1.5,1.5,0,0,1,20.472,17.491Zm0-4a1.5,1.5,0,1,1-1.5-1.5A1.5,1.5,0,0,1,20.472,13.491Zm0-4a1.5,1.5,0,1,1-1.5-1.5A1.5,1.5,0,0,1,20.472,9.491Z">
+</path>
+</svg>
+<span class="fr-sr-only">More Paragraph</span>
+</button>
+</div>
+<div class="fr-btn-grp fr-float-left">
+<button id="insertLink-1" type="button" tabindex="-1" role="button" title="Insert Link (Ctrl+K)" class="fr-command fr-btn" data-cmd="insertLink" data-popup="true">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M11,17H7A5,5,0,0,1,7,7h4V9H7a3,3,0,0,0,0,6h4ZM17,7H13V9h4a3,3,0,0,1,0,6H13v2h4A5,5,0,0,0,17,7Zm-1,4H8v2h8Z">
+</path>
+</svg>
+<span class="fr-sr-only">Insert Link</span>
+</button>
+<button id="insertImage-1" type="button" tabindex="-1" role="button" title="Insert Image (Ctrl+P)" class="fr-command fr-btn" data-cmd="insertImage" data-popup="true">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M14.2,11l3.8,5H6l3-3.9l2.1,2.7L14,11H14.2z M8.5,11c0.8,0,1.5-0.7,1.5-1.5S9.3,8,8.5,8S7,8.7,7,9.5C7,10.3,7.7,11,8.5,11z   M22,6v12c0,1.1-0.9,2-2,2H4c-1.1,0-2-0.9-2-2V6c0-1.1,0.9-2,2-2h16C21.1,4,22,4.9,22,6z M20,8.8V6H4v12h16V8.8z">
+</path>
+</svg>
+<span class="fr-sr-only">Insert Image</span>
+</button>
+<button id="insertVideo-1" type="button" tabindex="-1" role="button" title="Insert Video" class="fr-command fr-btn" data-cmd="insertVideo" data-popup="true">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M15,8v8H5V8H15m2,2.5V7a1,1,0,0,0-1-1H4A1,1,0,0,0,3,7V17a1,1,0,0,0,1,1H16a1,1,0,0,0,1-1V13.5l2.29,2.29A1,1,0,0,0,21,15.08V8.91a1,1,0,0,0-1.71-.71Z">
+</path>
+</svg>
+<span class="fr-sr-only">Insert Video</span>
+</button>
+<button id="moreRich-1" data-group-name="moreRich-1" type="button" tabindex="-1" role="button" title="More Rich" class="fr-command fr-btn" data-cmd="moreRich">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M16.5,13h-6v6h-2V13h-6V11h6V5h2v6h6Zm5,4.5A1.5,1.5,0,1,1,20,16,1.5,1.5,0,0,1,21.5,17.5Zm0-4A1.5,1.5,0,1,1,20,12,1.5,1.5,0,0,1,21.5,13.5Zm0-4A1.5,1.5,0,1,1,20,8,1.5,1.5,0,0,1,21.5,9.5Z">
+</path>
+</svg>
+<span class="fr-sr-only">More Rich</span>
+</button>
+</div>
+<div class="fr-btn-grp fr-float-right">
+<button id="undo-1" type="button" tabindex="-1" role="button" aria-disabled="true" title="Undo (Ctrl+Z)" class="fr-command fr-btn fr-disabled" data-cmd="undo">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M10.4,9.4c-1.7,0.3-3.2,0.9-4.6,2L3,8.5v7h7l-2.7-2.7c3.7-2.6,8.8-1.8,11.5,1.9c0.2,0.3,0.4,0.5,0.5,0.8l1.8-0.9  C18.9,10.8,14.7,8.7,10.4,9.4z">
+</path>
+</svg>
+<span class="fr-sr-only">Undo</span>
+</button>
+<button id="redo-1" type="button" tabindex="-1" role="button" aria-disabled="true" title="Redo (Ctrl+Shift+Z)" class="fr-command fr-btn fr-disabled" data-cmd="redo">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M13.6,9.4c1.7,0.3,3.2,0.9,4.6,2L21,8.5v7h-7l2.7-2.7C13,10.1,7.9,11,5.3,14.7c-0.2,0.3-0.4,0.5-0.5,0.8L3,14.6  C5.1,10.8,9.3,8.7,13.6,9.4z">
+</path>
+</svg>
+<span class="fr-sr-only">Redo</span>
+</button>
+<button id="moreMisc-1" data-group-name="moreMisc-1" type="button" tabindex="-1" role="button" title="More Misc" class="fr-command fr-btn" data-cmd="moreMisc">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M13.5,17c0,0.8-0.7,1.5-1.5,1.5s-1.5-0.7-1.5-1.5s0.7-1.5,1.5-1.5S13.5,16.2,13.5,17z M13.5,12c0,0.8-0.7,1.5-1.5,1.5 s-1.5-0.7-1.5-1.5s0.7-1.5,1.5-1.5S13.5,11.2,13.5,12z M13.5,7c0,0.8-0.7,1.5-1.5,1.5S10.5,7.8,10.5,7s0.7-1.5,1.5-1.5 S13.5,6.2,13.5,7z">
+</path>
+</svg>
+<span class="fr-sr-only">More Misc</span>
+</button>
+</div>
+<div class="fr-newline">
+</div>
+<div class="fr-more-toolbar" data-name="moreText-1" style="padding-left: 0px;">
+<button id="strikeThrough-1" type="button" tabindex="-1" role="button" aria-pressed="false" title="Strikethrough (Ctrl+S)" class="fr-command fr-btn" data-cmd="strikeThrough">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M3,12.20294H21v1.5H16.63422a3.59782,3.59782,0,0,1,.34942,1.5929,3.252,3.252,0,0,1-1.31427,2.6997A5.55082,5.55082,0,0,1,12.20251,19a6.4421,6.4421,0,0,1-2.62335-.539,4.46335,4.46335,0,0,1-1.89264-1.48816,3.668,3.668,0,0,1-.67016-2.15546V14.704h.28723v-.0011h.34149v.0011H9.02v.11334a2.18275,2.18275,0,0,0,.85413,1.83069,3.69,3.69,0,0,0,2.32836.67926,3.38778,3.38778,0,0,0,2.07666-.5462,1.73346,1.73346,0,0,0,.7013-1.46655,1.69749,1.69749,0,0,0-.647-1.43439,3.00525,3.00525,0,0,0-.27491-.17725H3ZM16.34473,7.05981A4.18163,4.18163,0,0,0,14.6236,5.5462,5.627,5.627,0,0,0,12.11072,5,5.16083,5.16083,0,0,0,8.74719,6.06213,3.36315,3.36315,0,0,0,7.44006,8.76855a3.22923,3.22923,0,0,0,.3216,1.42786h2.59668c-.08338-.05365-.18537-.10577-.25269-.16064a1.60652,1.60652,0,0,1-.65283-1.30036,1.79843,1.79843,0,0,1,.68842-1.5108,3.12971,3.12971,0,0,1,1.96948-.55243,3.04779,3.04779,0,0,1,2.106.6687,2.35066,2.35066,0,0,1,.736,1.83258v.11341h2.00317V9.17346A3.90013,3.90013,0,0,0,16.34473,7.05981Z">
+</path>
+</svg>
+<span class="fr-sr-only">Strikethrough</span>
+</button>
+<button id="subscript-1" type="button" tabindex="-1" role="button" aria-pressed="false" title="Subscript" class="fr-command fr-btn" data-cmd="subscript">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M10.4,12l3.6,3.6L12.6,17L9,13.4L5.4,17L4,15.6L7.6,12L4,8.4L5.4,7L9,10.6L12.6,7L14,8.4L10.4,12z M18.31234,19.674  l1.06812-1.1465c0.196-0.20141,0.37093-0.40739,0.5368-0.6088c0.15975-0.19418,0.30419-0.40046,0.432-0.617  c0.11969-0.20017,0.21776-0.41249,0.29255-0.6334c0.07103-0.21492,0.10703-0.43986,0.10662-0.66621  c0.00297-0.28137-0.04904-0.56062-0.1531-0.82206c-0.09855-0.24575-0.25264-0.46534-0.45022-0.6416  c-0.20984-0.18355-0.45523-0.32191-0.72089-0.40646c-0.63808-0.19005-1.3198-0.17443-1.94851,0.04465  c-0.28703,0.10845-0.54746,0.2772-0.76372,0.49487c-0.20881,0.20858-0.37069,0.45932-0.47483,0.73548  c-0.10002,0.26648-0.15276,0.54838-0.15585,0.833l-0.00364,0.237H17.617l0.00638-0.22692  c0.00158-0.12667,0.01966-0.25258,0.05377-0.37458c0.03337-0.10708,0.08655-0.20693,0.15679-0.29437  c0.07105-0.08037,0.15959-0.14335,0.25882-0.1841c0.22459-0.08899,0.47371-0.09417,0.7018-0.01458  c0.0822,0.03608,0.15559,0.08957,0.21509,0.15679c0.06076,0.07174,0.10745,0.15429,0.13761,0.24333  c0.03567,0.10824,0.05412,0.22141,0.05469,0.33538c-0.00111,0.08959-0.0118,0.17881-0.0319,0.26612  c-0.02913,0.10428-0.07076,0.20465-0.124,0.29893c-0.07733,0.13621-0.1654,0.26603-0.26338,0.38823  c-0.13438,0.17465-0.27767,0.34226-0.42929,0.50217l-2.15634,2.35315V21H21v-1.326H18.31234z">
+</path>
+</svg>
+<span class="fr-sr-only">Subscript</span>
+</button>
+<button id="superscript-1" type="button" tabindex="-1" role="button" aria-pressed="false" title="Superscript" class="fr-command fr-btn" data-cmd="superscript">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M10.4,12,14,15.6,12.6,17,9,13.4,5.4,17,4,15.6,7.6,12,4,8.4,5.4,7,9,10.6,12.6,7,14,8.4Zm8.91234-3.326,1.06812-1.1465c.196-.20141.37093-.40739.5368-.6088a4.85745,4.85745,0,0,0,.432-.617,3.29,3.29,0,0,0,.29255-.6334,2.11079,2.11079,0,0,0,.10662-.66621,2.16127,2.16127,0,0,0-.1531-.82206,1.7154,1.7154,0,0,0-.45022-.6416,2.03,2.03,0,0,0-.72089-.40646,3.17085,3.17085,0,0,0-1.94851.04465,2.14555,2.14555,0,0,0-.76372.49487,2.07379,2.07379,0,0,0-.47483.73548,2.446,2.446,0,0,0-.15585.833l-.00364.237H18.617L18.62338,5.25a1.45865,1.45865,0,0,1,.05377-.37458.89552.89552,0,0,1,.15679-.29437.70083.70083,0,0,1,.25882-.1841,1.00569,1.00569,0,0,1,.7018-.01458.62014.62014,0,0,1,.21509.15679.74752.74752,0,0,1,.13761.24333,1.08893,1.08893,0,0,1,.05469.33538,1.25556,1.25556,0,0,1-.0319.26612,1.34227,1.34227,0,0,1-.124.29893,2.94367,2.94367,0,0,1-.26338.38823,6.41629,6.41629,0,0,1-.42929.50217L17.19709,8.92642V10H22V8.674Z">
+</path>
+</svg>
+<span class="fr-sr-only">Superscript</span>
+</button>
+<button id="fontFamily-1" type="button" tabindex="-1" role="button" aria-controls="dropdown-menu-fontFamily-1" aria-expanded="false" aria-haspopup="true" title="Font Family" class="fr-command fr-btn fr-dropdown fr-selection" data-cmd="fontFamily">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M16,19h2L13,5H11L6,19H8l1.43-4h5.14Zm-5.86-6L12,7.8,13.86,13Z">
+</path>
+</svg>
+<span class="fr-sr-only">Font Family</span>
+</button>
+<div id="dropdown-menu-fontFamily-1" class="fr-dropdown-menu" role="listbox" aria-labelledby="fontFamily-1" aria-hidden="true">
+<div class="fr-dropdown-wrapper" role="presentation">
+<div class="fr-dropdown-content" role="presentation">
+<ul class="fr-dropdown-list" role="presentation">
+<li role="presentation">
+<a class="fr-command" tabindex="-1" role="option" data-cmd="fontFamily" data-param1="Arial,Helvetica,sans-serif" style="font-family: Arial,Helvetica,sans-serif" title="Arial">Arial</a>
+</li>
+<li role="presentation">
+<a class="fr-command" tabindex="-1" role="option" data-cmd="fontFamily" data-param1="Georgia,serif" style="font-family: Georgia,serif" title="Georgia">Georgia</a>
+</li>
+<li role="presentation">
+<a class="fr-command" tabindex="-1" role="option" data-cmd="fontFamily" data-param1="Impact,Charcoal,sans-serif" style="font-family: Impact,Charcoal,sans-serif" title="Impact">Impact</a>
+</li>
+<li role="presentation">
+<a class="fr-command" tabindex="-1" role="option" data-cmd="fontFamily" data-param1="Tahoma,Geneva,sans-serif" style="font-family: Tahoma,Geneva,sans-serif" title="Tahoma">Tahoma</a>
+</li>
+<li role="presentation">
+<a class="fr-command" tabindex="-1" role="option" data-cmd="fontFamily" data-param1="Times New Roman,Times,serif,-webkit-standard" style="font-family: Times New Roman,Times,serif,-webkit-standard" title="Times New Roman">Times New Roman</a>
+</li>
+<li role="presentation">
+<a class="fr-command" tabindex="-1" role="option" data-cmd="fontFamily" data-param1="Verdana,Geneva,sans-serif" style="font-family: Verdana,Geneva,sans-serif" title="Verdana">Verdana</a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<button id="fontSize-1" type="button" tabindex="-1" role="button" aria-controls="dropdown-menu-fontSize-1" aria-expanded="false" aria-haspopup="true" title="Font Size" class="fr-command fr-btn fr-dropdown fr-selection" data-cmd="fontSize">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M20.75,19h1.5l-3-10h-1.5l-3,10h1.5L17,16.5h3Zm-3.3-4,1.05-3.5L19.55,15Zm-5.7,4h2l-5-14h-2l-5,14h2l1.43-4h5.14ZM5.89,13,7.75,7.8,9.61,13Z">
+</path>
+</svg>
+<span class="fr-sr-only">Font Size</span>
+</button>
+<div id="dropdown-menu-fontSize-1" class="fr-dropdown-menu" role="listbox" aria-labelledby="fontSize-1" aria-hidden="true">
+<div class="fr-dropdown-wrapper" role="presentation">
+<div class="fr-dropdown-content" role="presentation">
+<ul class="fr-dropdown-list" role="presentation">
+<li role="presentation">
+<a class="fr-command" tabindex="-1" role="option" data-cmd="fontSize" data-param1="8px" title="8">8</a>
+</li>
+<li role="presentation">
+<a class="fr-command" tabindex="-1" role="option" data-cmd="fontSize" data-param1="9px" title="9">9</a>
+</li>
+<li role="presentation">
+<a class="fr-command" tabindex="-1" role="option" data-cmd="fontSize" data-param1="10px" title="10">10</a>
+</li>
+<li role="presentation">
+<a class="fr-command" tabindex="-1" role="option" data-cmd="fontSize" data-param1="11px" title="11">11</a>
+</li>
+<li role="presentation">
+<a class="fr-command" tabindex="-1" role="option" data-cmd="fontSize" data-param1="12px" title="12">12</a>
+</li>
+<li role="presentation">
+<a class="fr-command" tabindex="-1" role="option" data-cmd="fontSize" data-param1="14px" title="14">14</a>
+</li>
+<li role="presentation">
+<a class="fr-command" tabindex="-1" role="option" data-cmd="fontSize" data-param1="18px" title="18">18</a>
+</li>
+<li role="presentation">
+<a class="fr-command" tabindex="-1" role="option" data-cmd="fontSize" data-param1="24px" title="24">24</a>
+</li>
+<li role="presentation">
+<a class="fr-command" tabindex="-1" role="option" data-cmd="fontSize" data-param1="30px" title="30">30</a>
+</li>
+<li role="presentation">
+<a class="fr-command" tabindex="-1" role="option" data-cmd="fontSize" data-param1="36px" title="36">36</a>
+</li>
+<li role="presentation">
+<a class="fr-command" tabindex="-1" role="option" data-cmd="fontSize" data-param1="48px" title="48">48</a>
+</li>
+<li role="presentation">
+<a class="fr-command" tabindex="-1" role="option" data-cmd="fontSize" data-param1="60px" title="60">60</a>
+</li>
+<li role="presentation">
+<a class="fr-command" tabindex="-1" role="option" data-cmd="fontSize" data-param1="72px" title="72">72</a>
+</li>
+<li role="presentation">
+<a class="fr-command" tabindex="-1" role="option" data-cmd="fontSize" data-param1="96px" title="96">96</a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<button id="textColor-1" type="button" tabindex="-1" role="button" title="Text Color" class="fr-command fr-btn" data-cmd="textColor" data-popup="true">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M15.2,13.494s-3.6,3.9-3.6,6.3a3.65,3.65,0,0,0,7.3.1v-.1C18.9,17.394,15.2,13.494,15.2,13.494Zm-1.47-1.357.669-.724L12.1,5h-2l-5,14h2l1.43-4h2.943A24.426,24.426,0,0,1,13.726,12.137ZM11.1,7.8l1.86,5.2H9.244Z">
+</path>
+</svg>
+<span class="fr-sr-only">Text Color</span>
+</button>
+<button id="backgroundColor-1" type="button" tabindex="-1" role="button" title="Background Color" class="fr-command fr-btn" data-cmd="backgroundColor" data-popup="true">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M9.91752,12.24082l7.74791-5.39017,1.17942,1.29591-6.094,7.20747L9.91752,12.24082M7.58741,12.652l4.53533,4.98327a.93412.93412,0,0,0,1.39531-.0909L20.96943,8.7314A.90827.90827,0,0,0,20.99075,7.533l-2.513-2.76116a.90827.90827,0,0,0-1.19509-.09132L7.809,11.27135A.93412.93412,0,0,0,7.58741,12.652ZM2.7939,18.52772,8.41126,19.5l1.47913-1.34617-3.02889-3.328Z">
+</path>
+</svg>
+<span class="fr-sr-only">Background Color</span>
+</button>
+<button id="inlineClass-1" type="button" tabindex="-1" role="button" aria-controls="dropdown-menu-inlineClass-1" aria-expanded="false" aria-haspopup="true" title="Inline Class" class="fr-command fr-btn fr-dropdown" data-cmd="inlineClass">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M9.9,13.313A1.2,1.2,0,0,1,9.968,13H6.277l1.86-5.2,1.841,5.148A1.291,1.291,0,0,1,11.212,12h.426l-2.5-7h-2l-5,14h2l1.43-4H9.9Zm2.651,6.727a2.884,2.884,0,0,1-.655-2.018v-2.71A1.309,1.309,0,0,1,13.208,14h3.113a3.039,3.039,0,0,1,2,1.092s1.728,1.818,2.964,2.928a1.383,1.383,0,0,1,.318,1.931,1.44,1.44,0,0,1-.19.215l-3.347,3.31a1.309,1.309,0,0,1-1.832.258h0a1.282,1.282,0,0,1-.258-.257l-1.71-1.728Zm2.48-3.96a.773.773,0,1,0,.008,0Z">
+</path>
+</svg>
+<span class="fr-sr-only">Inline Class</span>
+</button>
+<div id="dropdown-menu-inlineClass-1" class="fr-dropdown-menu" role="listbox" aria-labelledby="inlineClass-1" aria-hidden="true">
+<div class="fr-dropdown-wrapper" role="presentation">
+<div class="fr-dropdown-content" role="presentation">
+<ul class="fr-dropdown-list" role="presentation">
+<li role="presentation">
+<a class="fr-command" tabindex="-1" role="option" data-cmd="inlineClass" data-param1="fr-class-code" title="Code">Code</a>
+</li>
+<li role="presentation">
+<a class="fr-command" tabindex="-1" role="option" data-cmd="inlineClass" data-param1="fr-class-highlighted" title="Highlighted">Highlighted</a>
+</li>
+<li role="presentation">
+<a class="fr-command" tabindex="-1" role="option" data-cmd="inlineClass" data-param1="fr-class-transparency" title="Transparent">Transparent</a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<button id="inlineStyle-1" type="button" tabindex="-1" role="button" aria-controls="dropdown-menu-inlineStyle-1" aria-expanded="false" aria-haspopup="true" title="Inline Style" class="fr-command fr-btn fr-dropdown" data-cmd="inlineStyle">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M11.88,15h.7l.7-1.7-3-8.3h-2l-5,14h2l1.4-4Zm-4.4-2,1.9-5.2,1.9,5.2ZM15.4,21.545l3.246,1.949-.909-3.637L20.72,17H16.954l-1.429-3.506L13.837,17H10.071l2.857,2.857-.779,3.637Z">
+</path>
+</svg>
+<span class="fr-sr-only">Inline Style</span>
+</button>
+<div id="dropdown-menu-inlineStyle-1" class="fr-dropdown-menu" role="listbox" aria-labelledby="inlineStyle-1" aria-hidden="true">
+<div class="fr-dropdown-wrapper" role="presentation">
+<div class="fr-dropdown-content" role="presentation">
+<ul class="fr-dropdown-list" role="presentation">
+<li role="presentation">
+<span style="font-size: 20px; color: red; display:block;" role="presentation">
+<a class="fr-command" tabindex="-1" role="option" data-cmd="inlineStyle" data-param1="font-size: 20px; color: red;" title="Big Red">Big Red</a>
+</span>
+</li>
+<li role="presentation">
+<span style="font-size: 14px; color: blue; display:block;" role="presentation">
+<a class="fr-command" tabindex="-1" role="option" data-cmd="inlineStyle" data-param1="font-size: 14px; color: blue;" title="Small Blue">Small Blue</a>
+</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<button id="clearFormatting-1" type="button" tabindex="-1" role="button" title="Clear Formatting" class="fr-command fr-btn" data-cmd="clearFormatting">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M11.48,10.09l-1.2-1.21L8.8,7.41,6.43,5,5.37,6.1,8.25,9,4.66,19h2l1.43-4h5.14l1.43,4h2l-.89-2.51L18.27,19l1.07-1.06L14.59,13.2ZM8.8,13l.92-2.56L12.27,13Zm.56-7.15L9.66,5h2l1.75,4.9Z">
+</path>
+</svg>
+<span class="fr-sr-only">Clear Formatting</span>
+</button>
+</div>
+<div class="fr-more-toolbar" data-name="moreParagraph-1" style="padding-left: 110px;">
+<button id="alignRight-1" type="button" tabindex="-1" role="button" title="Align Right" class="fr-command fr-btn" data-cmd="alignRight">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M15,18h6v-2h-6V18z M9,11v2h12v-2H9z M3,6v2h18V6H3z">
+</path>
+</svg>
+<span class="fr-sr-only">Align Right</span>
+</button>
+<button id="alignJustify-1" type="button" tabindex="-1" role="button" title="Align Justify" class="fr-command fr-btn" data-cmd="alignJustify">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M3,18h18v-2H3V18z M3,11v2h18v-2H3z M3,6v2h18V6H3z">
+</path>
+</svg>
+<span class="fr-sr-only">Align Justify</span>
+</button>
+<div class="fr-btn-wrap">
+<button id="formatOL-1" type="button" tabindex="-1" role="button" title="Ordered List" class="fr-command fr-btn" data-cmd="formatOL">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M2.5,16h2v.5h-1v1h1V18h-2v1h3V15h-3Zm1-7h1V5h-2V6h1Zm-1,2H4.3L2.5,13.1V14h3V13H3.7l1.8-2.1V10h-3Zm5-5V8h14V6Zm0,12h14V16H7.5Zm0-5h14V11H7.5Z">
+</path>
+</svg>
+<span class="fr-sr-only">Ordered List</span>
+</button> <button id="formatOLOptions-1" type="button" tabindex="-1" role="button" aria-controls="dropdown-menu-formatOLOptions-1" aria-expanded="false" aria-haspopup="true" title="Ordered List" class="fr-command fr-btn fr-dropdown fr-options" data-cmd="formatOLOptions">
+</button>
+<div id="dropdown-menu-formatOLOptions-1" class="fr-dropdown-menu" role="listbox" aria-labelledby="formatOLOptions-1" aria-hidden="true">
+<div class="fr-dropdown-wrapper" role="presentation">
+<div class="fr-dropdown-content" role="presentation">
+<ul class="fr-dropdown-list" role="presentation">
+<li role="presentation">
+<a class="fr-command" tabindex="-1" role="option" data-cmd="formatOL" data-param1="default" title="Default">Default</a>
+</li>
+<li role="presentation">
+<a class="fr-command" tabindex="-1" role="option" data-cmd="formatOL" data-param1="lower-alpha" title="Lower Alpha">Lower Alpha</a>
+</li>
+<li role="presentation">
+<a class="fr-command" tabindex="-1" role="option" data-cmd="formatOL" data-param1="lower-greek" title="Lower Greek">Lower Greek</a>
+</li>
+<li role="presentation">
+<a class="fr-command" tabindex="-1" role="option" data-cmd="formatOL" data-param1="lower-roman" title="Lower Roman">Lower Roman</a>
+</li>
+<li role="presentation">
+<a class="fr-command" tabindex="-1" role="option" data-cmd="formatOL" data-param1="upper-alpha" title="Upper Alpha">Upper Alpha</a>
+</li>
+<li role="presentation">
+<a class="fr-command" tabindex="-1" role="option" data-cmd="formatOL" data-param1="upper-roman" title="Upper Roman">Upper Roman</a>
+</li>
+</ul>
+</div>
+</div>
+</div>  </div>
+<div class="fr-btn-wrap">
+<button id="formatUL-1" type="button" tabindex="-1" role="button" title="Unordered List" class="fr-command fr-btn" data-cmd="formatUL">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M4,10.5c-0.8,0-1.5,0.7-1.5,1.5s0.7,1.5,1.5,1.5s1.5-0.7,1.5-1.5S4.8,10.5,4,10.5z M4,5.5C3.2,5.5,2.5,6.2,2.5,7  S3.2,8.5,4,8.5S5.5,7.8,5.5,7S4.8,5.5,4,5.5z M4,15.5c-0.8,0-1.5,0.7-1.5,1.5s0.7,1.5,1.5,1.5s1.5-0.7,1.5-1.5S4.8,15.5,4,15.5z   M7.5,6v2h14V6H7.5z M7.5,18h14v-2h-14V18z M7.5,13h14v-2h-14V13z">
+</path>
+</svg>
+<span class="fr-sr-only">Unordered List</span>
+</button> <button id="formatULOptions-1" type="button" tabindex="-1" role="button" aria-controls="dropdown-menu-formatULOptions-1" aria-expanded="false" aria-haspopup="true" title="Unordered List" class="fr-command fr-btn fr-dropdown fr-options" data-cmd="formatULOptions">
+</button>
+<div id="dropdown-menu-formatULOptions-1" class="fr-dropdown-menu" role="listbox" aria-labelledby="formatULOptions-1" aria-hidden="true">
+<div class="fr-dropdown-wrapper" role="presentation">
+<div class="fr-dropdown-content" role="presentation">
+<ul class="fr-dropdown-list" role="presentation">
+<li role="presentation">
+<a class="fr-command" tabindex="-1" role="option" data-cmd="formatUL" data-param1="default" title="Default">Default</a>
+</li>
+<li role="presentation">
+<a class="fr-command" tabindex="-1" role="option" data-cmd="formatUL" data-param1="circle" title="Circle">Circle</a>
+</li>
+<li role="presentation">
+<a class="fr-command" tabindex="-1" role="option" data-cmd="formatUL" data-param1="disc" title="Disc">Disc</a>
+</li>
+<li role="presentation">
+<a class="fr-command" tabindex="-1" role="option" data-cmd="formatUL" data-param1="square" title="Square">Square</a>
+</li>
+</ul>
+</div>
+</div>
+</div>  </div>
+<button id="paragraphFormat-1" type="button" tabindex="-1" role="button" aria-controls="dropdown-menu-paragraphFormat-1" aria-expanded="false" aria-haspopup="true" title="Paragraph Format" class="fr-command fr-btn fr-dropdown fr-selection" data-cmd="paragraphFormat">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M10.15,5A4.11,4.11,0,0,0,6.08,8.18,4,4,0,0,0,10,13v6h2V7h2V19h2V7h2V5ZM8,9a2,2,0,0,1,2-2v4A2,2,0,0,1,8,9Z">
+</path>
+</svg>
+<span class="fr-sr-only">Paragraph Format</span>
+</button>
+<div id="dropdown-menu-paragraphFormat-1" class="fr-dropdown-menu" role="listbox" aria-labelledby="paragraphFormat-1" aria-hidden="true">
+<div class="fr-dropdown-wrapper" role="presentation">
+<div class="fr-dropdown-content" role="presentation">
+<ul class="fr-dropdown-list" role="presentation">
+<li role="presentation">
+<p style="padding: 0 !important; margin: 0 !important;" role="presentation">
+<a class="fr-command" tabindex="-1" role="option" data-cmd="paragraphFormat" data-param1="N" title="Normal">Normal</a>
+</p>
+</li>
+<li role="presentation">
+<h1 style="padding: 0 !important; margin: 0 !important;" role="presentation">
+<a class="fr-command" tabindex="-1" role="option" data-cmd="paragraphFormat" data-param1="H1" title="Heading 1">Heading 1</a>
+</h1>
+</li>
+<li role="presentation">
+<h2 style="padding: 0 !important; margin: 0 !important;" role="presentation">
+<a class="fr-command" tabindex="-1" role="option" data-cmd="paragraphFormat" data-param1="H2" title="Heading 2">Heading 2</a>
+</h2>
+</li>
+<li role="presentation">
+<h3 style="padding: 0 !important; margin: 0 !important;" role="presentation">
+<a class="fr-command" tabindex="-1" role="option" data-cmd="paragraphFormat" data-param1="H3" title="Heading 3">Heading 3</a>
+</h3>
+</li>
+<li role="presentation">
+<h4 style="padding: 0 !important; margin: 0 !important;" role="presentation">
+<a class="fr-command" tabindex="-1" role="option" data-cmd="paragraphFormat" data-param1="H4" title="Heading 4">Heading 4</a>
+</h4>
+</li>
+<li role="presentation">
+<pre style="padding: 0 !important; margin: 0 !important;" role="presentation">
+<a class="fr-command" tabindex="-1" role="option" data-cmd="paragraphFormat" data-param1="PRE" title="Code">Code</a>
+</pre>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<button id="paragraphStyle-1" type="button" tabindex="-1" role="button" aria-controls="dropdown-menu-paragraphStyle-1" aria-expanded="false" aria-haspopup="true" title="Paragraph Style" class="fr-command fr-btn fr-dropdown" data-cmd="paragraphStyle">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M4,9c0-1.1,0.9-2,2-2v4C4.9,11,4,10.1,4,9z M16.7,20.5l3.2,1.9L19,18.8l3-2.9h-3.7l-1.4-3.5L15.3,16h-3.8l2.9,2.9l-0.9,3.6  L16.7,20.5z M10,17.4V19h1.6L10,17.4z M6.1,5c-1.9,0-3.6,1.3-4,3.2c-0.5,2.1,0.8,4.2,2.9,4.7c0,0,0,0,0,0h0.2C5.5,13,5.8,13,6,13v6  h2V7h2v7h2V7h2V5H6.1z">
+</path>
+</svg>
+<span class="fr-sr-only">Paragraph Style</span>
+</button>
+<div id="dropdown-menu-paragraphStyle-1" class="fr-dropdown-menu" role="listbox" aria-labelledby="paragraphStyle-1" aria-hidden="true">
+<div class="fr-dropdown-wrapper" role="presentation">
+<div class="fr-dropdown-content" role="presentation">
+<ul class="fr-dropdown-list" role="presentation">
+<li role="presentation">
+<a class="fr-command fr-text-gray" tabindex="-1" role="option" data-cmd="paragraphStyle" data-param1="fr-text-gray" title="Gray">Gray</a>
+</li>
+<li role="presentation">
+<a class="fr-command fr-text-bordered" tabindex="-1" role="option" data-cmd="paragraphStyle" data-param1="fr-text-bordered" title="Bordered">Bordered</a>
+</li>
+<li role="presentation">
+<a class="fr-command fr-text-spaced" tabindex="-1" role="option" data-cmd="paragraphStyle" data-param1="fr-text-spaced" title="Spaced">Spaced</a>
+</li>
+<li role="presentation">
+<a class="fr-command fr-text-uppercase" tabindex="-1" role="option" data-cmd="paragraphStyle" data-param1="fr-text-uppercase" title="Uppercase">Uppercase</a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<button id="lineHeight-1" type="button" tabindex="-1" role="button" aria-controls="dropdown-menu-lineHeight-1" aria-expanded="false" aria-haspopup="true" title="Line Height" class="fr-command fr-btn fr-dropdown" data-cmd="lineHeight">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M6.25,7h2.5L5.25,3.5,1.75,7h2.5V17H1.75l3.5,3.5L8.75,17H6.25Zm4-2V7h12V5Zm0,14h12V17h-12Zm0-6h12V11h-12Z">
+</path>
+</svg>
+<span class="fr-sr-only">Line Height</span>
+</button>
+<div id="dropdown-menu-lineHeight-1" class="fr-dropdown-menu" role="listbox" aria-labelledby="lineHeight-1" aria-hidden="true">
+<div class="fr-dropdown-wrapper" role="presentation">
+<div class="fr-dropdown-content" role="presentation">
+<ul class="fr-dropdown-list" role="presentation">
+<li role="presentation">
+<a class="fr-command Default" tabindex="-1" role="option" data-cmd="lineHeight" data-param1="" title="Default">Default</a>
+</li>
+<li role="presentation">
+<a class="fr-command Single" tabindex="-1" role="option" data-cmd="lineHeight" data-param1="1" title="Single">Single</a>
+</li>
+<li role="presentation">
+<a class="fr-command 1.15" tabindex="-1" role="option" data-cmd="lineHeight" data-param1="1.15" title="1.15">1.15</a>
+</li>
+<li role="presentation">
+<a class="fr-command 1.5" tabindex="-1" role="option" data-cmd="lineHeight" data-param1="1.5" title="1.5">1.5</a>
+</li>
+<li role="presentation">
+<a class="fr-command Double" tabindex="-1" role="option" data-cmd="lineHeight" data-param1="2" title="Double">Double</a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<button id="outdent-1" type="button" tabindex="-1" role="button" title="Decrease Indent (Ctrl+[)" class="fr-command fr-btn fr-disabled" data-cmd="outdent" aria-disabled="true">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M3,12l3,3V9L3,12z M3,19h18v-2H3V19z M3,7h18V5H3V7z M9,11h12V9H9V11z M9,15h12v-2H9V15z">
+</path>
+</svg>
+<span class="fr-sr-only">Decrease Indent</span>
+</button>
+<button id="indent-1" type="button" tabindex="-1" role="button" title="Increase Indent (Ctrl+])" class="fr-command fr-btn" data-cmd="indent" aria-disabled="false">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M3,9v6l3-3L3,9z M3,19h18v-2H3V19z M3,7h18V5H3V7z M9,11h12V9H9V11z M9,15h12v-2H9V15z">
+</path>
+</svg>
+<span class="fr-sr-only">Increase Indent</span>
+</button>
+<button id="quote-1" type="button" tabindex="-1" role="button" aria-controls="dropdown-menu-quote-1" aria-expanded="false" aria-haspopup="true" title="Quote" class="fr-command fr-btn fr-dropdown" data-cmd="quote">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M10.31788,5l.93817,1.3226A12.88271,12.88271,0,0,0,8.1653,9.40125a5.54242,5.54242,0,0,0-.998,3.07866v.33733q.36089-.04773.66067-.084a4.75723,4.75723,0,0,1,.56519-.03691,2.87044,2.87044,0,0,1,2.11693.8427,2.8416,2.8416,0,0,1,.8427,2.09274,3.37183,3.37183,0,0,1-.8898,2.453A3.143,3.143,0,0,1,8.10547,19,3.40532,3.40532,0,0,1,5.375,17.7245,4.91156,4.91156,0,0,1,4.30442,14.453,9.3672,9.3672,0,0,1,5.82051,9.32933,14.75716,14.75716,0,0,1,10.31788,5Zm8.39243,0,.9369,1.3226a12.88289,12.88289,0,0,0-3.09075,3.07865,5.54241,5.54241,0,0,0-.998,3.07866v.33733q.33606-.04773.63775-.084a4.91773,4.91773,0,0,1,.58938-.03691,2.8043,2.8043,0,0,1,2.1042.83,2.89952,2.89952,0,0,1,.80578,2.10547,3.42336,3.42336,0,0,1-.86561,2.453A3.06291,3.06291,0,0,1,16.49664,19,3.47924,3.47924,0,0,1,13.742,17.7245,4.846,4.846,0,0,1,12.64721,14.453,9.25867,9.25867,0,0,1,14.17476,9.3898,15.26076,15.26076,0,0,1,18.71031,5Z">
+</path>
+</svg>
+<span class="fr-sr-only">Quote</span>
+</button>
+<div id="dropdown-menu-quote-1" class="fr-dropdown-menu" role="listbox" aria-labelledby="quote-1" aria-hidden="true">
+<div class="fr-dropdown-wrapper" role="presentation">
+<div class="fr-dropdown-content" role="presentation">
+<ul class="fr-dropdown-list" role="presentation">
+<li role="presentation">
+<a class="fr-command fr-active increase" tabindex="-1" role="option" data-cmd="quote" data-param1="increase" title="Increase">Increase<span class="fr-shortcut">Ctrl+'</span>
+</a>
+</li>
+<li role="presentation">
+<a class="fr-command fr-active decrease" tabindex="-1" role="option" data-cmd="quote" data-param1="decrease" title="Decrease">Decrease<span class="fr-shortcut">Ctrl+Shift+'</span>
+</a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="fr-more-toolbar" data-name="moreRich-1" style="padding-left: 439px;">
+<button id="insertTable-1" type="button" tabindex="-1" role="button" title="Insert Table" class="fr-command fr-btn" data-cmd="insertTable" data-popup="true">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M20,5H4C2.9,5,2,5.9,2,7v2v1.5v3V15v2c0,1.1,0.9,2,2,2h16c1.1,0,2-0.9,2-2v-2v-1.5v-3V9V7C22,5.9,21.1,5,20,5z M9.5,13.5v-3  h5v3H9.5z M14.5,15v2.5h-5V15H14.5z M9.5,9V6.5h5V9H9.5z M3.5,7c0-0.3,0.2-0.5,0.5-0.5h4V9H3.5V7z M3.5,10.5H8v3H3.5V10.5z M3.5,17  v-2H8v2.5H4C3.7,17.5,3.5,17.3,3.5,17z M20.5,17c0,0.3-0.2,0.5-0.5,0.5h-4V15h4.5V17z M20.5,13.5H16v-3h4.5V13.5z M16,9V6.5h4  c0.3,0,0.5,0.2,0.5,0.5v2H16z">
+</path>
+</svg>
+<span class="fr-sr-only">Insert Table</span>
+</button>
+<button id="emoticons-1" type="button" tabindex="-1" role="button" title="Emoticons" class="fr-command fr-btn" data-cmd="emoticons" data-popup="true">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M11.991,3A9,9,0,1,0,21,12,8.99557,8.99557,0,0,0,11.991,3ZM12,19a7,7,0,1,1,7-7A6.99808,6.99808,0,0,1,12,19Zm3.105-5.2h1.503a4.94542,4.94542,0,0,1-9.216,0H8.895a3.57808,3.57808,0,0,0,6.21,0ZM7.5,9.75A1.35,1.35,0,1,1,8.85,11.1,1.35,1.35,0,0,1,7.5,9.75Zm6.3,0a1.35,1.35,0,1,1,1.35,1.35A1.35,1.35,0,0,1,13.8,9.75Z">
+</path>
+</svg>
+<span class="fr-sr-only">Emoticons</span>
+</button>
+<button id="specialCharacters-1" type="button" tabindex="-1" role="button" title="Special Characters" class="fr-command fr-btn" data-cmd="specialCharacters" data-popup="true">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M15.77493,16.98885a8.21343,8.21343,0,0,0,1.96753-2.57651,7.34824,7.34824,0,0,0,.6034-3.07618A6.09092,6.09092,0,0,0,11.99515,5a6.13347,6.13347,0,0,0-4.585,1.79187,6.417,6.417,0,0,0-1.756,4.69207,6.93955,6.93955,0,0,0,.622,2.97415,8.06587,8.06587,0,0,0,1.949,2.53076H5.41452V19h5.54114v-.04331h-.00147V16.84107a5.82825,5.82825,0,0,1-2.2052-2.2352A6.40513,6.40513,0,0,1,7.97672,11.447,4.68548,4.68548,0,0,1,9.07785,8.19191a3.73232,3.73232,0,0,1,2.9173-1.22462,3.76839,3.76839,0,0,1,2.91241,1.21489,4.482,4.482,0,0,1,1.11572,3.154,6.71141,6.71141,0,0,1-.75384,3.24732,5.83562,5.83562,0,0,1-2.22357,2.25759v2.11562H13.0444V19h5.54108V16.98885Z">
+</path>
+</svg>
+<span class="fr-sr-only">Special Characters</span>
+</button>
+<button id="insertFile-1" type="button" tabindex="-1" role="button" title="Upload File" class="fr-command fr-btn" data-cmd="insertFile" data-popup="true">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M7,3C5.9,3,5,3.9,5,5v14c0,1.1,0.9,2,2,2h10c1.1,0,2-0.9,2-2V7.6L14.4,3H7z M17,19H7V5h6v4h4V19z">
+</path>
+</svg>
+<span class="fr-sr-only">Upload File</span>
+</button>
+<button id="insertHR-1" type="button" tabindex="-1" role="button" title="Insert Horizontal Line" class="fr-command fr-btn" data-cmd="insertHR">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M5,12h14 M19,11H5v2h14V11z">
+</path>
+</svg>
+<span class="fr-sr-only">Insert Horizontal Line</span>
+</button>
+</div>
+<div class="fr-more-toolbar" data-name="moreMisc-1" style="padding-left: 984px;">
+<button id="fullscreen-1" type="button" tabindex="-1" role="button" aria-pressed="false" title="Fullscreen" class="fr-command fr-btn" data-cmd="fullscreen">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M7,14H5v5h5V17H7ZM5,10H7V7h3V5H5Zm12,7H14v2h5V14H17ZM14,5V7h3v3h2V5Z">
+</path>
+</svg>
+<span class="fr-sr-only">Fullscreen</span>
+</button>
+<button id="print-1" type="button" tabindex="-1" role="button" title="Print" class="fr-command fr-btn" data-cmd="print">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M16.1,17c0-0.6,0.4-1,1-1c0.6,0,1,0.4,1,1s-0.4,1-1,1C16.5,18,16.1,17.6,16.1,17z M22,15v4c0,1.1-0.9,2-2,2H4  c-1.1,0-2-0.9-2-2v-4c0-1.1,0.9-2,2-2h1V5c0-1.1,0.9-2,2-2h7.4L19,7.6V13h1C21.1,13,22,13.9,22,15z M7,13h10V9h-4V5H7V13z M20,15H4  v4h16V15z">
+</path>
+</svg>
+<span class="fr-sr-only">Print</span>
+</button>
+<button id="getPDF-1" type="button" tabindex="-1" role="button" title="Download PDF" class="fr-command fr-btn" data-cmd="getPDF">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M7,3C5.9,3,5,3.9,5,5v14c0,1.1,0.9,2,2,2h10c1.1,0,2-0.9,2-2V7.6L14.4,3H7z M17,19H7V5h6v4h4V19z M16.3,13.5  c-0.2-0.6-1.1-0.8-2.6-0.8c-0.1,0-0.1,0-0.2,0c-0.3-0.3-0.8-0.9-1-1.2c-0.2-0.2-0.3-0.3-0.4-0.6c0.2-0.7,0.2-1,0.3-1.5  c0.1-0.9,0-1.6-0.2-1.8c-0.4-0.2-0.7-0.2-0.9-0.2c-0.1,0-0.3,0.2-0.7,0.7c-0.2,0.7-0.1,1.8,0.6,2.8c-0.2,0.8-0.7,1.6-1,2.4  c-0.8,0.2-1.5,0.7-1.9,1.1c-0.7,0.7-0.9,1.1-0.7,1.6c0,0.3,0.2,0.6,0.7,0.6c0.3-0.1,0.3-0.2,0.7-0.3c0.6-0.3,1.2-1.7,1.7-2.4  c0.8-0.2,1.7-0.3,2-0.3c0.1,0,0.3,0,0.6,0c0.8,0.8,1.2,1.1,1.8,1.2c0.1,0,0.2,0,0.3,0c0.3,0,0.8-0.1,1-0.6  C16.4,14.1,16.4,13.9,16.3,13.5z M8.3,15.7c-0.1,0.1-0.2,0.1-0.2,0.1c0-0.1,0-0.3,0.6-0.8c0.2-0.2,0.6-0.3,0.9-0.7  C9,15,8.6,15.5,8.3,15.7z M11.3,9c0-0.1,0.1-0.2,0.1-0.2S11.6,9,11.5,10c0,0.1,0,0.3-0.1,0.7C11.3,10.1,11,9.5,11.3,9z M10.9,13.1  c0.2-0.6,0.6-1,0.7-1.5c0.1,0.1,0.1,0.1,0.2,0.2c0.1,0.2,0.3,0.7,0.7,0.9C12.2,12.8,11.6,13,10.9,13.1z M15.2,14.1  c-0.1,0-0.1,0-0.2,0c-0.2,0-0.7-0.2-1-0.7c1.1,0,1.6,0.2,1.6,0.6C15.5,14.1,15.4,14.1,15.2,14.1z">
+</path>
+</svg>
+<span class="fr-sr-only">Download PDF</span>
+</button>
+<button id="selectAll-1" type="button" tabindex="-1" role="button" title="Select All" class="fr-command fr-btn" data-cmd="selectAll">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M5,7h2V5C5.9,5,5,5.9,5,7z M5,11h2V9H5V11z M9,19h2v-2H9V19z M5,11h2V9H5V11z M15,5h-2v2h2V5z M17,5v2h2C19,5.9,18.1,5,17,5  z M7,19v-2H5C5,18.1,5.9,19,7,19z M5,15h2v-2H5V15z M11,5H9v2h2V5z M13,19h2v-2h-2V19z M17,11h2V9h-2V11z M17,19c1.1,0,2-0.9,2-2h-2  V19z M17,11h2V9h-2V11z M17,15h2v-2h-2V15z M13,19h2v-2h-2V19z M13,7h2V5h-2V7z M9,15h6V9H9V15z M11,11h2v2h-2V11z">
+</path>
+</svg>
+<span class="fr-sr-only">Select All</span>
+</button>
+<button id="html-1" type="button" tabindex="-1" role="button" aria-pressed="false" title="Code View" class="fr-command fr-btn" data-cmd="html">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M9.4,16.6,4.8,12,9.4,7.4,8,6,2,12l6,6Zm5.2,0L19.2,12,14.6,7.4,16,6l6,6-6,6Z">
+</path>
+</svg>
+<span class="fr-sr-only">Code View</span>
+</button>
+<button id="help-1" type="button" tabindex="-1" role="button" title="Help (Ctrl+/)" class="fr-command fr-btn" data-cmd="help" data-modal="true">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M11,17h2v2h-2V17z M12,5C9.8,5,8,6.8,8,9h2c0-1.1,0.9-2,2-2s2,0.9,2,2c0,2-3,1.7-3,5v1h2v-1c0-2.2,3-2.5,3-5  C16,6.8,14.2,5,12,5z">
+</path>
+</svg>
+<span class="fr-sr-only">Help</span>
+</button>
+</div>
+</div>
+<div class="fr-sticky-dummy" style="height: 50px;">
+</div>
+<div class="fr-wrapper show-placeholder" dir="auto">
+<div class="fr-element fr-view" dir="auto" contenteditable="true" aria-disabled="false" spellcheck="true">
+<p>
+<br>
+</p>
+</div>
+<span class="fr-placeholder" style="font-size: 14px; line-height: 22.4px; margin-top: -76px; padding: 20px 20px 34px; margin-left: 0px; margin-right: 0px; text-align: left;">Type something</span>
+</div>
+<div class="second-toolbar">
+<a id="logo" href="https://froala.com/wysiwyg-editor" target="_blank" title="Froala WYSIWYG HTML Editor">
+<span>Powered by</span>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 822.8 355.33">
+<defs>
+<style>.fr-logo{fill:#b1b2b7;}</style>
+</defs>
+<title>Froala</title>
+<path class="fr-logo" d="M123.58,78.65A16.16,16.16,0,0,0,111.13,73H16.6C7.6,73,0,80.78,0,89.94V128.3a16.45,16.45,0,0,0,32.9,0V104.14h78.5A15.63,15.63,0,0,0,126.87,91.2,15.14,15.14,0,0,0,123.58,78.65Z">
+</path>
+<path class="fr-logo" d="M103.54,170a16.05,16.05,0,0,0-11.44-4.85H15.79A15.81,15.81,0,0,0,0,180.93v88.69a16.88,16.88,0,0,0,5,11.92,16,16,0,0,0,11.35,4.7h.17a16.45,16.45,0,0,0,16.41-16.6v-73.4H92.2A15.61,15.61,0,0,0,107.89,181,15.1,15.1,0,0,0,103.54,170Z">
+</path>
+<path class="fr-logo" d="M233,144.17c-5.29-6.22-16-7.52-24.14-7.52-16.68,0-28.72,7.71-36.5,23.47v-5.67a16.15,16.15,0,1,0-32.3,0v115.5a16.15,16.15,0,1,0,32.3,0v-38.7c0-19.09,3.5-63.5,35.9-63.5a44.73,44.73,0,0,1,5.95.27h.12c12.79,1.2,20.06-2.73,21.6-11.69C236.76,151.48,235.78,147.39,233,144.17Z">
+</path>
+<path class="fr-logo" d="M371.83,157c-13.93-13.11-32.9-20.33-53.43-20.33S279,143.86,265.12,157c-14.67,13.88-22.42,32.82-22.42,54.77,0,21.68,8,41.28,22.4,55.2,13.92,13.41,32.85,20.8,53.3,20.8s39.44-7.38,53.44-20.79c14.55-13.94,22.56-33.54,22.56-55.21S386.39,170.67,371.83,157Zm-9.73,54.77c0,25.84-18.38,44.6-43.7,44.6s-43.7-18.76-43.7-44.6c0-25.15,18.38-43.4,43.7-43.4S362.1,186.59,362.1,211.74Z">
+</path>
+<path class="fr-logo" d="M552.7,138.14a16.17,16.17,0,0,0-16,16.3v1C526.41,143.85,509,136.64,490,136.64c-19.83,0-38.19,7.24-51.69,20.4C424,171,416.4,190,416.4,212c0,21.61,7.78,41.16,21.9,55,13.56,13.33,31.92,20.67,51.7,20.67,18.83,0,36.29-7.41,46.7-19.37v1.57a16.15,16.15,0,1,0,32.3,0V154.44A16.32,16.32,0,0,0,552.7,138.14Zm-16.3,73.6c0,30.44-22.81,44.3-44,44.3-24.57,0-43.1-19-43.1-44.3s18.13-43.4,43.1-43.4C513.73,168.34,536.4,183.55,536.4,211.74Z">
+</path>
+<path class="fr-logo" d="M623.5,61.94a16.17,16.17,0,0,0-16,16.3v191.7a16.15,16.15,0,1,0,32.3,0V78.24A16.32,16.32,0,0,0,623.5,61.94Z">
+</path>
+<path class="fr-logo" d="M806.5,138.14a16.17,16.17,0,0,0-16,16.3v1c-10.29-11.63-27.74-18.84-46.7-18.84-19.83,0-38.19,7.24-51.69,20.4-14.33,14-21.91,33-21.91,55,0,21.61,7.78,41.16,21.9,55,13.56,13.33,31.92,20.67,51.7,20.67,18.83,0,36.29-7.41,46.7-19.37v1.57a16.15,16.15,0,1,0,32.3,0V154.44A16.32,16.32,0,0,0,806.5,138.14Zm-16.3,73.6c0,30.44-22.81,44.3-44,44.3-24.57,0-43.1-19-43.1-44.3s18.13-43.4,43.1-43.4C767.53,168.34,790.2,183.55,790.2,211.74Z">
+</path>
+</svg>
+</a>
+<span class="fr-counter" style="bottom: 1px; margin-right: 2px;">Characters : 0</span>
+</div>
+<div class="fr-quick-insert" style="top: -9999px; left: -9999px;">
+<a class="fr-floating-btn" role="button" tabindex="-1" title="Quick Insert">
+<svg class="fr-svg" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M19,13h-6v6h-2v-6H5v-2h6V5h2v6h6V13z">
+</path>
+</svg>
+</a>
+</div>
+</div>
+
+
+<textarea name="body" cols="40" rows="10" required="" id="id_body" style="display: none;">testy</textarea>
+        <script>
+            new FroalaEditor('#id_body',{"inlineMode": false, "imageUpload": false, "fileUpload": false})
+        </script>
+        
+    <!-- <textarea id="froala-editor">this is prefilled</textarea>
+     -->
+    <button id="submitbtn" type="submit" name="_submit" class="btn fixed-action-btn2 btn-large ev-submitbtn z-depth-5 ev-col4">SAVE</button>
+
+
+    </form>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Google Calendar API Quickstart</title>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <p>Google Calendar API Quickstart</p>
+
+    <!--Add buttons to initiate auth sequence and sign out-->
+    <button id="authorize_button" style="display: none;">Authorize</button>
+    <button id="signout_button" style="display: none;">Sign Out</button>
+
+    <pre id="content" style="white-space: pre-wrap;"></pre>
+
+    <script type="text/javascript">
+      // Client ID and API key from the Developer Console
+      var CLIENT_ID = '333988183244-m5dsa21iib250dkijcpe4656c613g3aa.apps.googleusercontent.com';
+      var API_KEY = 'AIzaSyDN0FXTgolyYxscc4A00YNvdcFWA611gt4';
+
+      // Array of API discovery doc URLs for APIs used by the quickstart
+      var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
+
+      // Authorization scopes required by the API; multiple scopes can be
+      // included, separated by spaces.
+      var SCOPES = "https://www.googleapis.com/auth/calendar.readonly";
+
+      var authorizeButton = document.getElementById('authorize_button');
+      var signoutButton = document.getElementById('signout_button');
+
+      /**
+       *  On load, called to load the auth2 library and API client library.
+       */
+      function handleClientLoad() {
+        gapi.load('client:auth2', initClient);
+      }
+
+      /**
+       *  Initializes the API client library and sets up sign-in state
+       *  listeners.
+       */
+      function initClient() {
+        gapi.client.init({
+          apiKey: API_KEY,
+          clientId: CLIENT_ID,
+          discoveryDocs: DISCOVERY_DOCS,
+          scope: SCOPES
+        }).then(function () {
+          // Listen for sign-in state changes.
+          gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+
+          // Handle the initial sign-in state.
+          updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+          authorizeButton.onclick = handleAuthClick;
+          signoutButton.onclick = handleSignoutClick;
+        }, function(error) {
+          appendPre(JSON.stringify(error, null, 2));
+        });
+      }
+
+      /**
+       *  Called when the signed in status changes, to update the UI
+       *  appropriately. After a sign-in, the API is called.
+       */
+      function updateSigninStatus(isSignedIn) {
+        if (isSignedIn) {
+          authorizeButton.style.display = 'none';
+          signoutButton.style.display = 'block';
+          listUpcomingEvents();
+        } else {
+          authorizeButton.style.display = 'block';
+          signoutButton.style.display = 'none';
+        }
+      }
+
+      /**
+       *  Sign in the user upon button click.
+       */
+      function handleAuthClick(event) {
+        gapi.auth2.getAuthInstance().signIn();
+      }
+
+      /**
+       *  Sign out the user upon button click.
+       */
+      function handleSignoutClick(event) {
+        gapi.auth2.getAuthInstance().signOut();
+      }
+
+      /**
+       * Append a pre element to the body containing the given message
+       * as its text node. Used to display the results of the API call.
+       *
+       * @param {string} message Text to be placed in pre element.
+       */
+      function appendPre(message) {
+        var pre = document.getElementById('content');
+        var textContent = document.createTextNode(message + '\n');
+        pre.appendChild(textContent);
+      }
+
+      /**
+       * Print the summary and start datetime/date of the next ten events in
+       * the authorized user's calendar. If no events are found an
+       * appropriate message is printed.
+       */
+      function listUpcomingEvents() {
+        gapi.client.calendar.events.list({
+          'calendarId': 'dh769s32186ua8lcnebiftkd6k@group.calendar.google.com',
+          'timeMin': (new Date()).toISOString(),
+          'showDeleted': false,
+          'singleEvents': true,
+          'maxResults': 10,
+          'orderBy': 'startTime'
+        }).then(function(response) {
+          var events = response.result.items;
+          appendPre('Upcoming events:');
+
+          if (events.length > 0) {
+            for (i = 0; i < events.length; i++) {
+              var event = events[i];
+              var when = event.start.dateTime;
+              if (!when) {
+                when = event.start.date;
+              }
+              appendPre(event.summary + ' (' + when + ')')
+            }
+          } else {
+            appendPre('No upcoming events found.');
+          }
+        });
+      }
+
+    </script>
+
+    <script async defer src="https://apis.google.com/js/api.js"
+      onload="this.onload=function(){};handleClientLoad()"
+      onreadystatechange="if (this.readyState === 'complete') this.onload()">
+    </script>
+  </body>
+</html>    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    

@@ -1,0 +1,60 @@
+{% load tozero %}
+    {% if not musician.event.date_ispast and not musician.event.event_archived %}
+        <div class="row">
+            <a href="/events/{{ musician.event.id }}/edit" style="color: inherit">
+            <div class="col s12 m10 offset-m1 ev-round z-depth-1 ev-shaded" id="ev-pad-right">
+                <table class="event_sum">
+                    <col width="25%">
+                    <col width="25%">
+                    <col width="25%">
+                    <col width="25%">
+                    <tr>
+                        <td>{% if musician.event.event_archived %}<span style=""><b>[ARCHIVED] </b></span>{% endif %}
+                            {{ musician.musician.name }}</td>
+                        <td style="background-color: white; color:gray;">
+                         asked or booked for {{ musician.event.date|date:'M j Y' }}</td>
+                        <td style="background-color: white; color:#gray;">
+                            <b>{{ musician.event.name }}</b></td>
+                        <td style="background-color: white; color:#gray;">
+                            {% if event.ensemble %}
+                                {{ event.ensemble }}
+                            {% else %}
+                                {{ event.ensemble_name|default:" " }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            </a>
+        </div>
+    {% else %}
+        <div class="row">
+            <a href="/events/{{ musician.event.id }}/edit" style="color: inherit">
+            <div class="col s12 m10 offset-m1 ev-round z-depth-1 ev-shaded" id="ev-pad-right"
+                style="background-color: white; color:#b4b4b4;">
+                <table class="event_sum">
+                    <col width="25%">
+                    <col width="25%">
+                    <col width="25%">
+                    <col width="25%">
+                    <tr>
+                        <td> {% if musician.event.event_archived %}<span style=""><b>[ARCHIVED] </b></span>{% endif %}
+                            {{ musician.musician.name }}</td>
+                        <td style="background-color: #eeeeee; color:#b4b4b4;">
+                            asked or booked for
+                        {{ musician.event.date|date:'M j Y' }}</td>
+                        <td style="background-color: #eeeeee; color:#b4b4b4;">
+                            <b>{{ musician.event.name }}</b></td>
+                        <td style="background-color: #eeeeee; color:#b4b4b4;">
+                            {% if musician.event.ensemble %}
+                                {{ musician.event.ensemble }}
+                            {% else %}
+                                {{ musician.event.ensemble_name|default:" " }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            </a>
+        </div>
+    {% endif %}    

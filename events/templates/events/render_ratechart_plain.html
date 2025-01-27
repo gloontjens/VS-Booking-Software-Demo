@@ -1,0 +1,30 @@
+
+
+            {% if mode ==  '1'  %}
+                <th style="border-bottom:1px solid white;padding: 10px 20px;">Ensemble:</th>{% if minhours <=  '1'  and maxhours >=  '1'  %}<th style="border-bottom:1px solid white;padding: 10px 20px;">      Ceremony</th>{% endif %}{% if minhours <= '2' and maxhours >= '2' %}<th style="border-bottom:1px solid white;padding: 10px 20px;">      Ceremony and Cocktails</th>{% endif %}{% if minhours <= '3' and maxhours >= '3' %}<th style="border-bottom:1px solid white;padding: 10px 20px;">        Ceremony, Cocktails and Dinner</th>{% endif %}{% if minhours <= '4' and maxhours >= '4' %}<th style="border-bottom:1px solid white;padding: 10px 20px;">        Full Event (max 4 hrs)</th>{% endif %}
+            {% else %}
+                <th style="border-bottom:1px solid white;padding: 10px 20px;">Ensemble:</th>{% if minhours <=  '1'  and maxhours >=  '1'  %}<th style="border-bottom:1px solid white;padding: 10px 20px;">      1 Hour</th>{% endif %}{% if minhours <= '2' and maxhours >= '2' %}<th style="border-bottom:1px solid white;padding: 10px 20px;">        2 Hours</th>{% endif %}{% if minhours <= '3' and maxhours >= '3' %}<th style="border-bottom:1px solid white;padding: 10px 20px;">       3 Hours</th>{% endif %}{% if minhours <= '4' and maxhours >= '4' %}<th style="border-bottom:1px solid white;padding: 10px 20px;">       4 Hours</th>{% endif %}
+            {% endif %}            
+            </tr>
+
+            {% if minensnum <= '1' and maxensnum >= '1' %}
+            <tr style="padding:20px;">
+                <td style="border-bottom:1px solid white;padding:20px;"><b>Solo</b></td>{% if minhours <=  '1'  and maxhours >=  '1'  %}<td style="border-bottom:1px solid white;padding-left:20px;">         ${{ rate.solo }}</td>{% endif %}{% if minhours <= '2' and maxhours >= '2' %}<td style="border-bottom:1px solid white;padding-left:20px;">         ${{ rate.two_solo }}</td>{% endif %}{% if minhours <= '3' and maxhours >= '3' %}<td style="border-bottom:1px solid white;padding-left:20px;">         ${{ rate.three_solo }}</td>{% endif %}{% if minhours <= '4' and maxhours >= '4' %}<td style="border-bottom:1px solid white;padding-left:20px;">         ${{ rate.four_solo }}</td>{% endif %}
+            </tr>
+            {% endif %}{% if minensnum <= '2' and maxensnum >= '2' %}
+            <tr style="padding:20px;">
+                <td style="border-bottom:1px solid white;padding:20px;"><b>String Duo</b></td>{% if minhours <=  '1'  and maxhours >=  '1'  %}<td style="border-bottom:1px solid white;padding-left:20px;">         ${{ rate.duo }}</td>{% endif %}{% if minhours <= '2' and maxhours >= '2' %}<td style="border-bottom:1px solid white;padding-left:20px;">         ${{ rate.two_duo }}</td>{% endif %}{% if minhours <= '3' and maxhours >= '3' %}<td style="border-bottom:1px solid white;padding-left:20px;">         ${{ rate.three_duo }}</td>{% endif %}{% if minhours <= '4' and maxhours >= '4' %}<td style="border-bottom:1px solid white;padding-left:20px;">         ${{ rate.four_duo }}</td>{% endif %}
+            </tr>
+            {% endif %}{% if minensnum <= '3' and maxensnum >= '3' %}
+            <tr style="padding:20px;">
+                <td style="border-bottom:1px solid white;padding:20px;"><b>String Trio</b></td>{% if minhours <=  '1'  and maxhours >=  '1'  %}<td style="border-bottom:1px solid white;padding-left:20px;">         ${{ rate.trio }}</td>{% endif %}{% if minhours <= '2' and maxhours >= '2' %}<td style="border-bottom:1px solid white;padding-left:20px;">         ${{ rate.two_trio }}</td>{% endif %}{% if minhours <= '3' and maxhours >= '3' %}<td style="border-bottom:1px solid white;padding-left:20px;">         ${{ rate.three_trio }}</td>{% endif %}{% if minhours <= '4' and maxhours >= '4' %}<td style="border-bottom:1px solid white;padding-left:20px;">         ${{ rate.four_trio }}</td>{% endif %}
+            </tr>
+            {% endif %}{% if minensnum <= '4' and maxensnum >= '4' %}
+            <tr style="padding:20px;">
+                <td style="border-bottom:1px solid white;padding:20px;"><b>String Quartet</b></td>{% if minhours <=  '1'  and maxhours >=  '1'  %}<td style="border-bottom:1px solid white;padding-left:20px;">         ${{ rate.quartet }}</td>{% endif %}{% if minhours <= '2' and maxhours >= '2' %}<td style="border-bottom:1px solid white;padding-left:20px;">         ${{ rate.two_quartet }}</td>{% endif %}{% if minhours <= '3' and maxhours >= '3' %}<td style="border-bottom:1px solid white;padding-left:20px;">         ${{ rate.three_quartet }}</td>{% endif %}{% if minhours <= '4' and maxhours >= '4' %}<td style="border-bottom:1px solid white;padding-left:20px;">         ${{ rate.four_quartet }}</td>{% endif %}
+            </tr>
+            {% endif %}
+
+    
+    
+    

@@ -1,0 +1,61 @@
+{% extends 'events/base-new.html' %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block content %}
+
+    <input type="hidden" id="page_flag" value="syncgcal">
+
+    <br />
+    <h5 class="center-align">This will delete all current Vanderbilt Strings events from your google calendar<br />
+        that are from 3 months in the past to 3 years in the future.<br /><br />
+        Then all events in that time range will be re-saved,<br />
+        so that you have a clean, current calendar.<br />
+        <br /><b><i>Click the button below to begin...</i></b>
+        </h5><br /><br />
+    
+    <div class="container" style="width:auto">
+        
+        <div class="row center-align">
+            
+            <button type="button" id="btn_syncgcal" class="btn-large ev-col2">START</button>
+            
+            <div id="wait1_syncgcal" class="progress noshow">
+                <div class="indeterminate"></div>
+            </div>
+                        
+            <div id="info_syncgcal" class="noshow">Deleted events...</div>
+            
+            <div id="wait2_syncgcal" class="progress noshow">
+                <div class="indeterminate"></div><br />
+            </div>
+                        
+            <div id="saveinfo_syncgcal" class="noshow">Re-saved events...</div>
+            
+            <div id="done_syncgcal" class="noshow"><br /><br /><h5>Done!</h5><br /><br />
+                <form action="/events">
+                    <button class="btn-large ev-col2" type="submit" value="Go to Home">Go to Home</button>
+                </form>
+                <br />
+                <form action="/events/gcal/2020/1">
+                    <button class="btn-large ev-col2" type="submit" value="View G-Cal">View G-Cal</button>
+                </form>
+                
+            </div>
+            
+        </div>
+
+    </div>
+    
+ 
+
+
+
+
+
+{% endblock %}
+{% block scripts %}
+    <!-- custom js for the home page -->
+    <script src="{% static 'js/events_syncgcal.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,161 @@
+<!-- **** old navbar **** -->
+
+
+        <div class="navbar-fixed">
+            <!-- class="grey lighten-1" style="height: 62px; -->
+            <nav class="blue-grey lighten-5" style="height: 52px !important;">
+                <div class="nav-wrapper">
+                    <a href="#" data-target="sidenav-1"
+                        class="left sidenav-trigger">
+                        <i class="material-icons" style="color:var(--col5)">menu</i></a>
+                    <a id="dummyfocus1" href="#" data-target="mobile-menu" class="sidenav-trigger right">
+                    <i class="material-icons" style="color:var(--col5)">menu</i></a>
+
+                 <div class="container" style="width:98%;">
+                  <div class="row">
+                  
+                    <a href="#" id="hideleftbar" class="btn sidehidebutton blue-grey z-depth-1 lighten-5 hide-on-med-and-down"
+                        style="background-color:#eceff1 !important;color:var(--col5);">
+                        {% if sidestate.8 %}
+                        <span id="hideleftbartext" style="font-size:24px;">&Rang;</span>
+                        {% else %}
+                        <span id="hideleftbartext" style="font-size:24px;">&Lang;</span>
+                        {% endif %}
+                    </a>
+                    <!-- &Ll; &Gg; &Lang; &Rang; -->
+                    
+                   <div class="col s1 m1 l1 hide-on-large-and-down ev-nav" style="margin-left:-15px;margin-right:10px;">
+                    <a href="/events/mycal/" 
+                        class="btn blue-grey z-depth-1 lighten-5" style="width: 45px;" id="btn_calendar">
+                        <i class="material-icons left" style="margin-top:-12px;margin-left:-6px;color:var(--col5)">date_range</i>
+                    </a>
+                   </div>
+                   
+                   <form id="search_form" method="GET" action="/events/search/">
+                        <div id="search_div" class="col s4 m4 l2 ev-nav" style="margin-top: -2px !important;margin-left:-20px;padding-left:0px;margin-right:-8px;">
+                            <div class="input-field inline tooltipped" style="color:var(--col5)" data-position="bottom" data-tooltip="for date use '3/08' or '3-08' format">
+                                <i class="material-icons prefix" style="color:var(--col5);margin-left:10px !important; margin-top:-8px !important;">search</i>
+                                <input id="search" type="text" name="q">
+                                <input id="search_past" name="p" value=False hidden>
+                                <input id="search_newest" name="n" value=True hidden>
+                                <input id="search_archived" name="a" value=False hidden>
+                                <input id="search_musicians" name='m' value=False hidden>
+                                <input id="search_paymentsdue" name='d' value=False hidden>
+                                <input id="search_paymentsreceived" name='r' value=False hidden>
+                                <button id="btn_search_1" hidden type="submit">x</button>
+                                <label for="search" id="search_lbl" class="ev_search_lbl" style="color:var(--col5)">Search...</label>
+                            </div>
+                        </div>
+                   </form>
+                   
+                   
+                   <div class="col s6 m4 l3 ev-nav" style="padding-right:0px;margin-right:-20px;">
+                    <div id="nav_arrows" class="inline" style="display:inline;">
+                        {% if form.instance.id %}
+                            <a href="/events/browse_backward/{{browse_mode}}/{{ form.instance.id }}" 
+                                class="waves-effect waves-light btn z-depth-3 ev-col4"><</a>
+                            <a href="/events/edit_nextevent/" 
+                                class="waves-effect waves-light btn ev-col4 z-depth-3 tooltipped" 
+                                data-position="bottom" data-tooltip="jump to now (next scheduled event)"
+                                style="" id="browse_btn">{{ browse_mode }}</a>
+                            <a href="/events/browse_forward/{{browse_mode}}/{{ form.instance.id }}" 
+                                class="waves-effect waves-light btn z-depth-3 ev-col4">></a>
+                        {% else %}
+                            <a href="/events/browse_backward/{{browse_mode}}/0" 
+                                class="waves-effect waves-light btn z-depth-3 ev-col4"><</a>
+                            <a href="/events/cycle/{{browse_mode}}" 
+                                class="waves-effect waves-light btn ev-col4 z-depth-3 tooltipped" 
+                                data-position="bottom" data-tooltip="cycle day/week/month view"
+                                style="" id="browse_btn">{{ browse_mode }}</a>
+                            <a href="/events/browse_forward/{{browse_mode}}/0" 
+                                class="waves-effect waves-light btn z-depth-3 ev-col4">></a>
+                        {% endif %}                                                        
+                            
+                    </div>
+                   </div>
+
+                   <div class="col s1 m4 l7 xl6 right hide-on-med-and-down ev-nav">
+                    <ul id="nav_main" class="navmain_spec">
+                        <li id="nav_home"><a href="/events" class="navmain_spec" style="color:var(--col5)">Home</a></li>
+                        <li id="nav_browse"><a href="/events/browse/0" class="navmain_spec" style="color:var(--col5)">Browse</a></li>
+                        <!-- <li id="nav_tasks"><a href="/events/tasks" style="color:var(--col5)">Tasks</a></li> -->
+                        <li id="nav_new"><a href="/events/add" class="navmain_spec" style="color:var(--col5)">New</a></li>
+                        <li id="nav_dropdown"><a class="dropdown-trigger" href="#!" data-target="dropdown1">
+                            <i class="material-icons" style="color:var(--col5)">arrow_drop_down</i>
+                            </a>
+                        </li>
+                        <li></li>
+                    </ul>
+                   </div>
+                  </div>
+                 </div>
+                    
+                </div>
+            </nav>
+        </div>
+
+        
+        
+        
+        
+    <!-- **********************************To-do's, History, Notes*************************************** -->
+    <ul class="collapsible expandable popout">
+        <li class="{% if not form.reminders_bar_hidden.value %}active {% endif %}blue-grey lighten-3 ev-round">
+            <div class="collapsible-header ev-coll-header-tight blue-grey lighten-3 ev-round evx-rightboxhead" id="reminders_bar_header">
+                <span style="margin-top:-6px;"><i class="material-icons">arrow_drop_down_circle</i></span>
+                <span id="reminders_bar" class="truncate" style="margin-top:-6px;margin-bottom:-6px;">To-do's, Notes</span>
+                <span style="text-align: right;float: right; margin-left: auto;margin-top:-6px;">
+                    <label for="{{ form.automation.auto_id }}">
+                        <input type="checkbox" class="filled-in ev-auto-check autobtnspcl" name="automation" 
+                            {% if form.automation.value %}checked{% endif %} 
+                            {% if form.reminderdisable.value %}disabled{% endif %} id="{{ form.automation.auto_id }}" />
+                        <span style="padding-left:20px;font-size:14px;background-color:#eeeeee;color:#f57c00;font-weight:bold;">
+                        <span style="background-color:#b0bec5;border:none !important;">&nbsp;</span>&nbsp;AUTOMATION&nbsp;</span>
+                    </label>
+                </span>
+                
+                
+            </div>
+            <div class="row collapsible-body ev-collapsible-tightbody blue-grey lighten-3">
+            
+                <div class="col s12 m6 l6 xl4 blue-grey lighten-3">
+                    <div class="col s5">
+                        To-do's&nbsp;&nbsp;
+                        <a class="btn-small ev-btn-remind" 
+                            {% if form.instance.id %}
+                                onclick="return showEditPopup('/remind/{{ form.instance.id }}/create');"
+                            {% else %}
+                                onclick="return showEditPopup('/remind/2/create');"
+                            {% endif %}
+                            id="id_reminder_add" style="z-index: 1;position: relative;">+</a>
+                    </div>
+                    <div class="col s7"><div class="right">
+                        <label for="{{ form.reminderdisable.auto_id }}" class="ev-veryshortline" 
+                            style="margin-top:-2px;">
+                            <input type="checkbox" class="filled-in autobtnspcl" name="reminderdisable"
+                                    {% if form.reminderdisable.value %}checked{% endif %}  
+                                    {% if form.automation.value %}disabled{% endif %} 
+                                    id="{{ form.reminderdisable.auto_id }}" />
+                            <span style="padding-left:23px;">Disable all built-in</span>
+                        </label></div>
+                    </div>
+                    <div class="col s12 ev-badge-border-reminders ev-round2" style="overflow: auto">
+                        <span class="ev-reminders" id="id_reminders_list">
+                        {% include 'events/render_reminderslist.html' %}
+                        </span>
+                    </div>
+                </div>
+
+
+                <div class="col s12 m8 offset-m2 l8 offset-l2 xl4 blue-grey lighten-3">Notes           
+                    <div class="ev-badge-border-reminders ev-round2" style="overflow: auto">
+                        <span class="ev-reminders">
+                        {{ form.notes }}
+                        </span>
+                    </div>
+                </div>
+                
+            </div>
+        </li>
+    </ul>
+        

@@ -1,0 +1,66 @@
+{% load static %}
+
+{% if musiciansasked %}
+                            <div class="col s6 ev-veryshortline-ml" style="font-size:11px;">
+                                Musicians to try
+                            </div>
+                            <div class="col s2 ev-veryshortline-ml" style="font-size:11px;margin-left:10px;margin-right:-10px;">
+                                $
+                            </div>
+                            <div class="col s1 ev-veryshortline-ml" style="font-size:11px;margin-left:-13px;">
+                                Invited
+                            </div>
+                            <div class="col s1 ev-veryshortline-ml" style="font-size:11px;margin-left:10px;">
+                                YES
+                            </div>
+                            <div class="col s1 ev-veryshortline-ml" style="font-size:11px;margin-left:1px;">
+                                NO
+                            </div>
+                            <div class="col s1 ev-veryshortline-ml" style="font-size:11px;margin-left:-2px;margin-right: -10px;">
+                                Delete
+                            </div>
+                        {% for musician in musiciansasked %}
+                            <div class="col s6 ev-veryshortline-ml2">
+                                <span class="truncate muslisttext2">{{ musician.musician.name }}</span>
+                            </div>
+                            <div class="col s2 ev-veryshortline-ml2">
+                                {% if musician.specialfee %}
+                                <input class="addmusician_specialfee musinputfee3 browser-default" id="id_addmsf_{{ musician.id }}"
+                                    type="text" value="{{musician.specialfee|floatformat:-2}}" style="color: #ccc !important;">
+                                {% else %}
+                                <input class="addmusician_specialfee musinputfee3 browser-default" id="id_addmsf_{{ musician.id }}"
+                                    type="text" value="{{musician.event.musician_fee|floatformat:-2}}" style="color: #ccc !important;">
+                                {% endif %}
+                            </div>
+                            <div class="col s1 ev-veryshortline-ml2"><span {% if musician.musician.name == "Janie Spangler" %}
+                                            class="addmusician_asked_noverify"{% else %}class="addmusician_asked"{% endif %}  
+                                        id="id_addmus_{{ musician.id }}"
+                                        style="cursor: pointer; cursor: hand;">
+                                    {% if musician.asked %}&check;{% else %}<span style="color:#ccc">&#9744</span>{% endif %}
+                                </span>
+                            </div>
+                            <div class="col s1 ev-veryshortline-ml2"><span class="addmusician_yes" 
+                                        id="id_addmus_{{ musician.id }}"
+                                        style="cursor: pointer; cursor: hand;">
+                                    {% if musician.yes %}&check;{% else %}<span style="color:#ccc">&#9744</span>{% endif %}
+                                </span>
+                            </div>
+                            <div class="col s1 ev-veryshortline-ml2"><span class="addmusician_no" 
+                                        id="id_addmus_{{ musician.id }}"
+                                        style="cursor: pointer; cursor: hand;">
+                                    {% if musician.no %}&check;{% else %}<span style="color:#ccc">&#9744</span>{% endif %}
+                                </span>
+                            </div>
+                            <div class="col s1 ev-veryshortline-ml2" style="color: red;">
+                                &nbsp;&nbsp;<span class="addmusician_delete" 
+                                        id="id_addmus_{{ musician.id }}"
+                                        style="cursor: pointer; cursor: hand;">x
+                                        </span>
+                                
+                            </div>
+                        {% endfor %}
+{% else %}
+    <div class="col s12 ev-reallyshortline">
+        (no musicians asked or added yet)
+    </div>
+{% endif %}

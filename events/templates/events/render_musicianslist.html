@@ -1,0 +1,74 @@
+{% load static %}
+{% load tozero %}
+
+    {% if number %}
+                            {% if number < 3 %}<div style="line-height:5px;"><br /></div>{% endif %}
+                            {% if number < 2 %}<div style="line-height:9px;"><br /></div>{% endif %}
+                            <div class="col s1">    
+                                {% for i in number|times %}
+                                    <input class="musinput browser-default" 
+                                            id="id_rerank_{{i}}" type="text" value="{{i}}"><br />
+                                {% endfor %}   
+                            </div>    
+                            <div class="col s6">
+                                <ul id="musname-sortable" style="margin-top:0px;margin-bottom:0px;">
+                                {% for musician in musicianlistyes %}
+                                <li id="musnum_{{forloop.counter}}">
+                                    <span class="truncate">
+                                        {% if musician.gotit %}
+                                            <span style="color:lightgreen !important;">&#x2714;</span>
+                                        {% elif form.flag_fact_sheets_sent.value %}
+                                            <span class="addmusician_gotit" 
+                                                id="id_addmus_{{ musician.id }}" style="cursor: pointer; cursor: hand;">
+                                            <span style="color:#e3e3e3">&#9744</span>
+                                            </span>
+                                        {% endif %}
+                                        <span class="muslisttext-nc cursor-drag">{{ musician.musician.name }}</span>
+                                    </span>
+                                </li>
+                                {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="col s3">
+                                {% for musician in musicianlistyes %}
+                                    {% if musician.musician.instrument2 %}
+                                    <select class="browser-default ev-select musinputinstcol" id="id_rerank_{{musician.rank}}">
+                                        <option value="{{ musician.musician.instrument }}" 
+                                            {% if musician.instrument == musician.musician.instrument %}
+                                                selected="selected"{% endif %}>{{ musician.musician.instrument }}
+                                        </option>
+                                        <option value="{{ musician.musician.instrument2 }}" 
+                                            {% if musician.instrument == musician.musician.instrument2 %}
+                                                selected="selected"{% endif %}>{{ musician.musician.instrument2 }}
+                                        </option>
+                                    </select>
+                                    {% else %}
+                                        <div class="ev-noselect muslisttext3-nc">{{ musician.instrument }}</div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <div class="col s2">
+                                {% for musician in musicianlistyes %}
+                                    {% if musician.musician.name != '----------' %}
+                                        {% if musician.specialfee %}
+                                            <span style="color:white;display:flex;">$<input class="musinputfee browser-default" 
+                                                id="id_rerann_{{musician.rank}}" type="text" value="{{ musician.specialfee|floatformat:-2 }}"><br />
+                                            </span>
+                                        {% else %}
+                                            <span style="color:white;display:flex;">$<input class="musinputfee browser-default" 
+                                                id="id_rerann_{{musician.rank}}" type="text" value="{{ musician.event.musician_fee|floatformat:-2 }}"><br />
+                                            </span>
+                                        {% endif %}
+                                    {% else %}
+                                        ---<br />
+                                    {% endif %}
+                                {% endfor %}
+                                {% if number == 3 %}<div style="line-height:22px;"><br /></div>{% endif %}
+                                {% if number == 2 %}<div style="line-height:39px;"><br /></div>{% endif %}
+                                {% if number == 1 %}<div style="line-height:52px;"><br /></div>{% endif %}
+                            </div>
+    {% else %}
+        <div style="line-height:14px;"><br /></div>
+        <div class="col s11 input-field">(Musician list is waiting for ensemble)<br /></div>
+        <div style="line-height:21px;"><br /></div>
+    {% endif %}

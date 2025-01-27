@@ -1,0 +1,84 @@
+{% if not payment_done.event.date_ispast and not payment_done.event.event_archived %}
+<div class="row">
+    <a href="/events/{{ payment_done.event.id }}/edit" style="color: inherit">
+    <div class="col s12 m10 offset-m1 ev-round z-depth-1 ev-shaded" id="ev-pad-right">
+        <table class="event_sum">
+            <col width="25%">
+            <col width="25%">
+            <col width="25%">
+            <col width="25%">
+            {% if payment_done.done %}
+                <tr>
+                    <td>{% if payment_done.event.event_archived %}<span style=""><b>[ARCHIVED] </b></span>{% endif %}
+                        <i><span style="color:#666666;">{% if payment_done.auto %}[AUTO] {% endif %}Done on {{payment_done.donedate}}</span><i></td>
+                    <td>${{payment_done.payment|default:"[TBD]"}} to {{payment_done.musician.name}}</td>
+                    <td style="background-color: white; color:#gray;">for {{ payment_done.event.date|date:'D M j Y' }} event</td>
+                    <td style="background-color: white; color:#gray;">{% if payment_done.event.type == "HD" %}[HOLD]: {% endif %}{{ payment_done.event.name }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td>{% if payment_done.auto %}<b>[AUTO]</b> {% endif %}
+                    {% if payment_done.done %}
+                        <span class="ev-reminder-done">
+                    {% elif payment_done.is_past_due %}
+                        <span class="ev-reminder-past-due">
+                    {% elif payment_done.is_this_week %}
+                        <span class="ev-reminder-this-week">
+                    {% else %}
+                        <span class="ev-reminder-not-past-due">
+                    {% endif %}
+                        <b>Due </b>on<b> {{payment_done.duedate}}</b>
+                    </span></td>
+                    <td><b>${{payment_done.payment|default:"[TBD]"}} </b>to<b> {{payment_done.musician.name}}</b></td>
+                    <td style="background-color: white; color:#gray;">for {{ payment_done.event.date|date:'D M j Y' }} event</td>
+                    <td style="background-color: white; color:#gray;">{% if payment_done.event.type == "HD" %}[HOLD]: {% endif %}{{ payment_done.event.name }}</td>
+                </tr>
+            {% endif %}
+        </table>
+    </div>
+    </a>
+</div>
+{% else %}
+<div class="row">
+    <a href="/events/{{ payment_done.event.id }}/edit" style="color: inherit">
+    <div class="col s12 m10 offset-m1 ev-round z-depth-1 ev-shaded" id="ev-pad-right"
+        style="background-color: white; color:#b4b4b4;">
+        <table class="event_sum">
+            <col width="25%">
+            <col width="25%">
+            <col width="25%">
+            <col width="25%">
+            {% if payment_done.done %}
+                <tr>
+                    <td>{% if payment_done.event.event_archived %}<span style=""><b>[ARCHIVED] </b></span>{% endif %}
+                        <i><span style="color:#666666;">{% if payment_done.auto %}[AUTO] {% endif %}Done on {{payment_done.donedate}}</span><i></td>
+                    <td>${{payment_done.payment|default:"[TBD]"}} to {{payment_done.musician.name}}</td>
+                    <td style="background-color: #eeeeee; color:#b4b4b4;">for {{ payment_done.event.date|date:'D M j Y' }} event</td>
+                    <td style="background-color: #eeeeee; color:#b4b4b4;">{% if payment_done.event.type == "HD" %}[HOLD]: {% endif %}{{ payment_done.event.name }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td>{% if payment_done.auto %}<b>[AUTO]</b> {% endif %}
+                    {% if payment_done.done %}
+                        <span class="ev-reminder-done">
+                    {% elif payment_done.is_past_due %}
+                        <span class="ev-reminder-past-due">
+                    {% elif payment_done.is_this_week %}
+                        <span class="ev-reminder-this-week">
+                    {% else %}
+                        <span class="ev-reminder-not-past-due">
+                    {% endif %}
+                        <b>Due </b>on<b> {{payment_done.duedate}}</b>
+                    </span></td>
+                    <td><b>${{payment_done.payment|default:"[TBD]"}} </b>to<b> {{payment_done.musician.name}}</b></td>
+                    <td style="background-color: #eeeeee; color:#b4b4b4;">for {{ payment_done.event.date|date:'D M j Y' }} event</td>
+                    <td style="background-color: #eeeeee; color:#b4b4b4;">{% if payment_done.event.type == "HD" %}[HOLD]: {% endif %}{{ payment_done.event.name }}</td>
+                </tr>
+            {% endif %}
+        </table>
+    </div>
+    </a>
+</div>
+{% endif %}
+
+

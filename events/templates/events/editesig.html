@@ -1,0 +1,96 @@
+{% extends 'events/base-new.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+<input type="hidden" id="page_flag" value="esigs">
+
+
+<div class = "container">
+    
+    <form method='POST' action='' enctype = "multipart/form-data" id="esig-form">{% csrf_token %}
+
+    <h4>Edit/Add Signature</h4>
+    <p>
+        On WiseStamp's werbsite, just click-and-drag over the whole signature only, then type Ctrl+C to copy.<br />
+        Then click in text box below, and type Ctrl+V to paste (empty the text box first if editing).<br /><br />
+        Or, to edit or add manually, make any changes directly into the textbox below.<br /><br />
+        Then, enter/edit the name for this signature, and check the box if you want this to 
+        become the default signature.<br />
+        When done, click the SAVE button!<br />
+        <br />
+    </p>
+    
+    {% if error %}
+        <div style="color:orange;">
+            <h5>ERROR: The name you entered is already in use.<br />
+            Please enter a unique name!</h5><br /><br />
+        </div>
+    {% endif %}
+    
+    <div class="row">
+        <div class="col s12">
+            HTML Code:
+            <div class="" style="overflow: auto">
+                {{ form.sig }}
+            </div>
+        </div>
+        <div class="col s6">
+            <br />
+            <div class="input-field">
+                <input style="font-size:20px !important;" type="text" name="{{ form.name.name }}" value="{{form.name.value}}" class="dummyvalidate"
+                        required id="{{form.name.auto_id}}">
+                
+                {{ form.name.label_tag }}
+                <div class="error-text">{{ form.name.errors }}</div>
+                <span class="helper-text">{{ form.name.help_text }}</span>
+            </div>
+        </div>
+        <div class="col s3">
+            <br />
+            <div class="input-field">
+                <label for="{{ form.default.auto_id }}" class="ev-veryshortline" 
+                    style="margin-top:-2px;">
+                    <input type="checkbox" class="filled-in" name="default"
+                            {% if form.default.value %}checked{% endif %}  
+                            id="{{ form.default.auto_id }}" />
+                    <span style="color:black;padding-left:28px;">Default</span>
+                </label>
+            </div>
+        </div>
+        <div class="col s3">
+            <br />
+            <div class="input-field">
+                <label for="{{ form.default_alt.auto_id }}" class="ev-veryshortline" 
+                    style="margin-top:-2px;">
+                    <input type="checkbox" class="filled-in" name="default_alt"
+                            {% if form.default_alt.value %}checked{% endif %}  
+                            id="{{ form.default_alt.auto_id }}" />
+                    <span style="color:black;padding-left:28px;">Default Alt</span>
+                </label>
+            </div>
+        </div>
+    </div>
+    
+    <div style="display:hidden;" class="noshow">
+        {{ form.date }}
+    </div>
+        
+    <button id="submitbtn_editesig" type="submit" name="_submit"
+            class="btn btn-large z-depth-3 right">SAVE</button>
+    <br /><br />
+    
+    </form>
+    
+    <br /><br /><br />
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+    <!-- custom js for the home page -->
+    <script src="{% static 'js/events_home.js' %}"></script>
+{% endblock %}
+
+

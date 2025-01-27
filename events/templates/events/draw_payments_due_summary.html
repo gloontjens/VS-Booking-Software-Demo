@@ -1,0 +1,80 @@
+
+{% load humanize %}
+<div class="row">
+    <a href="/events/{{ payment.event.id }}/edit" style="color: inherit">
+    <div class="col s12 m10 offset-m1 ev-rounded-only z-depth-1 evx-panelbackgroundlight" id="ev-pad-right">
+        <table class="homepagetable" style="border:none !important;">
+            <col width="25%">
+            <col width="37.5%">
+            <col width="37.5%">
+            {% if payment.done %}
+                <tr>
+                    <td>{% if payment.event.event_archived %}<span style=""><b>[ARCHIVED] </b></span>{% endif %}
+                        <i><span style="color:#333333;">
+                            {% if payment.auto %}[AUTO] {% endif %}Done {{payment.donedate|naturalday:'D n/j'|title}}
+                        </span><i>
+                    </td>
+                        
+                    <td class="center" style="color:#333333;">
+                        ${{payment.payment|default:"[TBD]"}} to {{payment.musician.name}}
+                    </td>
+                    
+                    <td class="center">
+                        <span class="evx-main-subline-extra evx-rounded-only {% if payment.event.date_ispast or payment.event.event_archived %}evx-panelbackgroundold-subline{% else %}evx-panelbackground-subline{% endif %}">
+                            <span class="{% if payment.event.date_ispast or payment.event.event_archived %}evx-tinyold{% else %}evx-tiny{% endif %}">
+                                {{ payment.event.date|date:"M j, 'y" }}:&nbsp;&nbsp;
+                            </span>
+                            <span class="{% if payment.event.date_ispast or payment.event.event_archived %}evx-tinyeventold{% else %}evx-tinyevent{% endif %}">
+                                <b>{% if payment.event.type == "HD" %}[HOLD]: {% endif %}{{ payment.event.name }}</b>
+                           </span>
+                        </span>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td class="evx-remactdatetext">
+                        {% if payment.auto %}
+                            <b>[AUTO]</b> 
+                        {% else %}
+                            <label>
+                            <input type="checkbox" id="mark_pay_done" name="mark_pay_done"
+                                class="paid_check" pay_id="{{payment.id}}" value="yes" style="top:-8px;"
+                                />
+                            <span style="padding-left:20px;top:-2px;padding-right:8px;" >
+                                <span style="padding-top:3px;">PAID</span>
+                            </span>
+                            </label>
+                        {% endif %}
+                        {% if payment.done %}
+                        <span class="evx-reminder-done">&nbsp;&nbsp;Done {{payment.duedate|naturalday:'D n/j'|title}}
+                        {% elif payment.is_past_due %}
+                        <span class="evx-reminder-past-due">&nbsp;&nbsp;Past-Due ({{payment.duedate|naturalday:'D n/j'|title}})
+                        {% elif payment.is_this_week %}
+                        <span class="evx-reminder-this-week">&nbsp;&nbsp;Due {{payment.duedate|naturalday:'D n/j'|title}}
+                        {% else %}
+                        <span class="evx-reminder-not-past-due">&nbsp;&nbsp;Due {{payment.duedate|naturalday:'D n/j'|title}}
+                        {% endif %}
+                        </span>
+                    </td>
+                    
+                    <td class="center evx-remactdatetext"><b>${{payment.payment|default:"[TBD]"}} </b>to<b> {{payment.musician.name}}</b></td>
+                    
+                    <td class="center"> 
+                        <span class="evx-main-subline-extra evx-rounded-only {% if payment.event.date_ispast or payment.event.event_archived %}evx-panelbackgroundold-subline{% else %}evx-panelbackground-subline{% endif %}">
+                            <span class="{% if payment.event.date_ispast or payment.event.event_archived %}evx-tinyold{% else %}evx-tiny{% endif %}">
+                                {{ payment.event.date|date:"M j, 'y" }}:&nbsp;&nbsp;
+                            </span>
+                            <span class="{% if payment.event.date_ispast or payment.event.event_archived %}evx-tinyeventold{% else %}evx-tinyevent{% endif %}">
+                                <b>{% if payment.event.type == "HD" %}[HOLD]: {% endif %}{{ payment.event.name }}</b>
+                           </span>
+                        </span>
+                    </td>
+                </tr>
+            {% endif %}
+        </table>
+    </div>
+    </a>
+</div>
+
+
+

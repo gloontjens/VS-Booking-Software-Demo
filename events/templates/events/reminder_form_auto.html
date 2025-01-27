@@ -1,0 +1,66 @@
+{% extends "events/base2.html" %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block content %}
+<div class = "container">
+    <br /><h3>Edit Automatic To-Do:</h3>
+    <br />
+    <form method='POST' action='' enctype = "multipart/form-data" id="reminder-form">{% csrf_token %}
+        
+        <div class="input-field ev-shortline">
+            <i class="material-icons prefix">comment</i>
+            <input type="text" name="{{ form.name.name }}" disabled style="color: black" class="dummyvalidate"
+                        value="{{ form.name.value }}" required id="{{ form.name.auto_id }}" />
+            {{ form.name.label_tag }}
+            <div class="error-text">{{ form.name.errors }}</div>
+            <span class="helper-text">{{ form.name.help_text }}</span>
+        </div>
+        <br />
+        <div class="input-field ev-shortline ev-pop-up-date">
+            <i class="material-icons prefix">event</i>
+            {{ form.date|add_class:"validate" }}
+            {{ form.date.label_tag }}
+            <div class="error-text">{{ form.date.errors }}</div>
+            <span class="helper-text">{{ form.date.help_text }}</span>
+        </div>
+        <br />
+        <div>
+            <label for="{{ form.done.auto_id }}" style="margin-left:0px;">
+                <input type="checkbox" class="filled-in" name="done"
+                        {% if form.done.value %}checked{% endif %} id="{{ form.done.auto_id }}" />
+                <span style="font-size:16px; color:black;">{{ form.done.label }}</span>
+            </label>
+        </div>
+        <br />
+        <div>
+            <label for="{{ form.auto.auto_id }}" style="margin-left:0px;">
+                <input type="checkbox" class="filled-in" name="auto"
+                        {% if form.auto.value %}checked{% endif %} id="{{ form.auto.auto_id }}" />
+                <span style="font-size:16px; color: black;">{{ form.auto.label }}</span>
+            </label>
+        </div>
+        <br />
+        <div>
+            <label for="{{ form.disb.auto_id }}" style="margin-left:0px;">
+                <input type="checkbox" class="filled-in" name="disb"
+                        {% if form.disb.value %}checked{% endif %} id="{{ form.disb.auto_id }}" />
+                <span style="font-size:16px; color: black;">{{ form.disb.label }}</span>
+            </label>
+        </div>
+        <br /><br />
+        
+        <button id="submitbtn_reminder_auto_form" type="submit" name="_submit"
+            class="btn z-depth-3">Submit</button>
+
+    </form>
+</div>
+
+
+{% endblock %}
+
+{% block scripts %}
+    <!-- custom js for the home page -->
+    <script src="{% static 'js/events2.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+{% extends 'events/base4.html' %}
+{% load static %}
+{% load selectable_tags %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+    
+{% block content %}
+<form method = 'POST' action= ''  id="test-form" enctype = "multipart/form-data" novalidate>
+{% csrf_token %}
+
+
+{% if mode == 'reg' %}
+<div style="padding-left:0px;padding-right:0px;margin-left:-20px;margin-right:-20px;">
+    <br /><br />
+    <input id="goto_home" type="submit" name="goto_home" class="linkish" value="The Vanderbilt Strings">
+    <!-- <h4 class="mytitle">The Vanderbilt Strings</h4> -->
+    <br />
+</div>
+{% else %}
+<div style="padding-left:0px;padding-right:0px;margin-left:-20px;margin-right:-20px;">
+    <br /><br />
+    <div class="mytitle">The Vanderbilt Strings</div>
+    <!-- <br /> -->
+</div>
+{% endif %}
+
+
+<div class="mysignout">
+    {% if mode == 'reg' %}
+    <button id="goto_signout" type="submit" name="goto_signout"
+            class="btn mysmbtn">Sign Out
+    </button>
+    {% endif %}
+    <div class="show-on-medium-and-down hide-on-large-only"><br /></div>
+</div>
+
+<div class="col s12 center">
+    <h5 class="mycol-indextext myindex">Contact Us</h5><br />
+</div>
+
+<!-- <button class="btn-floating mybtn-floating btn-large tooltipped" data-position="left" data-tooltip="Contact Us" type="submit" name="goto_questions">
+  <i class="material-icons large client-fine myicon-floating">email</i></button> -->
+
+
+
+
+
+
+
+
+<br /><br />
+<div class="mycol-subtext">
+{% if error %}<a href="/events/client_home/{{event.id}}/">Click here to login please!</a>{% else %}
+
+
+
+
+    <div class="row">
+        <div class="col s12 center">
+            <div class="card mycol-panelplain">
+                <div class="">
+                    <br />
+                    <span class="mysize-norm mycol-subtext">Type your inquiry below, then click send</span>
+                    <p>
+                      <span class="mysize-small">Or email us manually: 
+                      <a class="clink-special2" href="mailto:janie@vanderbiltstrings.com">Email</a></span><br />
+                    <br /></p>
+    
+                    
+                    <div class="input-field ev-lessshortline" style="width:70%;margin:auto;">
+                        <i class="material-icons prefix prefixclient">email</i>
+                        <input type="email" class="mycol-subtext nosubmit specialclient" name="from_email" maxlength="100" required="" 
+                            id="id_from_email" value="{{ event.contact.email }}{{ event.contact_email }}">
+                        {{ form.from_email.label_tag }}
+                        <div class="error-text">{{ form.from_email.errors }}</div>
+                        <span class="helper-text">{{ form.from_email.help_text }}</span>
+                    </div>
+                    
+                    <div class="input-field ev-lessshortline" style="width:70%;margin:auto">
+                        <i class="material-icons prefix prefixclient">subject</i>
+                        <input type="text" class="mycol-subtext nosubmit specialclient" name="subject" maxlength="200" required="" id="id_subject">
+                        {{ form.subject.label_tag }}
+                        <div class="error-text">{{ form.subject.errors }}</div>
+                        <span class="helper-text">{{ form.subject.help_text }}</span>
+                    </div>
+            
+                    
+                    <span style="width:80%;margin-auto">Your Message:</span><br />
+                    <textarea class="mycol-subtext client-textarea" style="width:80%;margin:auto;" name="body" id="id_body" rows="40" cols="80"></textarea>    
+                    
+                    
+                    <input type="hidden" name="event" id="id_event" value="{{event.id}}">
+                    <br /><br />
+                                        
+                    <button id="goto_questions_submit" type="submit" name="goto_questions_submit"
+                            class="btn btn-large ev-submitbtn z-depth-2 mybtn-submit">SEND</button>
+                    <div class="row"><br /><br /></div>
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endif %}
+</div>
+</form>
+
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/events_clients.js' %}"></script>
+<script src="{%  static 'js/jSignature.min.js' %}"></script>    
+{% endblock %}
+

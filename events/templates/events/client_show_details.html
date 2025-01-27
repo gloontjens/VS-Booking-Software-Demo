@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+{% extends 'events/base4.html' %}
+{% load static %}
+{% load selectable_tags %}
+
+
+    
+{% block content %}
+<form method = 'POST' action= ''  id="test-form" enctype = "multipart/form-data" novalidate>
+{% csrf_token %}
+
+
+<div class="col s12 l6 center show-on-medium-and-down hide-on-large-only">
+    <h5>Your Event Details</h5>
+</div>
+
+<div class="col s6 l3 center">
+    <button id="goto_home" type="submit" name="goto_home"
+            class="btn mysmbtn" style="background-color:lightgrey;color:black;">&lt;&lt; Home
+    </button>
+</div>
+<div class="col s12 l6 center hide-on-med-and-down">
+    <h5>Your Event Details</h5>
+</div>
+<div class="col s6 l3 center">
+    <button id="goto_signout" type="submit" name="goto_signout"
+            class="btn mysmbtn" style="background-color:lightgrey;color:black;">Sign Out
+    </button>
+    <div class="show-on-medium-and-down hide-on-large-only"><br /></div>
+</div>
+
+<br /><br />
+<div style="color: black">
+{% if error %}<a href="/events/client_home/{{event.id}}/">Click here to login please!</a>{% else %}
+
+
+
+
+    <div class="row">
+        <div class="col s12 center">
+            <div class="card blue-grey darken-1">
+                <div class="card-content white-text">
+                  <span class="card-title cyan-text text-lighten-4"><h4>{{event.name}}<br />{{event.event_type_name}}</h4></span>
+                  <p><h5>{{event.ensemble_name}} ({{event.ensemble_number|default:"TBD # of"}} {{musicianplural}})<br />
+                    {{event.date|date:"l F j, Y"}}<br /> 
+                    {{event.start_time|time:"P"|default:"[Start time TBD]"}} - 
+                    {{event.end_time|time:"P"|default:"[End time TBD]"}}<br />
+                    {% if event.type == "HD" %}
+                        <br />This event is on HOLD, so no further details are available.<br />
+                        Go back to your client home and contact us to proceed!<br />
+                    {% else %}
+                        Location: &nbsp;&nbsp;{{event.location.name|default_if_none:""}}
+                        {{event.location_name|default_if_none:""}}</h5></p><br />
+                        <h6><p>
+                            Event fee: ${{event.fee|floatformat:'2'}} 
+                            {% if event.deposit_fee == 0 or not event.deposit_fee %}
+                            (deposit amount: ${{event.final_fee|floatformat:'2'}})<br /><br />
+                            {% else %}
+                            (deposit amount: ${{event.deposit_fee|floatformat:'2'}})<br /><br />
+                            {% endif %}
+                        </p>
+                        <p>
+                            We will be ready to start playing at {{event.start_time|time:"P"|default:"[Start time TBD]"}}, 
+                            and must finish playing no later 
+                                than {{event.end_time|time:"P"|default:"[End time TBD]"}}.<br />
+                            {% if event.ceremony_time %}
+                                Your ceremony start time is {{event.ceremony_time|time:"P"|default:"TBD"}}<br />
+                            {% endif %}
+                            <br />
+                        </p>
+                        <p>
+                            {% if event.contact_name %}
+                                Our main contact for your event is {{event.contact_name|default:"[Contact TBD]"}} 
+                                    - {{event.contact_agency|default:""}} {{event.contact_phone|default:""}} {{event.contact_email|default:""}}<br /><br />
+                            {% elif event.contact.name %}
+                                Our contact for your event is {{event.contact.name|default:"[Contact TBD]"}}
+                                    - {{event.contact.agency|default:""}} {{event.contact.phone|default:""}} {{event.contact.email|default:""}}<br /><br />
+                            {% endif %}    
+                        </p>   
+                        <p>
+                            {% if event.dayofcontact_name %}
+                                In case of last-minute needs, our day-of contact is {{event.dayofcontact_name|default:"[Day-of Contact TBD]"}} 
+                                    - {{event.dayofcontact_phone|default:""}} {{event.dayofcontact_email|default:""}}<br /><br />
+                            {% elif event.dayofcontact.name %}
+                                In case of last-minute needs, our day-of contact for this event is {{event.dayofcontact.name|default:"[Day-of Contact TBD]"}}
+                                    - {{event.dayofcontact.phone|default:""}} {{event.dayofcontact.email|default:""}}<br /><br />
+                            {% endif %}    
+                        </p></h6> 
+                    {% endif %}  
+                </div>
+                <div class="card-action">
+                  <input class="clink-warn" type="submit" name="goto_home" value="Back to Client Home">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endif %}
+</div>
+</form>
+
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/events_clients.js' %}"></script>
+<script src="{%  static 'js/jSignature.min.js' %}"></script>    
+{% endblock %}
+

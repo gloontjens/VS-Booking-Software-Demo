@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+{% load static %}
+
+{% load selectable_tags %}
+
+
+<html lang="en">
+    <head>
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <!-- <script type="text/javascript">    
+            (function(document,navigator,standalone) {
+                        // prevents links from apps from oppening in mobile safari
+                        // this javascript must be the first script in your <head>
+                        if ((standalone in navigator) && navigator[standalone]) {
+                            var curnode, location=document.location, stop=/^(a|html)$/i;
+                            document.addEventListener('click', function(e) {
+                                curnode=e.target;
+                                while (!(stop).test(curnode.nodeName)) {
+                                    curnode=curnode.parentNode;
+                                }
+                                // Condidions to do this only on links to your own app
+                                // if you want all links, use if('href' in curnode) instead.
+                                if('href' in curnode && ( curnode.href.indexOf('http') || ~curnode.href.indexOf(location.host) ) ) {
+                                    e.preventDefault();
+                                    location.href = curnode.href;
+                                }
+                            },false);
+                        }
+                    })(document,window.navigator,'standalone');    
+        </script>     -->
+     
+    
+        <meta charset="utf-8" />
+        <meta name="Vanderbilt Strings Events" content="Vanderbilt Strings Events" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <title>Vanderbilt Strings Events</title>
+        
+        <!--    CSS FILES!  -->        
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <link type="text/css" rel="stylesheet" href="{% static 'css/materialize.css' %}"  media="screen,projection"/>
+        <link rel="stylesheet" href="{% static 'css/dj.selectable.css' %}">
+        <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/themes/base/jquery-ui.css" type="text/css">
+        <link rel="stylesheet" href="{% static 'css/events.css' %}">
+        
+        <!--    FONT & ICON FILES    -->
+        <!-- <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css"> -->
+        <link href='http://fonts.googleapis.com/css?family=Courgette|PT+Sans+Narrow|Cabin:400,700' rel='stylesheet' type='text/css' />
+        <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i|Roboto+Mono:300,400,700|Roboto+Slab:300,400,700" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        
+        <!--    RANDOM FILES   -->
+        <link rel="shortcut icon" href="{%  static 'images/favicon.png' %}">
+        
+        {{ form.media }}   
+        
+        <!-- <script src="ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">  -->
+        <!--[if lt IE 9]>
+        <script type="text/javascript" src="path/to/flashcanvas.js"></script>
+        <![endif]-->
+
+        <!-- {% include 'material/includes/material_css.html' %} -->
+        <!-- {% include 'material/includes/material_js.html' %} -->
+        
+            
+        <script type="text/javascript">
+            var HOLD_UNTIL = "{{HOLD_UNTIL}}"
+            var HOLD_INDEFINITELY = "{{HOLD_INDEFINITELY}}"
+            var SEND_HOLD = "{{SEND_HOLD}}"
+            var SEND_CONTRACT = "{{SEND_CONTRACT}}"
+            var RECEIVE_CONTRACT = "{{RECEIVE_CONTRACT}}"
+            var RECEIPT_CONTRACT = "{{RECEIPT_CONTRACT}}"
+            var SEND_DEPOSIT = "{{SEND_DEPOSIT}}"
+            var RECEIVE_DEPOSIT = "{{RECEIVE_DEPOSIT}}"
+            var RECEIPT_DEPOSIT = "{{RECEIPT_DEPOSIT}}"
+            var SEND_FINAL_PAYMENT = "{{SEND_FINAL_PAYMENT}}"
+            var RECEIVE_FINAL_PAYMENT = "{{RECEIVE_FINAL_PAYMENT}}"
+            var RECEIPT_FINAL_PAYMENT = "{{RECEIPT_FINAL_PAYMENT}}"
+            var INVITE_MUSICIANS = "{{INVITE_MUSICIANS}}"
+            var ALL_MUSICIANS_BOOKED = "{{ALL_MUSICIANS_BOOKED}}"
+            var SEND_FINAL_CONFIRMATION = "{{SEND_FINAL_CONFIRMATION}}"
+            var RECEIVE_FINAL_CONFIRMATION = "{{RECEIVE_FINAL_CONFIRMATION}}"
+            var SEND_MUSIC_LIST = "{{SEND_MUSIC_LIST}}"
+            var RECEIVE_MUSIC_LIST = "{{RECEIVE_MUSIC_LIST}}"
+            var SEND_FACT_SHEETS = "{{SEND_FACT_SHEETS}}"
+            var ALL_FACT_SHEETS_CONFIRMED = "{{ALL_FACT_SHEETS_CONFIRMED}}"
+        </script>
+    
+
+        
+        
+    </head>
+    
+    <!-- class="blue-grey lighten-5" -->
+    <!-- <body class="" style="background-color: #fafafa;"> -->
+    <body class="" style="background-color: #f6f6f6;">
+    
+    
+    {% if user.is_authenticated %} 
+       
+        {% if sidestate.8 %}
+        <header class="mainfull" id="headerelement">
+        {% else %}
+        <header class="mainnormal" id="headerelement">
+        {% endif %}
+
+
+        <div class="navbar-fixed">
+            <!-- class="grey lighten-1" style="height: 62px; -->
+            <nav class="blue-grey lighten-5" style="height: 52px !important;">
+                <div class="nav-wrapper">
+                    <a href="#" data-target="sidenav-1"
+                        class="left sidenav-trigger">
+                        <i class="material-icons" style="color:var(--col5)">menu</i></a>
+                    <a id="dummyfocus1" href="#" data-target="mobile-menu" class="sidenav-trigger right">
+                    <i class="material-icons" style="color:var(--col5)">menu</i></a>
+
+                 <div class="container" style="width:98%;">
+                  <div class="row">
+                  
+                    <a href="#" id="hideleftbar" class="btn sidehidebutton blue-grey z-depth-1 lighten-5 hide-on-med-and-down"
+                        style="background-color:#eceff1 !important;color:var(--col5);">
+                        {% if sidestate.8 %}
+                        <span id="hideleftbartext" style="font-size:24px;">&Rang;</span>
+                        {% else %}
+                        <span id="hideleftbartext" style="font-size:24px;">&Lang;</span>
+                        {% endif %}
+                    </a>
+                    <!-- &Ll; &Gg; &Lang; &Rang; -->
+                    
+                   <div class="col s1 m1 l1 hide-on-large-and-down ev-nav" style="margin-left:-15px;margin-right:10px;">
+                    <a href="/events/mycal/" 
+                        class="btn blue-grey z-depth-1 lighten-5" style="width: 45px;" id="btn_calendar">
+                        <i class="material-icons left" style="margin-top:-12px;margin-left:-6px;color:var(--col5)">date_range</i>
+                    </a>
+                   </div>
+                   
+                   <form id="search_form" method="GET" action="/events/search/">
+                        <div id="search_div" class="col s4 m4 l2 ev-nav" style="margin-top: -2px !important;margin-left:-20px;padding-left:0px;margin-right:-8px;">
+                            <div class="input-field inline tooltipped" style="color:var(--col5)" data-position="bottom" data-tooltip="for date use '3/08' or '3-08' format">
+                                <i class="material-icons prefix" style="color:var(--col5);margin-left:10px !important; margin-top:-8px !important;">search</i>
+                                <input id="search" type="text" name="q">
+                                <input id="search_past" name="p" value=False hidden>
+                                <input id="search_newest" name="n" value=True hidden>
+                                <input id="search_archived" name="a" value=False hidden>
+                                <input id="search_musicians" name='m' value=False hidden>
+                                <input id="search_paymentsdue" name='d' value=False hidden>
+                                <input id="search_paymentsreceived" name='r' value=False hidden>
+                                <button id="btn_search_1" hidden type="submit">x</button>
+                                <label for="search" id="search_lbl" class="ev_search_lbl" style="color:var(--col5)">Search...</label>
+                            </div>
+                        </div>
+                   </form>
+                   
+                   
+                   <div class="col s6 m4 l3 ev-nav" style="padding-right:0px;margin-right:-20px;">
+                    <div id="nav_arrows" class="inline" style="display:inline;">
+                        {% if form.instance.id %}
+                            <a href="/events/browse_backward/{{browse_mode}}/{{ form.instance.id }}" 
+                                class="waves-effect waves-light btn z-depth-3 ev-col4"><</a>
+                            <a href="/events/edit_nextevent/" 
+                                class="waves-effect waves-light btn ev-col4 z-depth-3 tooltipped" 
+                                data-position="bottom" data-tooltip="jump to now (next scheduled event)"
+                                style="" id="browse_btn">{{ browse_mode }}</a>
+                            <a href="/events/browse_forward/{{browse_mode}}/{{ form.instance.id }}" 
+                                class="waves-effect waves-light btn z-depth-3 ev-col4">></a>
+                        {% else %}
+                            <a href="/events/browse_backward/{{browse_mode}}/0" 
+                                class="waves-effect waves-light btn z-depth-3 ev-col4"><</a>
+                            <a href="/events/cycle/{{browse_mode}}" 
+                                class="waves-effect waves-light btn ev-col4 z-depth-3 tooltipped" 
+                                data-position="bottom" data-tooltip="cycle day/week/month view"
+                                style="" id="browse_btn">{{ browse_mode }}</a>
+                            <a href="/events/browse_forward/{{browse_mode}}/0" 
+                                class="waves-effect waves-light btn z-depth-3 ev-col4">></a>
+                        {% endif %}                                                        
+                            
+                    </div>
+                   </div>
+
+                   <div class="col s1 m4 l7 xl6 right hide-on-med-and-down ev-nav">
+                    <ul id="nav_main" class="navmain_spec">
+                        <li id="nav_home"><a href="/events" class="navmain_spec" style="color:var(--col5)">Home</a></li>
+                        <li id="nav_browse"><a href="/events/browse/0" class="navmain_spec" style="color:var(--col5)">Browse</a></li>
+                        <!-- <li id="nav_tasks"><a href="/events/tasks" style="color:var(--col5)">Tasks</a></li> -->
+                        <li id="nav_new"><a href="/events/add" class="navmain_spec" style="color:var(--col5)">New</a></li>
+                        <li id="nav_dropdown"><a class="dropdown-trigger" href="#!" data-target="dropdown1">
+                            <i class="material-icons" style="color:var(--col5)">arrow_drop_down</i>
+                            </a>
+                        </li>
+                        <li></li>
+                    </ul>
+                   </div>
+                  </div>
+                 </div>
+                    
+                </div>
+            </nav>
+        </div>
+        </header>
+    
+        
+        
+        <!-- Dropdown Structure -->
+        <ul id="dropdown1" class="dropdown-content" style="width:300px;">
+            <li id="nav_calendar" class="hide-on-extra-large-only"><a href="/events/mycal" style="color:var(--col5)">Calendar</a></li>
+            <li id="nav_payments_due"><a href="/events/payments_due" style="color:var(--col5)">Payments Due</a></li>
+            <li id="nav_payments_received"><a href="/events/payments_received" style="color:var(--col5)">Payments Rcvd</a></li>
+            <li id="nav_rates"><a href="/events/rates" style="color:var(--col5)">Rate Charts</a></li>
+            <li id="nav_esigs"><a href="/events/esigs" style="color:var(--col5)">Signatures</a></li>
+            <li id="nav_archived"><a href="/events/archived" style="color:var(--col5)">Archived...</a></li>
+            <li class="divider"></li>
+            <li id="nav_reports"><a href="/events/reports" style="color:var(--col5)">Reports</a></li>
+            <li class="divider"></li>
+            <li id="nav_editforms"><a href="/events/editforms" style="color:var(--col5)">Edit Forms...</a></li>
+            <li id="nav_syncgcal"><a href="/events/syncgcal" style="color:var(--col5)">Re-sync G-Cal...</a></li>
+            <li class="divider"></li>
+            <li id="nav_admin"><a href="/admin" style="color:var(--col5)">Admin</a></li>        
+            <li id="nav_logout"><a href="/accounts/logout" style="color:var(--col5)">Sign Out</a></li>        
+        </ul>        
+        
+        
+        <!-- Sidenav right Structure -->
+        <ul class="sidenav sidenav-right" id="mobile-menu" style="width:180px">
+            <li class="divider"></li>
+            <li id="navs_home"><a href="/events" style="color:var(--col5)">Home</a></li>
+            <li id="navs_browse"><a href="/events/browse/0" style="color:var(--col5)">Browse</a></li>
+            <li id="navs_tasks"><a href="/events/mycal/" style="color:var(--col5)">Calendar</a></li>
+            <li id="navs_new"><a href="/events/add" style="color:var(--col5)">New</a></li>
+            <li class="divider"></li>
+            <li id="navs_calendar" class="hide-on-extra-large-only"><a href="/events/mycal" style="color:var(--col5)">Calendar</a></li>
+            <li id="navs_payments_due"><a href="/events/payments_due" style="color:var(--col5)">Payments Due</a></li>
+            <li id="navs_payments_received"><a href="/events/payments_received" style="color:var(--col5)">Payments Rcvd</a></li>
+            <li id="navs_rates"><a href="/events/rates" style="color:var(--col5)">Rate Charts</a></li>
+            <li id="navs_esigs"><a href="/events/esigs" style="color:var(--col5)">Signatures</a></li>
+            <li id="navs_archived"><a href="/events/archived" style="color:var(--col5)">Archived...</a></li>
+            <li class="divider"></li>
+            <li id="navs_reports"><a href="/events/reports" style="color:var(--col5)">Reports</a></li>
+            <li class="divider"></li>
+            <li id="navs_editforms"><a href="/events/editforms" style="color:var(--col5)">Edit Forms...</a></li>
+            <li id="navs_syncgcal"><a href="/events/syncgcal" style="color:var(--col5)">Re-sync G-Cal</a></li>
+            <li class="divider"></li>
+            <li id="navs_admin"><a href="/admin" style="color:var(--col5)">Admin</a></li>
+            <li id="nav_logouts"><a href="/accounts/logout" style="color:var(--col5)">Sign Out</a></li>        
+            <li></li>
+        </ul>    
+
+        <!-- Sidenav left Structure -->
+        <!-- Mini calendar, events panel, reminders panel, activity panel -->
+        {% if sidestate.8 %}
+        <div id="sidenav-1" class="sidenav sidenav-left sidenav-fixed white sidebarsizesmall">
+        {% else %}
+        <div id="sidenav-1" class="sidenav sidenav-left sidenav-fixed white sidebarsizefull">
+        {% endif %}
+
+            <div class="container" style="width:auto">
+                <div class="row center">
+                    <div id="sidecal" class="{% if sidestate.8 %}nospecialshow{% endif %}">
+                        {{smallcal}}
+                    </div>  
+                </div>
+            </div>  
+        
+            <ul class="collapsible expandable {% if sidestate.8 %}nospecialshow{% endif %}" id="sidestuff">
+              <li class="ev-collapsible {% if sidestate.0 %}active{% endif %}">
+                <div class="collapsible-header" id="pnl1"><i class="material-icons">event</i><span class="sidebar-shift-left">Upcoming Events</span></div>
+                <div class="collapsible-body">
+                    {% if not soonevents %}<div style="line-height:14px;">(none)<div>{% else %}
+                    {% for event in soonevents %}
+                    {% include 'events/draw_side_event_summary.html' %}
+                    {% endfor %}{% endif %}
+                </div>
+              </li>
+              <li class="ev-collapsible {% if sidestate.1 %}active{% endif %}">
+                <div class="collapsible-header" id="pnl2"><i class="material-icons">notifications_active</i><span class="sidebar-shift-left">Past-Due Reminders</span></div>
+                <div class="collapsible-body" id="sidePastDueReminders">
+                    {% if not pastduereminder %}<div style="line-height:14px;">(none)<div>{% else %}
+                    {% for reminder in pastduereminder %}
+                    {% include 'events/draw_side_reminder_summary2.html' %}
+                    {% endfor %}{% endif %}
+                </div>
+              </li>
+              <li class="ev-collapsible {% if sidestate.2 %}active{% endif %}">
+                
+                <div class="collapsible-header" style="display:inline-block;vertical-align:middle;margin-right:-15px;" id="pnl3"><i style="display:inline-block;vertical-align:middle;" class="material-icons">notifications</i><span class="sidebar-shift-left">Upcoming Reminders</span>
+                </div>
+                
+                <button type="button" id="include_auto_reminders_side" class="auto-button-side {% if sidestate.5 %}auto-pressed{% endif %}"><span style="margin-left:-5px;">AUTO</span></button>
+                
+                <div class="collapsible-body" id="sideUpcomingReminders">
+                    {% if soonreminder and all_soonrem_auto %}<div id="soonrem_none" {% if sidestate.5 %}class="noshow"{% endif %} style="line-height:14px;">(none)</div>{% endif %}
+                    {% if not soonreminder %}<div style="line-height:14px;">(none)<div>
+                    {% else %}
+                        {% for reminder in soonreminder %}
+                        {% include 'events/draw_side_reminder_summary.html' %}
+                        {% endfor %}
+                    {% endif %}
+                </div>
+              </li>
+              <li class="ev-collapsible {% if sidestate.7 %}active{% endif %}">
+                <div class="collapsible-header" id="pnl6"><i class="material-icons">notifications_active</i><span class="sidebar-shift-left">Payments Due</span></div>
+                <div class="collapsible-body" id="sidePaymentsDue">
+                    {% if not pays and not pays_pd %}<div style="line-height:14px;">(none)<div>{% else %}
+                    {% for payment_pd in pays_pd %}
+                    {% include 'events/draw_side_payments_due_pd_summary.html' %}
+                    {% endfor %}
+                    {% for payment in pays %}
+                    {% include 'events/draw_side_payments_due_summary.html' %}
+                    {% endfor %}
+                    {% endif %}
+                </div>
+              </li>
+              <li class="ev-collapsible {% if sidestate.3 %}active{% endif %}">
+                <div class="collapsible-header" id="pnl4"><i class="material-icons">done_all</i><span class="sidebar-shift-left">Recent Activity</span></div>
+                <div class="collapsible-body" id="sideActivities">
+                    {% if not recentactivities %}<div style="line-height:14px;">(none)<div>{% else %}
+                    {% for activity in recentactivities %}
+                        {% include 'events/draw_side_activity_summary.html' %}
+                    {% endfor %}{% endif %}
+                </div>
+              </li>
+              <li class="ev-collapsible {% if sidestate.4 %}active{% endif %}">
+                <div class="collapsible-header" id="pnl5"><i class="material-icons">event</i><span class="sidebar-shift-left">Newer Events</span></div>
+                <div class="collapsible-body">
+                    {% if not newevents %}<div style="line-height:14px;">(none)<div>{% else %}
+                    {% for event in newevents %}
+                    {% include 'events/draw_side_event_summary.html' %}
+                    {% endfor %}{% endif %}
+                </div>
+              </li>
+            </ul>        
+            <br /><br />
+        </div>        
+
+        {% if sidestate.8 %}
+        <main class="mainfull" id="mainelement">
+        {% else %}
+        <main class="mainnormal" id="mainelement">
+        {% endif %}
+        
+        
+        <div class="container" style="width:95% !important;">
+            
+            
+
+            <div>
+                {% block content %}
+                {% endblock %}
+            </div>
+            
+        </div>
+        </main>
+        
+        
+    
+    {% else %}
+
+    <br /><br /><br /><br />
+    <p>You are not logged in</p>
+    <a href="{% url 'login' %}">login</a>
+  
+    {% endif %} 
+    
+    <!-- {% include_jquery_libs %} -->
+           
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script> -->
+
+    <!-- jquery ui -->
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.js"></script>
+
+
+    <!-- Then Materialize JavaScript on top of Bootstrap JavaScript -->
+    <script type="text/javascript" src="{% static 'js/materialize.js' %}"></script>
+    
+    <!-- Then Selectable module js -->
+    <script type="text/javascript" src="{% static 'js/jquery.dj.selectable.js' %}"></script>
+
+    <!-- Then are-you-sure code js -->
+    <script type="text/javascript" src="{% static 'js/jquery.are-you-sure.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/ays-beforeunload-shim.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/ajaxq.js' %}"></script>
+    
+    {% block scripts %}
+    {% endblock %}
+
+    </body>
+</html>
+        
+        

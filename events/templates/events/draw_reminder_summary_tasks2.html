@@ -1,0 +1,90 @@
+
+        <div class="row">
+            <a href="/events/{{ reminder.event_id }}/edit" style="color: inherit">
+            <div class="col s12 m10 offset-m1 ev-round z-depth-1 ev-shaded" id="ev-pad-right">
+                <table class="event_sum">
+                    <col width="25%">
+                    <col width="25%">
+                    <col width="25%">
+                    <col width="">
+                    <col width="90px">
+                    <tr>
+                        {% if reminder.done %}
+                        <td class="ev-reminder-done">
+                        {% elif reminder.is_past_due %}
+                        <td class="ev-reminder-past-due">
+                        {% elif reminder.is_this_week %}
+                        <td class="ev-reminder-this-week">
+                        {% else %}
+                        <td class="ev-reminder-not-past-due">
+                        {% endif %}
+                            {% if reminder.auto %}Scheduled{% else %}
+                            Due{% endif %}
+                             {{ reminder.date|date:'D M j' }}</td>
+                        <td colspan="2"><b>
+                        {% if reminder.auto %}<span style="color:orange"><b>[AUTO]</b>&nbsp;</span>{% endif %}
+                        {{ reminder.name }}</b></td>
+                        
+                        {% if reminder.done %}
+                        <td class="ev-reminder-done">
+                        {% elif reminder.is_past_due %}
+                        <td class="ev-reminder-past-due">
+                        {% elif reminder.is_this_week %}
+                        <td class="ev-reminder-this-week">
+                        {% else %}
+                        <td class="ev-reminder-not-past-due">
+                        {% endif %}
+                        
+                        {% if reminder.done %}
+                                Done
+                        {% elif reminder.is_past_due %}
+                                Past Due 
+                        {% elif reminder.is_this_week %}
+                                Due Soon
+                        {% else %}
+                                &nbsp;
+                        {% endif %}
+                        </td>
+                        <td>
+                        &nbsp;
+                        {% comment %}
+                            <a href="/events/mark_reminder_done/{{reminder.id}}" 
+                            {% if reminder.event.date_ispast or reminder.done %} disabled {% endif %}
+                            class="btn-flat btn-small
+                                ev-col10" style="font-size:11px; margin:2px;padding:2px">
+                                <i class="material-icons left" style="margin-left:0px;margin-right:0px">check_box_outline_blank</i>Done</a>
+                        {% endcomment %}
+                        </td>
+                    </tr>
+                    <tr style="background-color: white; color:gray;">
+                        <td>
+                        For {{ reminder.event.date|date:'D M j' }}, 
+                            {{ reminder.event.start_time|default:" " }} - 
+                            {{ reminder.event.end_time|default:" " }}</td>
+                        <td>{{ reminder.event.name }}</td>
+                        <td>{% if reminder.event.location %}
+                                {{ reminder.event.location }}
+                            {% else %}
+                                {{ reminder.event.location_name|default:" " }}
+                            {% endif %}</td>
+                        <td colspan="2">{% if reminder.event.ensemble %}
+                                {{ reminder.event.ensemble }}
+                            {% else %}
+                                {{ reminder.event.ensemble_name|default:" " }}
+                            {% endif %}</td>
+                    </tr>
+                </table>
+            </div>
+            </a>
+        </div>
+
+                        <!-- {% if reminder.done %}
+                        <td class="ev-reminder-done">
+                        {% elif reminder.is_past_due %}
+                        <td class="ev-reminder-past-due">
+                        {% elif reminder.is_this_week %}
+                        <td class="ev-reminder-this-week">
+                        {% else %}
+                        <td class="ev-reminder-not-past-due">
+                        {% endif %} -->
+        

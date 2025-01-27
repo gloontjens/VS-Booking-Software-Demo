@@ -1,0 +1,89 @@
+{% load tozero %}
+        <div class="row">
+            <a href="/events/{{ event.id }}/edit" style="color: inherit">
+            <div class="col s12 m10 offset-m1 ev-round z-depth-1 ev-shaded" id="ev-pad-right"
+                    {% if event.date_ispast or event.event_archived %}
+                    style="background-color: white; color:#b4b4b4;"{% endif %}>
+                <table class="event_sum">
+                    <col width="25%">
+                    <col width="25%">
+                    <col width="25%">
+                    <col width="25%">
+                    <tr>
+                        <td>{% if event.event_archived %}<span style=""><b>[ARCHIVED] </b></span>{% endif %}
+                            {{ event.date|date:'D M j Y' }}</td>
+                        <td><b>{% if event.type == "HD" %}[HOLD]: {% endif %}{{ event.name }}</b></td>
+                        <td>{% if event.location %}
+                                {{ event.location }}
+                            {% else %}
+                                {{ event.location_name|default:" " }}
+                            {% endif %}</td>
+                        <td>${{ event.fee|tozero|default:" " }} - 
+                            ${{ event.musician_fee|tozero|default:" " }} -
+                            <b>${{ event.contracting_fee|tozero|default:" " }}</b></td>
+                    </tr>
+                    <tr>
+                        <td>{{ event.start_time|default:" " }} - 
+                            {{ event.end_time|default:" " }}</td>
+                        <td>{% if event.event_type %}
+                                {{ event.event_type }}
+                            {% else %}
+                                {{ event.event_type_name|default:" " }}
+                            {% endif %}</td>
+                        <td>{% if event.ensemble %}
+                                {{ event.ensemble }}
+                            {% else %}
+                                {{ event.ensemble_name|default:" " }}
+                            {% endif %}</td>
+                        {% if event.contact %}
+                            <td class="tooltipped" data-tooltip="{{event.contact_email}}">
+                                {{ event.contact }} {% if event.friendly_name %}("{{event.friendly_name}}"){% endif %}
+                            </td>
+                        {% else %}
+                            <td class="tooltipped" data-tooltip="{{event.contact_email}}">
+                                {{ event.contact_name|default:" " }} {% if event.friendly_name %}("{{event.friendly_name}}"){% endif %}
+                            </td>
+                        {% endif %}
+                    </tr>
+                    <tr class="ev-shaded2">
+                        <td class="tooltipped reminder_feed" event_id="{{event.id}}" data-tooltip="Upcoming Undone Reminders:<br />(none)">
+                            <span style="font-size:10px; border:1px solid; background-color: {{ event.color_contract}};">
+                                &nbsp;{% if event.waive_contract %}X{% else %}&nbsp;&nbsp;{% endif %}&nbsp;</span>&nbsp;
+                            <span style="font-size:10px; border:1px solid; background-color: {{ event.color_deposit}};">
+                                &nbsp;{% if event.waive_payment or event.deposit_senddate == event.final_senddate or event.deposit_fee == 0 %}X{% else %}&nbsp;&nbsp;{% endif %}&nbsp;</span>&nbsp;
+                            <span style="font-size:10px; border:1px solid; background-color: {{ event.color_music_list}};">
+                                &nbsp;{% if event.waive_music_list %}X{% else %}&nbsp;&nbsp;{% endif %}&nbsp;</span>&nbsp;
+                            <span style="font-size:10px; border:1px solid; background-color: {{ event.color_musicians}};">
+                                &nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;
+                            <span style="font-size:10px; border:1px solid; background-color: {{ event.color_final_payment}};">
+                                &nbsp;{% if event.waive_payment %}X{% else %}&nbsp;&nbsp;{% endif %}&nbsp;</span>&nbsp;
+                            <span style="font-size:10px; border:1px solid; background-color: {{ event.color_final_confirmation}};">
+                                &nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;
+                            <span style="font-size:10px; border:1px solid; background-color: {{ event.color_fact_sheets}};">
+                                &nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;
+                            <span style="font-size:12px; color:orange">&nbsp;
+                            {% if event.automation %}
+                            <b>AUTO</b>
+                            {% endif %}
+                            </span></td>
+                        <td class="tooltipped activity_feed" event_id="{{event.id}}" data-tooltip="Most Recent Activity:<br />(none)">(no recent activity)</td>
+                        <td class="tooltipped musicians_feed" event_id="{{event.id}}" data-tooltip="Musicians Booked:<br />">
+                            /{{event.ensemble_number|default_if_none:"0"}} musicians booked)</td>
+                        {% if event.waive_music_list %} <!-- no list necessary -->
+                        <td class="tooltipped" event_id="{{event.id}}" data-tooltip="Music List waived<br />">(Music List waived)</td>
+                        {% elif event.flag_music_list_rcvd %} <!-- list completed -->
+                        <td class="tooltipped musiclist_feed" event_id="{{event.id}}" data-tooltip="Music List completed<br />">
+                            Music list completed</td>
+                        {% elif event.music_list %} <!-- partial list exists, but not marked rcvd (done) -->
+                        <td class="tooltipped musiclist_feed" event_id="{{event.id}}" data-tooltip="Music List partial<br />">
+                            Music List partial</td>
+                        {% else %} <!-- no list yet, blank -->
+                        <td class="tooltipped" event_id="{{event.id}}" data-tooltip="no Music List yet<br />">
+                            (no Music List yet)</td>
+                        {% endif %}
+                    </tr>
+                </table>
+            </div>
+            </a>
+        </div>
+    

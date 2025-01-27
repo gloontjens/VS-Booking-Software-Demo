@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+{% extends 'events/base4.html' %}
+{% load static %}
+{% load selectable_tags %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+    
+{% block content %}
+<form method = 'POST' action= ''  id="test_form" enctype = "multipart/form-data" novalidate>
+{% csrf_token %}
+
+{% if mode == 'reg' %}
+<div style="padding-left:0px;padding-right:0px;margin-left:-20px;margin-right:-20px;">
+    <br /><br />
+    <input id="goto_home" type="submit" name="goto_home" class="linkish" value="The Vanderbilt Strings">
+    <!-- <h4 class="mytitle">The Vanderbilt Strings</h4> -->
+    <br />
+</div>
+{% else %}
+<div style="padding-left:0px;padding-right:0px;margin-left:-20px;margin-right:-20px;">
+    <br /><br />
+    <div class="mytitle">The Vanderbilt Strings</div>
+    <!-- <br /> -->
+</div>
+{% endif %}
+<div class="mysignout">
+    {% if mode == 'reg' %}
+    <button id="goto_signout" type="submit" name="goto_signout"
+            class="btn mysmbtn">Sign Out
+    </button>
+    {% endif %}
+    <div class="show-on-medium-and-down hide-on-large-only"><br /></div>
+</div>
+
+
+<div class="col s12 center">
+    {% if mode == 'reg' or not pay_required or mode == 'contract' %}
+        <h5 class="mycol-indextext myindex">Done!</h5><br />
+    {% elif paymentonly %}
+        <h5 class="mycol-indextext myindex">Welcome!</h5>
+    {% else %}
+       <h5 class="mycol-indextext myindex">Payment - Step 3/3</h5><br />
+    {% endif %}
+</div>
+
+<button class="btn-floating mybtn-floating btn-large" type="submit" name="goto_questions">
+  <i class="material-icons large myicon-floating">email</i>
+  </button>
+<button class="btn-floating mybtn-floatingb btn-large tooltipped" data-position="left" data-tooltip="Contact Us" type="submit" name="goto_questions">      
+  <i class="material-icons large myicon-floatingb">edit</i>
+  </button>
+
+
+
+
+
+
+
+
+
+<br /><br />
+<div style="color: black">
+{% if error %}<a href="/events/client_home/{{event.id}}/">Click here to login please!</a>{% else %}
+
+
+
+{% if mode == 'reg' %}
+    <div class="row">
+        <div class="col s12 center">
+            <div class="card mycol-panelplain">
+                <div class="">
+                    <br />
+                    <span class="mycol-subtext mysize-large">Signed, Sealed, Delivered!  Thank you!</span>
+                    <p class="mycol-panel-pad2">
+                      <span class="mycol-subtext mysize-norm"><br />
+                          A copy of your contract has been emailed to {{email}}.<br />
+                          <a target="_blank" style="color:blue !important;" href="{{ftp_file_path}}">Click Here </a>
+                          to view or download now.
+                          <br />
+                      </span>
+                    </p>
+
+
+                    <div class="col s12"><br /></div>                   
+                    <button id="goto_home" type="submit" name="goto_home"
+                        class="btn btn-large ev-submitbtn z-depth-2 mybtn-submit">
+                        <i class="material-icons left mycol-maintext">home</i>HOME</button>
+                    <div class="row"><br /><br /></div>
+              
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+{% elif not pay_required or mode == 'contract' %}
+
+    <div class="row">
+        <div class="col s12 center">
+            <div class="card mycol-panelplain">
+                <div class="mycol-panel-pad2">
+                    <br />
+                    {% if mode == 'contract' %}
+                    <span class="mycol-subtext mysize-large">Signed, Sealed, Delivered!  Thank you!</span>
+                    {% else %}
+                    <span class="mycol-subtext mysize-large">Signed, Sealed, Delivered!  Thank you!</span>
+                    {% endif %}
+                    <br />
+                    <span class="mycol-subtext mysize-norm"><br />
+                          A copy of your contract has been emailed to {{email}}.<br />
+                          <a target="_blank" style="color:blue !important;" href="{{ftp_file_path}}">Click Here </a>
+                          to view or download now.
+                    </span>
+                    <br /><br />
+                    <span class="mycol-subtext mysize-large">
+                        {% if mode != 'contract' %}
+                    
+                            <div class="row mybackground-login2 valign-wrapper">
+                            <div class="col card center mycol-panel col s10 m10 l8 xl6 offset-s1 offset-m1 offset-l2 offset-xl3" style="padding-left:30px;padding-right:30px;">
+                            <span class="mycol-subtext mysize-large">
+                                  <br />
+                                  Check out your new Client Home
+                                  <h6 class="mycol-subtext mysize-norm">We're thrilled to be playing for you,
+                                  <br /> and to help keep track of things and see what's next, we've made a page just for you.</h6><br />
+                                  <span class="mycol-subtext mysize-norm">You can bookmark this link:</span><br />
+                                  <a href="{{client_home_path}}" class="mysize-small mycol-maintext"><span style="word-wrap:break-word;overflow-wrap:break-word;">{{client_home_path}}</span></a><br />
+                                  <br />
+                                  <h6 class="mycol-subtext mysize-norm">Or click below to check out your page right now!</h6><br />
+                            </span>
+                            </div>
+                            </div>
+
+                        {% endif %}
+                    </span>
+
+
+                    <div class="col s12"></div>
+                    
+                    {% if mode != 'contract' %}                  
+                    <button id="goto_home" type="submit" name="goto_home_firsttime"
+                        class="btn btn-large ev-submitbtn z-depth-2 mybtn-submit">
+                        <i class="material-icons left mycol-maintext">home</i>HOME</button>
+                    {% endif %}
+                    <div class="row"><br /><br /></div>
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{% else %}
+
+
+
+
+    <div class="row"></div>
+    <div class="row">
+        <div class="col s12 center">
+            <div class="card mycol-panelplain">
+                <div class="mycol-panel-pad2">
+                    <br />
+                    {% if pickup %}
+                    <span class="mycol-maintext mysize-large"><h5>Let's pickup where we left off!</h5></span>
+                    <p>
+                     <span class="mycol-subtext mysize-norm">
+                          Thanks for signing your contract!  Select one of the following payment options to complete your reservation.<br />
+                          <br />
+                     </span>
+                    </p>
+                    {% elif paymentonly %}
+                    <span class="mycol-maintext mysize-large"><h5>Welcome, {{event.friendly_name}}!
+                        </h5></span>
+                    <p>
+                        <span class="mycol-subtext mysize-norm">
+                            Select one of the following payment options to complete your reservation.
+                        </span>
+                        <br />
+                    </p>
+                    <br />
+                    {% else %}
+                    <span class="mycol-subtext mysize-norm">Signed, Sealed, Delivered!  Thank you!</span>
+                    <p class="mycol-panel-pad2">
+                      <span class="mycol-subtext mysize-norm">
+                          A copy of your contract has been emailed to {{email}}.<br />
+                          <a target="_blank" style="color:blue !important;" href="{{ftp_file_path}}">Click Here </a>
+                          to view or download now.
+                          <br /><br />
+                          <span class="mycol-subtext mysize-norm">Select one of the following payment options to complete your reservation.</span>
+                          <br />
+                      </span>
+                      <br />
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- if not client.paid_deposit, and deposit fee is 0/null, then allow only full -->
+    {% if not client.paid_deposit %}
+        {% if event.deposit_fee == 0 or event.deposit_fee == 0.00 or not event.deposit_fee %}
+        <!-- show single (combined) full-pay-panel only -->
+        <div class="row">
+            <div class="col s12 center">
+                <div class="card mycol-panelplain">
+                    <div class="  mycol-subtext">
+                        <span class="mysize-large">
+                        Full Payment
+                        </span>
+                        <p class="mysize-small mycol-subtext mycol-panel-pad">
+                        
+                        <!-- allow only full total payment! -->
+                                 ${{event.fee|floatformat:'2'}} is due
+                                at this time.  If your event is
+                                soon, only online payment is possible.
+                                Online payment fees apply.
+                        </p>
+                    </div>
+                    {% if event.is_final_pay_past_due_simple %}
+                        <div class="mycol-panel-btmfix">
+                            <input class="clink-late" type="submit" name="goto_pay_full_paypal" value="Pay Online">
+                            {% if not event.date_issoon %}
+                                <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                <input class="clink-late" type="submit" name="goto_pay_full_mail" value="Send a Check">
+                            {% endif %}
+                        </div>
+                    {% elif event.is_final_pay_due_soon %}
+                        <div class="mycol-panel-btmfix">
+                            <input class="clink-warn" type="submit" name="goto_pay_full_paypal" value="Pay Online">
+                            {% if not event.date_issoon %}
+                                <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                <input class="clink-warn" type="submit" name="goto_pay_full_mail" value="Send a Check">
+                            {% endif %}
+                        </div>
+                    {% else %}
+                        <div class="mycol-panel-btmfix">
+                            <input class="clink-noneed" type="submit" name="goto_pay_full_paypal" value="Pay Online">
+                            <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                            <input class="clink-noneed" type="submit" name="goto_pay_full_mail" value="Send a Check">
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
+
+    {% endif %}
+    {% if not client.paid_deposit %}
+        {% if event.deposit_fee and event.deposit_fee != 0 and event.deposit_fee != 0.00 %}
+        
+        <!-- show combined deposit-pay-panel and full-pay-panel -->
+        <div class="row">
+            <div class="col s12 center">
+                <div class="card mycol-panelplain">
+                    <div class="  mycol-subtext">
+                        <span class="mysize-large">
+                        {% if event.date_issoon %}Payment in Full
+                        {% else %}Deposit or Full Payment
+                        {% endif %}
+                        </span>
+                        <p>
+                        {% if event.date_issoon %}
+                        <!-- allow only full total payment! -->
+                                    ${{event.fee|floatformat:'2'}} is due
+                                    at this time.  If your event is
+                                    soon, only online payment is possible.
+                                    Online payment fees apply.
+                        
+                        {% else %}
+                                    Deposit of ${{event.deposit_fee|floatformat:'2'}} is due
+                                    at this time.  If your event is
+                                    soon, only online payment is possible.
+                                    Online payment fees apply.  If you prefer to pay
+                                    the full fee now, it is ${{event.fee|floatformat:'2'}}.
+                        
+                        {% endif %}
+                        </p>
+                    </div>
+                    {% if event.is_deposit_past_due_simple %}
+                        <div class="mycol-panel-btmfix">
+                            {% if not event.date_isrealsoon %}
+                                <input class="clink-late" type="submit" name="goto_pay_deposit_paypal" value="Pay Deposit Online">
+                                <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                            {% endif %}
+                            <input class="clink-late" type="submit" name="goto_pay_full_paypal" value="Pay Total Online">
+                            {% if not event.date_issoon %}
+                                <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                <input class="clink-late" type="submit" name="goto_pay_deposit_mail" value="Send Deposit Check">
+                                <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                <input class="clink-late" type="submit" name="goto_pay_full_mail" value="Send Total Check">
+                            {% endif %}
+                        </div>
+                    {% elif event.is_deposit_due_soon %}
+                        <div class="mycol-panel-btmfix">
+                            {% if not event.date_isrealsoon %}
+                                <input class="clink-warn" type="submit" name="goto_pay_deposit_paypal" value="Pay Deposit Online">
+                                <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                            {% endif %}    
+                            <input class="clink-warn" type="submit" name="goto_pay_full_paypal" value="Pay Total Online">
+                            {% if not event.date_issoon %}
+                                <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                <input class="clink-warn" type="submit" name="goto_pay_deposit_mail" value="Send Deposit Check">
+                                <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                <input class="clink-warn" type="submit" name="goto_pay_full_mail" value="Send Total Check">
+                            {% endif %}
+                        </div>
+                    {% else %}
+                        <div class="mycol-panel-btmfix">
+                            <input class="clink-noneed" type="submit" name="goto_pay_deposit_paypal" value="Pay Deposit Online">
+                            <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                            <input class="clink-noneed" type="submit" name="goto_pay_full_paypal" value="Pay Total Online">
+                            <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                            <input class="clink-noneed" type="submit" name="goto_pay_deposit_mail" value="Send Deposit Check">
+                            <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                            <input class="clink-noneed" type="submit" name="goto_pay_full_mail" value="Send Total Check">
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    {% endif %}
+{% endif %}
+
+
+
+
+
+
+
+    <div class="" id="" style="display:none">
+        
+    </div>    
+
+
+{% endif %}
+</div>
+</form>
+
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/events_clients.js' %}"></script>
+<script src="{%  static 'js/jSignature.min.js' %}"></script>    
+{% endblock %}
+

@@ -1,0 +1,43 @@
+{% extends 'events/base-new.html' %}
+{% load static %}
+
+
+
+{% block content %}
+    <input type="hidden" id="page_flag" value="archived">
+    
+    <br /><br />
+    <h5>All archived events:</h5><br />
+    <br />
+    
+    <div class="container" style="width:auto">
+        {% for event in events %}
+        
+        <div class="row" style="height:0px">
+        <div class="col s2 m2 offset-m1">
+            <a id="delete" class="ev-round btn-small z-depth-2 ev-shaded center"
+                href="/events/delete/{{event.id}}" style="color:red">DELETE</a>
+        </div>
+        <div class="col s2 m2 offset-xl7 offset-l6 offset-m5 offset-s7">
+            <a class="ev-round btn-small z-depth-2 ev-shaded center"
+                id="unarchive" href="/events/unarchive/{{event.id}}" style="color:green">RESTORE</a>
+        </div>
+        
+        {% include 'events/draw_event_summary_wy.html' %}        
+        
+        {% endfor %}
+        <br />
+        <br />
+        <br />
+    </div>
+    <br />
+    <br />
+    <br />   
+    
+ 
+{% endblock %}
+
+{% block scripts %}
+    <!-- custom js for the home page -->
+    <script src="{% static 'js/events_home.js' %}"></script>
+{% endblock %}

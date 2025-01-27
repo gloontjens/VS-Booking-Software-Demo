@@ -1,0 +1,316 @@
+{% extends 'events/base-new.html' %}
+{% load static %}
+
+
+
+{% block content %}
+<input type="hidden" id="page_flag" value="rates">
+
+<div>
+    <h4>Rate Charts</h4>
+    <p>TO COPY RATE CHART:  &nbsp; Choose 'hours', 'types', or 'both' for column labels, then click/drag across
+        any rate ($) numbers to select portion or whole chart to copy to clipboard.  If it's easier,
+        you can also click "Typical", or a single column or row header.
+        Paste it into an email
+        with right-click->paste, or ctrl-v.<br />
+        <br />
+        You can edit any existing rate charts, delete them, or add a new one:
+    </p>
+        
+    <textarea hidden id="finaltext"> </textarea> 
+      
+    <div class="row">
+        <!-- <a href="/events/editratecharts/add">
+        <h6>Add New Rate Chart...</h6>
+        </a> -->
+        
+        <span style=""><button id="btn_add" type="button" name="btn_add"
+            onclick="window.location.href='../editratecharts/add'"
+            class="browser-default" style="margin-top:2px;">Add New Rate Chart..</button>
+        </span>
+        
+    </div>
+    
+     
+    {% for rate in rates %}
+        <div><p><br /></p></div>
+        <div class="ev-modal">
+            <h5 style="display:inline;">
+                   {{ rate.name }}
+            </h5>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <span style="position:absolute;"><button id="btn_edit" type="button" name="btn_edit"
+                onclick="window.location.href='../editratecharts/{{ rate.id }}'"
+                class="browser-default" style="margin-top:2px;">Edit...</button>
+
+            &nbsp;&nbsp;&nbsp;
+            <button id="btn_del" type="button" name="btn_del" chart_id="{{ rate.id }}"
+                class="browser-default btn-del" style="margin-top:2px;color:red;">Delete</button>
+            </span>
+            
+        </div>
+        <div class="ev-modal">
+            &nbsp;&nbsp;Show as: &nbsp;
+            <form style="display:inline;" action="#">
+            <label style="padding-right:2px;"><input id="radio-hour-{{rate.id}}" class="with-gap" name="radio_group" type="radio" />
+                <span style="padding-left:23px;">Hours</span>
+            </label>
+            <label><input id="radio-type-{{rate.id}}" class="with-gap" name="radio_group" type="radio" />
+                <span style="padding-left:23px;">Types</span>
+            </label>
+            <label><input id="radio-both-{{rate.id}}" class="with-gap" name="radio_group" type="radio" checked />
+                <span style="padding-left:23px;">Both</span>
+            </label>
+            </form>
+
+            <table class="select_table highlight">
+                <thead>
+                    <tr>
+                        <th>
+                            <a href="javascript:void(0);" id="label-both-{{rate.id}}-col0"
+                               onclick="processRates('{{ rate.name }}','1', '2', '1', '4', '5');"
+                               class="modal-close waves-effect waves-green ev-rates">
+                               Typical Chart<br />(qtet/2hrs)
+                            </a>
+                            <a href="javascript:void(0);" id="label-type-{{rate.id}}-col0"
+                               onclick="processRates('{{ rate.name }}','1', '2', '1', '4', '4');"
+                               class="modal-close waves-effect waves-green ev-rates noshow">
+                               Typical Chart<br />(qtet/2hrs)
+                            </a>
+                            <a href="javascript:void(0);" id="label-hour-{{rate.id}}-col0"
+                               onclick="processRates('{{ rate.name }}','1', '2', '1', '4', '3');"
+                               class="modal-close waves-effect waves-green ev-rates noshow">
+                               Typical Chart<br />(qtet/2hrs)
+                            </a>
+                        </th>
+                        <th>
+                            <a href="javascript:void(0);" id="label-both-{{rate.id}}-col1"
+                               onclick="processRates('{{ rate.name }}','1', '1', '1', '4', '5');"
+                               class="modal-close waves-effect waves-green ev-rates">
+                               Ceremony<br />(up to 1hr)
+                            </a>
+                            <a href="javascript:void(0);" id="label-type-{{rate.id}}-col1"
+                               onclick="processRates('{{ rate.name }}','1', '1', '1', '4', '4');"
+                               class="modal-close waves-effect waves-green ev-rates noshow">
+                               Ceremony
+                            </a>
+                            
+                            <a href="javascript:void(0);" id="label-hour-{{rate.id}}-col1"
+                               onclick="processRates('{{ rate.name }}','1', '1', '1', '4', '3');"
+                               class="modal-close waves-effect waves-green ev-rates noshow">
+                               1 Hour
+                            </a>
+                        </th>
+                        <th>
+                            <a href="javascript:void(0);" id="label-both-{{rate.id}}-col2"
+                               onclick="processRates('{{ rate.name }}','2', '2', '1', '4', '5');"
+                               class="modal-close waves-effect waves-green ev-rates">
+                               Ceremony and Cocktails<br />(up to 2hrs)
+                            </a>
+                            <a href="javascript:void(0);" id="label-type-{{rate.id}}-col2"
+                               onclick="processRates('{{ rate.name }}','2', '2', '1', '4', '4');"
+                               class="modal-close waves-effect waves-green ev-rates noshow">
+                               Ceremony and Cocktails
+                            </a>
+                            
+                            <a href="javascript:void(0);" id="label-hour-{{rate.id}}-col2"
+                               onclick="processRates('{{ rate.name }}','2', '2', '1', '4', '3');"
+                               class="modal-close waves-effect waves-green ev-rates noshow">
+                               2 Hours
+                            </a>
+                        </th>
+                        <th>
+                            <a href="javascript:void(0);" id="label-both-{{rate.id}}-col3"
+                               onclick="processRates('{{ rate.name }}','3', '3', '1', '4', '5');"
+                               class="modal-close waves-effect waves-green ev-rates">
+                               Ceremony, Cocktails and Dinner<br />(up to 3hrs)
+                            </a>
+                            <a href="javascript:void(0);" id="label-type-{{rate.id}}-col3"
+                               onclick="processRates('{{ rate.name }}','3', '3', '1', '4', '4');"
+                               class="modal-close waves-effect waves-green ev-rates noshow">
+                               Ceremony, Cocktails and Dinner
+                            </a>
+                            <a href="javascript:void(0);" id="label-hour-{{rate.id}}-col3"
+                               onclick="processRates('{{ rate.name }}','3', '3', '1', '4', '3');"
+                               class="modal-close waves-effect waves-green ev-rates noshow">
+                               3 Hours
+                            </a>
+                        </th>
+                        <th>
+                            <a href="javascript:void(0);" id="label-both-{{rate.id}}-col4"
+                               onclick="processRates('{{ rate.name }}','4', '4', '1', '4', '5');"
+                               class="modal-close waves-effect waves-green ev-rates">
+                               Full Event<br />(up to 4 hours)
+                            </a>
+                            <a href="javascript:void(0);" id="label-type-{{rate.id}}-col4"
+                               onclick="processRates('{{ rate.name }}','4', '4', '1', '4', '4');"
+                               class="modal-close waves-effect waves-green ev-rates noshow">
+                               Full Event
+                            </a>
+                            
+                            <a href="javascript:void(0);" id="label-hour-{{rate.id}}-col4"
+                               onclick="processRates('{{ rate.name }}','4', '4', '1', '4', '3');"
+                               class="modal-close waves-effect waves-green ev-rates noshow">
+                               4 Hours
+                            </a>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <a href="javascript:void(0);" id="label-both-{{rate.id}}-col5"
+                               onclick="processRates('{{ rate.name }}', '1', '4', '1', '1', '5');"
+                               class="modal-close waves-effect waves-green ev-rates">
+                               Solo
+                            </a>
+                            <a href="javascript:void(0);" id="label-type-{{rate.id}}-col5"
+                               onclick="processRates('{{ rate.name }}', '1', '4', '1', '1', '4');"
+                               class="modal-close waves-effect waves-green ev-rates noshow">
+                               Solo
+                            </a>
+                            <a href="javascript:void(0);" id="label-hour-{{rate.id}}-col5"
+                               onclick="processRates('{{ rate.name }}', '1', '4', '1', '1', '3');"
+                               class="modal-close waves-effect waves-green ev-rates noshow">
+                               Solo
+                            </a>
+                        </td>
+                        <td class="select_cell" data-name="{{rate.name}}" data-id="{{rate.id}}" data-hours="1" data-ensnum="1">
+                               {{ rate.solo }}
+                        </td>
+                        <td class="select_cell" data-name="{{rate.name}}" data-id="{{rate.id}}" data-hours="2" data-ensnum="1">
+                                {{ rate.two_solo }}
+                        </td>
+                        <td class="select_cell" data-name="{{rate.name}}" data-id="{{rate.id}}" data-hours="3" data-ensnum="1">
+                                {{ rate.three_solo }}
+                        </td>
+                        <td class="select_cell" data-name="{{rate.name}}" data-id="{{rate.id}}" data-hours="4" data-ensnum="1">
+                                {{ rate.four_solo }}
+                        </td>
+                    <tr>
+                    <tr>
+                        <td>
+                            <a href="javascript:void(0);" id="label-both-{{rate.id}}-col6"
+                               onclick="processRates('{{ rate.name }}', '1', '4', '2', '2', '5');"
+                               class="modal-close waves-effect waves-green ev-rates">
+                               Duo
+                            </a>
+                            <a href="javascript:void(0);" id="label-type-{{rate.id}}-col6"
+                               onclick="processRates('{{ rate.name }}', '1', '4', '2', '2', '4');"
+                               class="modal-close waves-effect waves-green ev-rates noshow">
+                               Duo
+                            </a>
+                            <a href="javascript:void(0);" id="label-hour-{{rate.id}}-col6"
+                               onclick="processRates('{{ rate.name }}', '1', '4', '2', '2', '3');"
+                               class="modal-close waves-effect waves-green ev-rates noshow">
+                               Duo
+                            </a>
+                        </td>
+                        <td class="select_cell" data-name="{{rate.name}}" data-id="{{rate.id}}" data-hours="1" data-ensnum="2">
+                               {{ rate.duo }}
+                        </td>
+                        <td class="select_cell" data-name="{{rate.name}}" data-id="{{rate.id}}" data-hours="2" data-ensnum="2">
+                                {{ rate.two_duo }}
+                        </td>
+                        <td class="select_cell" data-name="{{rate.name}}" data-id="{{rate.id}}" data-hours="3" data-ensnum="2">
+                                {{ rate.three_duo }}
+                        </td>
+                        <td class="select_cell" data-name="{{rate.name}}" data-id="{{rate.id}}" data-hours="4" data-ensnum="2">
+                                {{ rate.four_duo }}
+                        </td>
+                    <tr>
+                    <tr>
+                        <td>
+                            <a href="javascript:void(0);" id="label-both-{{rate.id}}-col7"
+                               onclick="processRates('{{ rate.name }}', '1', '4', '3', '3', '5');"
+                               class="modal-close waves-effect waves-green ev-rates">
+                               Trio
+                            </a>
+                            <a href="javascript:void(0);" id="label-type-{{rate.id}}-col7"
+                               onclick="processRates('{{ rate.name }}', '1', '4', '3', '3', '4');"
+                               class="modal-close waves-effect waves-green ev-rates noshow">
+                               Trio
+                            </a>
+                            <a href="javascript:void(0);" id="label-hour-{{rate.id}}-col7"
+                               onclick="processRates('{{ rate.name }}', '1', '4', '3', '3', '3');"
+                               class="modal-close waves-effect waves-green ev-rates noshow">
+                               Trio
+                            </a>
+                        </td>
+                        <td class="select_cell" data-name="{{rate.name}}" data-id="{{rate.id}}" data-hours="1" data-ensnum="3">
+                               {{ rate.trio }}
+                        </td>
+                        <td class="select_cell" data-name="{{rate.name}}" data-id="{{rate.id}}" data-hours="2" data-ensnum="3">
+                                {{ rate.two_trio }}
+                        </td>
+                        <td class="select_cell" data-name="{{rate.name}}" data-id="{{rate.id}}" data-hours="3" data-ensnum="3">
+                                {{ rate.three_trio }}
+                        </td>
+                        <td class="select_cell" data-name="{{rate.name}}" data-id="{{rate.id}}" data-hours="4" data-ensnum="3">
+                                {{ rate.four_trio }}
+                        </td>
+                    <tr>
+                    <tr>
+                        <td>
+                            <a href="javascript:void(0);" id="label-both-{{rate.id}}-col8"
+                               onclick="processRates('{{ rate.name }}', '1', '4', '4', '4', '5');"
+                               class="modal-close waves-effect waves-green ev-rates">
+                               Quartet
+                            </a>
+                            <a href="javascript:void(0);" id="label-type-{{rate.id}}-col8"
+                               onclick="processRates('{{ rate.name }}', '1', '4', '4', '4', '4');"
+                               class="modal-close waves-effect waves-green ev-rates noshow">
+                               Quartet
+                            </a>
+                            <a href="javascript:void(0);" id="label-hour-{{rate.id}}-col8"
+                               onclick="processRates('{{ rate.name }}', '1', '4', '4', '4', '3');"
+                               class="modal-close waves-effect waves-green ev-rates noshow">
+                               Quartet
+                            </a>
+                        </td>
+                        <td class="select_cell" data-name="{{rate.name}}" data-id="{{rate.id}}" data-hours="1" data-ensnum="4">
+                               {{ rate.quartet }}
+                        </td>
+                        <td class="select_cell" data-name="{{rate.name}}" data-id="{{rate.id}}" data-hours="2" data-ensnum="4">
+                                {{ rate.two_quartet }}
+                        </td>
+                        <td class="select_cell" data-name="{{rate.name}}" data-id="{{rate.id}}" data-hours="3" data-ensnum="4">
+                                {{ rate.three_quartet }}
+                        </td>
+                        <td class="select_cell" data-name="{{rate.name}}" data-id="{{rate.id}}" data-hours="4" data-ensnum="4">
+                                {{ rate.four_quartet }}
+                        </td>
+                    <tr>
+                    <tr>
+                        <td>Musician Pay</td>
+                        <td>{{ rate.musician }}</td>
+                        <td>{{ rate.two_musician }}</td>
+                        <td>{{ rate.three_musician }}</td>
+                        <td>{{ rate.four_musician }}</td>
+                    <tr>
+                        <tr style="color:#888888 !important;">
+                            <td>Contracting</td>
+                            <td>{{ rate.cont_1s|default:"?" }}-{{ rate.cont_1d|default:"?"}}-{{ rate.cont_1t|default:"?" }}-{{ rate.cont_1q|default:"?"}}</td>
+                            <td>{{ rate.cont_2s|default:"?" }}-{{ rate.cont_2d|default:"?"}}-{{ rate.cont_2t|default:"?" }}-{{ rate.cont_2q|default:"?"}}</td>
+                            <td>{{ rate.cont_3s|default:"?" }}-{{ rate.cont_3d|default:"?"}}-{{ rate.cont_3t|default:"?" }}-{{ rate.cont_3q|default:"?"}}</td>
+                            <td>{{ rate.cont_4s|default:"?" }}-{{ rate.cont_4d|default:"?"}}-{{ rate.cont_4t|default:"?" }}-{{ rate.cont_4q|default:"?"}}</td>
+                        <tr>
+                </tbody>
+            </table>
+        </div>
+    {% endfor %}
+    <br />
+    <br />
+    <br />
+</div>
+
+
+{% endblock %}
+
+
+{% block scripts %}
+    <!-- custom js for the home page -->
+    <script src="{% static 'js/events_home.js' %}"></script>
+{% endblock %}
+
+

@@ -1,0 +1,31 @@
+
+/* If the screen size is 600px wide or less, set the font-size small */
+@media only screen and (max-width: 600px) {
+    body {
+        font-size: 13.5px !important;
+    }
+}
+/* If the screen size is medium, set the font-size med */
+@media only screen and (min-width: 601px) and (max-width: 992px) {
+    body {
+        font-size: 13.5px !important;
+    }
+}
+/* If the screen size is large, set the font-size normal */
+@media only screen and (min-width: 993px) and (max-width: 1200px) {
+    body {
+        font-size: 14px !important;
+    }
+}
+/* If the screen size is x-large, set the font-size large */
+@media only screen and (min-width: 1201px) and (max-width: 1400px) {
+    body {
+        font-size: 14.5px !important;
+    }
+}
+/* If the screen size is xx-large, set the font-size large */
+@media only screen and (min-width: 1401px) {
+    body {
+        font-size: 24px !important;
+    }
+}

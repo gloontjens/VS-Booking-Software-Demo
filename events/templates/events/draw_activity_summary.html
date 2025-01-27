@@ -1,0 +1,73 @@
+{% load humanize %}
+
+{% if activity.0 == 'not' %}
+        <div class="row" style="margin-top: -7px;">
+            <a href="/events/{{ activity.3 }}/edit" style="color: inherit">
+            <div class="col s12 m10 offset-m1 evx-roundedonly z-depth-1 evx-panelbackgroundlight" id="ev-pad-right">
+                <table class="homepagetable" style="border:none !important;">
+                    <col width="37.5%">
+                    <col width="62.5%">
+                    <tr style="">
+                        <td class="center" style="vertical-align:top;">
+                            <span class="evx-main-subline-extra evx-rounded-only-extra evx-panelbackground-subline">
+                                <span class="evx-tiny">
+                                    {{ activity.1|date:"M j, 'y" }}:&nbsp;&nbsp;
+                                </span>
+                                <span class="evx-tinyevent">
+                                    {% if '[HD]' in activity.2 %}
+                                        <b>[HOLD]{{ activity.2|cut:'[HD]'}}</b>
+                                    {% else %}
+                                        <b>{{ activity.2 }}</b>
+                                    {% endif %}
+                                </span>
+                            </span>
+                        </td>    
+                        <td>
+                            {% for act in activity.4 %} 
+                                <span class="evx-indent-second">
+                                    <b>{{ act.0|naturalday:'n/j'|title }}</b>: {{ act.1 }}
+                                </span><br />
+                            {% endfor %}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            </a>
+        </div>
+{% else %}
+        <div class="row" style="margin-top: -7px;">
+            <a href="/events/{{ activity.3 }}/edit" style="color: inherit">
+            <div class="col s12 m10 offset-m1 evx-roundedonly z-depth-1 evx-panelbackgroundlight" id="ev-pad-right">
+                <table class="homepagetable" style="border:none !important;">
+                    <col width="37.5%">
+                    <col width="62.5%">
+                    <tr style="">
+                        <td class="center" style="vertical-align:top;">
+                            <span class="evx-main-subline-extra evx-rounded-only-extra evx-panelbackgroundold-subline">
+                                {% if activity.0 == 'arch' or activity.0 == 'pastarch' %}<span class="tinyold"><b>[ARCHIVED] </b></span>{% endif %}
+                                <span class="evx-tinyold">
+                                    {{ activity.1|date:"M j, 'Y" }}:&nbsp;&nbsp;
+                                <span>
+                                </span class="evx-tinyeventold">
+                                    {% if '[HD]' in activity.2 %}
+                                        <b>[HOLD]{{ activity.2|cut:'[HD]'}}</b>
+                                    {% else %}
+                                        <b>{{ activity.2 }}</b>
+                                    {% endif %}
+                                </span>
+                            </span>
+                        </td>    
+                        <td>
+                            {% for act in activity.4 %} 
+                                <span class="evx-indent-second">
+                                    <b>{{ act.0|naturalday:'n/j'|title }}</b>: {{ act.1 }}
+                                </span><br />
+                            {% endfor %}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            </a>
+        </div>
+{% endif %}
+

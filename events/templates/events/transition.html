@@ -1,0 +1,230 @@
+{% extends 'events/base-new.html' %}
+{% load static %}
+{% load humanize %}
+{% load widget_tweaks %}
+
+{% block content %}
+<input type="hidden" id="page_flag" value="esigs">
+
+
+<div class = "container">
+    
+    <form method='POST' action='' enctype = "multipart/form-data" id="transition-form">{% csrf_token %}
+
+        <h4>Transition Page</h4>
+        <p>
+            Enter everything you know, especially check the defaults.<br />
+            When done, click the SAVE button!<br />
+        </p>
+        
+        <div class="row">
+            <div class="col s6">
+            
+                <div class="input-field">
+                    {{ form.event|add_class:"browser-default" }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s3">
+                <div class="input-field ev-reallyshortline">
+                    <label for="{{ form.did_sign.auto_id }}" class="ev-reallyshortline">
+                        <input type="checkbox" class="filled-in" name="{{ form.did_sign.name }}"
+                                {% if form.did_sign.value %}checked{% endif %}  
+                                id="{{ form.did_sign.auto_id }}" />
+                        <span style="color:black;padding-left:28px;">{{ form.did_sign.label }}</span>
+                    </label>
+                </div>
+            </div>
+            <div class="col s3">
+                <div class="input-field ev-reallyshortline">
+                    <input style="font-size:20px !important;" type="text" name="{{ form.signature_date.name }}"
+                         id="{{form.signature_date.auto_id}}" class="ev-reallyshortline">
+                    {{ form.signature_date.label_tag }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s3">
+                <div class="input-field ev-reallyshortline">
+                    <label for="{{ form.paid_deposit.auto_id }}" class="ev-reallyshortline">
+                        <input type="checkbox" class="filled-in" name="{{ form.paid_deposit.name }}"
+                                {% if form.paid_deposit.value %}checked{% endif %}  
+                                id="{{ form.paid_deposit.auto_id }}" />
+                        <span style="color:black;padding-left:28px;">{{ form.paid_deposit.label }}</span>
+                    </label>
+                </div>
+            </div>
+            <div class="col s3">
+                <div class="input-field ev-reallyshortline">
+                    <input style="font-size:20px !important;" type="text" name="{{ form.paid_deposit_date.name }}"
+                            id="{{form.paid_deposit_date.auto_id}}" class="ev-reallyshortline">
+                    {{ form.paid_deposit_date.label_tag }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s3">
+                <div class="input-field ev-reallyshortline">
+                    <label for="{{ form.paid_final.auto_id }}" class="ev-reallyshortline">
+                        <input type="checkbox" class="filled-in" name="{{ form.paid_final.name }}"
+                                {% if form.paid_final.value %}checked{% endif %}  
+                                id="{{ form.paid_final.auto_id }}" />
+                        <span style="color:black;padding-left:28px;">{{ form.paid_final.label }}</span>
+                    </label>
+                </div>
+            </div>
+            <div class="col s3">
+                <div class="input-field ev-reallyshortline">
+                    <input style="font-size:20px !important;" type="text" name="{{ form.paid_final_date.name }}"
+                            id="{{form.paid_final_date.auto_id}}">
+                    {{ form.paid_final_date.label_tag }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s3">
+                <div class="input-field ev-reallyshortline">
+                    <label for="{{ form.paid_total.auto_id }}" class="ev-reallyshortline">
+                        <input type="checkbox" class="filled-in" name="{{ form.paid_total.name }}"
+                                {% if form.paid_total.value %}checked{% endif %}  
+                                id="{{ form.paid_total.auto_id }}" />
+                        <span style="color:black;padding-left:28px;">{{ form.paid_total.label }}</span>
+                    </label>
+                </div>
+            </div>
+            <div class="col s3">
+                <div class="input-field ev-reallyshortline">
+                    <input style="font-size:20px !important;" type="text" name="{{ form.paid_total_date.name }}" 
+                            id="{{form.paid_total_date.auto_id}}">
+                    {{ form.paid_total_date.label_tag }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s3">
+                <div class="input-field ev-reallyshortline">
+                    <label for="{{ form.paid_extra.auto_id }}" class="ev-reallyshortline">
+                        <input type="checkbox" class="filled-in" name="{{ form.paid_extra.name }}"
+                                {% if form.paid_extra.value %}checked{% endif %}  
+                                id="{{ form.paid_extra.auto_id }}" />
+                        <span style="color:black;padding-left:28px;">{{ form.paid_extra.label }}</span>
+                    </label>
+                </div>
+            </div>
+            <div class="col s3">
+                <div class="input-field ev-reallyshortline">
+                    <input style="font-size:20px !important;" type="text" name="{{ form.paid_extra_date.name }}" 
+                            id="{{form.paid_extra_date.auto_id}}">
+                    {{ form.paid_extra_date.label_tag }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s3">
+                <div class="input-field ev-reallyshortline">
+                    <label for="{{ form.did_music_list.auto_id }}" class="ev-reallyshortline">
+                        <input type="checkbox" class="filled-in" name="{{ form.did_music_list.name }}"
+                                {% if form.did_music_list.value %}checked{% endif %}  
+                                id="{{ form.did_music_list.auto_id }}" />
+                        <span style="color:black;padding-left:28px;">{{ form.did_music_list.label }}</span>
+                    </label>
+                </div>
+            </div>
+            <div class="col s3">
+                <div class="input-field ev-reallyshortline">
+                    <input style="font-size:20px !important;" type="text" name="{{ form.music_list_date.name }}" 
+                            id="{{form.music_list_date.auto_id}}">
+                    {{ form.music_list_date.label_tag }}
+                </div>
+            </div>    
+        </div>
+        <div class="row">
+            <div class="col s3">
+                <div class="input-field ev-reallyshortline">
+                    <label for="{{ form.did_verify_info.auto_id }}" class="ev-reallyshortline">
+                        <input type="checkbox" class="filled-in" name="{{ form.did_verify_info.name }}"
+                                {% if form.did_verify_info.value %}checked{% endif %}  
+                                id="{{ form.did_verify_info.auto_id }}" />
+                        <span style="color:black;padding-left:28px;">{{ form.did_verify_info.label }}</span>
+                    </label>
+                </div>
+            </div>
+            <div class="col s3">
+                <div class="input-field ev-reallyshortline">
+                    <input style="font-size:20px !important;" type="text" name="{{ form.verify_info_date.name }}" 
+                            id="{{form.verify_info_date.auto_id}}">
+                    {{ form.verify_info_date.label_tag }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s2">
+                <div class="input-field ev-reallyshortline">
+                    <label for="{{ form.started.auto_id }}" class="ev-reallyshortline">
+                        <input type="checkbox" class="filled-in" name="{{ form.started.name }}"
+                                {% if form.started.value %}checked{% endif %}  
+                                id="{{ form.started.auto_id }}" />
+                        <span style="color:black;padding-left:28px;">{{ form.started.label }}</span>
+                    </label>
+                </div>
+            </div>
+            <div class="col s2">
+                <div class="input-field ev-reallyshortline">
+                    <label for="{{ form.transition.auto_id }}" class="ev-reallyshortline">
+                        <input type="checkbox" class="filled-in" name="{{ form.transition.name }}"
+                                {% if form.transition.value %}checked{% endif %}  
+                                id="{{ form.transition.auto_id }}" />
+                        <span style="color:black;padding-left:28px;">{{ form.transition.label }}</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="noshow input-field ev-reallyshortline">
+            <label for="{{ form.paid_online.auto_id }}" class="ev-reallyshortline">
+                <input type="checkbox" class="filled-in" name="{{ form.paid_online.name }}"
+                        {% if form.paid_online.value %}checked{% endif %}  
+                        id="{{ form.paid_online.auto_id }}" />
+                <span style="color:black;padding-left:28px;">{{ form.paid_online.label }}</span>
+            </label>
+        </div>
+        <br />
+        <div class="noshow input-field ev-reallyshortline">
+            <label for="{{ form.paid_final_online.auto_id }}" class="ev-reallyshortline">
+                <input type="checkbox" class="filled-in" name="{{ form.paid_final_online.name }}"
+                        {% if form.paid_final_online.value %}checked{% endif %}  
+                        id="{{ form.paid_final_online.auto_id }}" />
+                <span style="color:black;padding-left:28px;">{{ form.paid_final_online.label }}</span>
+            </label>
+        </div>
+        <br />
+        <div class="noshow input-field ev-reallyshortline">
+            <label for="{{ form.paid_extra_online.auto_id }}" class="ev-reallyshortline">
+                <input type="checkbox" class="filled-in" name="{{ form.paid_extra_online.name }}"
+                        {% if form.paid_extra_online.value %}checked{% endif %}  
+                        id="{{ form.paid_extra_online.auto_id }}" />
+                <span style="color:black;padding-left:28px;">{{ form.paid_extra_online.label }}</span>
+            </label>
+        </div>
+
+
+            
+        <button id="submitbtn_transition" type="submit" name="_submit"
+                class="btn btn-large z-depth-3 right">SAVE</button>
+        <br /><br />
+        
+    </form>
+    
+    <br /><br />
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+    <!-- custom js for the home page -->
+    <script src="{% static 'js/events_home.js' %}"></script>
+{% endblock %}

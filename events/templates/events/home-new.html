@@ -1,0 +1,155 @@
+{% extends 'events/base-new.html' %}
+{% load static %}
+{% load humanize %}
+
+
+{% block content %}
+    <input type="hidden" id="page_flag" value="home">
+    
+    <br /><br />
+    
+    <!-- <ul class="collapsible">
+        <li class="active">
+            <div class="collapsible-header evx-home-collapse">
+                <h6>Upcoming Events:</h6><br />
+            </div>
+            <div class="collapsible-body" style="padding-left:2%;padding-right:2%;">
+                {% for event in soonevents %}
+                
+                {% include 'events/draw_event_summary.html' %}
+                
+                {% endfor %}
+            </div>
+        </li>
+    </ul> -->
+
+
+    <div>
+        <h6>Upcoming Events &nbsp;<span class="badge">{{ soonevents.count }}</span></h6><br />
+    </div>
+    <div>
+        {% for event in soonevents %}
+        
+        {% include 'events/draw_event_summary.html' %}
+        
+        {% endfor %}
+    </div>
+
+
+
+
+    <div style="line-height: 3px;">&nbsp;<br /></div>
+    
+    
+    
+    <ul class="collapsible">
+        <li class="{% if home_booking_show %}active{% endif %}">
+            <div id="toggle_home_booking" class="collapsible-header evx-home-collapse">
+                <h6>Hiring To-do's &nbsp;<span class="badge">{{ pastduereminder.count }}</span>&nbsp;&nbsp;</h6>
+            </div>
+            <div class="collapsible-body" style="padding-left:2%;padding-right:2%;">
+                {% for reminder in pastduereminder %}
+                
+                {% include 'events/draw_booking_summary.html' %}
+                
+                {% endfor %}
+            </div>
+        </li>
+    </ul>
+
+
+
+
+
+
+
+    <div style="line-height: 3px;">&nbsp;<br /></div>
+    
+    
+    
+    <ul class="collapsible">
+        <li class="{% if home_todo_show %}active{% endif %}">
+            <div id="toggle_home_todo" class="collapsible-header evx-home-collapse">
+                <h6>To-do's &nbsp;<span class="badge">{{ nonautoremcount }}</span>&nbsp;&nbsp;</h6>
+                <span id="dummyfocus" style="display:inline-block;margin-top:9px;">               
+                <button type="button" id="include_auto_reminders" class="auto-button {% if sidestate.6 %}auto-pressed{% endif %}">SHOW AUTO</button>
+                </span>       
+            </div>
+            <div class="collapsible-body" style="padding-left:2%;padding-right:2%;">
+                {% for reminder in soonreminder %}
+                
+                {% include 'events/draw_reminder_summary.html' %}
+                
+                {% endfor %}
+            </div>
+        </li>
+    </ul>
+
+
+
+    <div style="line-height: 3px;">&nbsp;<br /></div>
+    
+    <ul class="collapsible">
+        <li class="{% if home_payment_show %}active{% endif %}">
+            <div id="toggle_home_payment" class="collapsible-header evx-home-collapse">
+                <h6>Payments: &nbsp;<span class="badge">{{ pays.count|add:pays_pd.count }}</span></h6><br />
+            </div>
+            <div class="collapsible-body" style="padding-left:2%;padding-right:2%;">
+                {% for payment in pays_pd %}
+                    {% include 'events/draw_payments_due_summary.html' %}
+                {% endfor %}
+                
+                {% for payment in pays %}
+                    
+                    {% include 'events/draw_payments_due_summary.html' %}
+                
+                {% endfor %}
+            </div>
+        </li>
+    </ul>
+
+
+
+    
+    <div style="line-height: 3px;">&nbsp;<br /></div>
+    
+    <ul class="collapsible" style="">
+        <li class="{% if home_history_show %}active{% endif %}">
+            <div id="toggle_home_history" class="collapsible-header evx-home-collapse">
+                <h6>Recent History: &nbsp;<span class="badge">{{ recentactivities|length }}</span></h6><br />
+            </div>
+            <div class="collapsible-body" style="padding-left:2%;padding-right:2%;">
+                {% for activity in recentactivities %}
+                
+                {% include 'events/draw_activity_summary.html' %}
+                
+                {% endfor %}
+            </div>
+        </li>
+    </ul>
+
+
+
+
+    <!-- <br />
+    {% if newevents %}
+    <h5>Recently-added Events:</h5><br />
+    {% else %}
+    <h5>No new events entered in the last 2 weeks.</h5><br />
+    {% endif %}
+    <div class="container" style="width:95% !important;">
+        {% for event in newevents %}
+        
+        {% include 'events/draw_event_summary.html' %}
+        
+        {% endfor %}
+    </div> -->
+    <br /><br />
+    
+ 
+{% endblock %}
+
+{% block scripts %}
+    <!-- custom js for the home page -->
+    <script src="{% static 'js/events_home.js' %}"></script>
+{% endblock %}

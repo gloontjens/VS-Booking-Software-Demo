@@ -1,0 +1,67 @@
+{% extends 'events/base-new.html' %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load static %}
+
+
+{% block content %}
+     
+    <input type="hidden" id="page_flag" value="email">
+    
+    <br />
+    <h5>Edit and then click "Save":</h5><br /><br />
+    
+    <div class="container" style="width:auto">
+
+    <form method="POST" class="" autocomplete="off">
+        {% csrf_token %}
+        
+        <div style="display:none">{{ form.name }}</div>
+        <div style="display:none">{{ form.name.value }}</div>
+        <div style="display:none">{{ from.order }}</div>
+        <div style="display:none">{{ form.description }}</div>
+        
+        <div class="blue-text"><h5>{{ form.description.value }}</h5></div>
+        <br />
+        
+        
+        <div class="input-field ev-shortline">
+            <i class="material-icons prefix">subject</i>
+            {{ form.subject|add_class:"validate" }}
+            {{ form.subject.label_tag }}
+            <div class="error-text">{{ form.subject.errors }}</div>
+            <span class="helper-text">{{ form.subject.help_text }}</span>
+        </div>
+
+        {{ form.body }}
+        
+        {% if form.pdf.value != 'x' %}
+            <br /><br />
+            <h5>This is the pdf attachment:</h5><br />
+            <div>{{ form.pdf }}</div>    
+        {% else %}
+            <div hidden>{{ form.pdf }}</div>
+        {% endif %}
+        
+        <button id="submitbtn" type="submit" name="_submit"
+                class="btn fixed-action-btn2 btn-large ev-submitbtn z-depth-5 ev-col4">SAVE</button>
+    
+    </form>
+
+    {% include 'events/dict_key.html' %}
+    
+    
+    </div>
+    
+ 
+
+
+
+
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/events_popups.js' %}"></script>
+    <script src="{% static 'js/events_home.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends 'events/base-new.html' %}
+{% load static %}
+
+
+
+{% block content %}
+<input type="hidden" id="page_flag" value="esigs">
+
+
+<div>
+    <h4>Signatures</h4>
+    <p>
+        You can edit any existing signatures, delete them, or add a new one:
+    </p>
+        
+    
+    <div class="row">
+        <span style=""><button id="btn_addsig" type="button" name="btn_addsig"
+            onclick="window.location.href='../editesig/add'"
+            class="browser-default" style="margin-top:2px;">Add New Signature..</button>
+        </span>
+    </div>
+    
+    <div class="row">
+        {% for esig in esigs %}
+            <div class="col s12 l8 offset-l2">
+                <div class="card horizontal" style="overflow:auto;">
+                  <div class="">
+                    <div class="card-content black-text">
+                        <span style="display:inline;" class="card-title">{{ esig.name }}</span>
+                        <span style="display:inline;position:absolute;">
+                            {% if esig.default %}&nbsp;&nbsp;(default){% endif %}
+                            {% if esig.default_alt %}&nbsp;&nbsp;(default alt){% endif %}
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <button id="btn_edit" type="button" name="btn_edit"
+                                onclick="window.location.href='../editesig/{{ esig.id }}'"
+                                class="browser-default" style="margin-top:4px;">Edit...</button>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <button id="btn_delsig" type="button" name="btn_delsig" chart_id="{{ esig.id }}"
+                                    class="browser-default btn-delsig" style="margin-top:4px;color:red;">Delete</button>
+                        </span>
+                        <div class="white specialtable" style="">
+                            {{ esig.sig|safe }}
+                        </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <div class="col l2 show-on-large hide-on-med-and-down"></div>
+
+
+
+        {% endfor %}
+    </div>
+     
+    <br />
+    <br />
+    <br />
+
+</div>
+
+
+{% endblock %}
+
+
+{% block scripts %}
+    <!-- custom js for the home page -->
+    <script src="{% static 'js/events_home.js' %}"></script>
+{% endblock %}
+
+

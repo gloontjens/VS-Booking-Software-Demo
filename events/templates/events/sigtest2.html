@@ -1,0 +1,13 @@
+{% load static %}
+
+<div id="signature"></div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    
+<!-- you load jquery somewhere before jSignature ... -->
+<script src="{%  static 'js/jSignature.min.js' %}"></script>
+<script>
+    $(document).ready(function() {
+        $("#signature").jSignature()
+    })
+</script>

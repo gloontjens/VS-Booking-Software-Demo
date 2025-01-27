@@ -1,0 +1,79 @@
+{% extends 'events/base2.html' %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load static %}
+
+
+{% block content %}
+
+    <input type="hidden" id="page_flag" value="email">
+    <br />
+    <input type="hidden" id="formname" value="{{ formname }}">
+    
+    {% if warning %}
+    <h5 style="color:red;">
+        {{warning}}
+    </h5>
+    {% endif %}
+    
+    <h5>Please edit your email below:</h5><br />
+
+    <form method="POST" class="" autocomplete="off">
+        {% csrf_token %}
+        
+        <div class="input-field ev-lessshortline">
+            <i class="material-icons prefix">email</i>
+            {{ form.addr|add_class:"validate" }}
+            {{ form.addr.label_tag }}
+            <div class="error-text">{{ form.addr.errors }}</div>
+            <span class="helper-text">{{ form.addr.help_text }}</span>
+        </div> 
+        <div class="input-field ev-lessshortline">
+            <i class="material-icons prefix">subject</i>
+            {{ form.subject|add_class:"validate" }}
+            {{ form.subject.label_tag }}
+            <div class="error-text">{{ form.subject.errors }}</div>
+            <span class="helper-text">{{ form.subject.help_text }}</span>
+        </div>
+
+        
+        {{ form.body }}
+
+        
+        <button id="sigs" type="button" name="sigs" class="btn-small z-depth-1">SIGNATURE...</button>
+        <br />
+        <button id="submitbtn" type="submit" name="_submit"
+                class="btn fixed-action-btn2 btn-large ev-submitbtn z-depth-5 ev-col4">SEND</button>
+    
+        <div hidden>{{ form.pdf }}</div>
+        
+        <div id="sig_panel" class="noshow">
+        {% for esig in esigs %}
+            <div style="" class="">
+                <a href="#" class="click_sig" sig_html="{{esig.sig}}">
+                    {{ esig.name }}
+                </a>
+                {% if esig.default %} (default){% endif %}
+                {% if esig.default_alt %} (default alt){% endif %}
+            </div>
+        {% endfor %}
+            <div style="" class="">
+                <a href="#" class="click_sig" sig_html="">
+                    [ None ]
+                </a>
+            </div>
+        </div>
+    
+        <br /><br />
+    </form>
+    <!-- {% include 'events/dict_key.html' %} -->
+
+    <script>
+    
+    </script>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/events_popups.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+{% extends 'events/base4.html' %}
+{% load static %}
+{% load selectable_tags %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+    
+{% block content %}
+<form method = 'POST' action= ''  id="test-form" enctype = "multipart/form-data" novalidate>
+{% csrf_token %}
+
+
+{% if mode != 'confirmation' %}
+<div style="padding-left:0px;padding-right:0px;margin-left:-20px;margin-right:-20px;">
+    <br /><br />
+    <input id="goto_home" type="submit" name="goto_home" class="linkish no-print" value="The Vanderbilt Strings">
+    <!-- <h4 class="mytitle">The Vanderbilt Strings</h4> -->
+    <br />
+</div>
+{% else %}
+<div style="padding-left:0px;padding-right:0px;margin-left:-20px;margin-right:-20px;">
+    <br /><br />
+    <div class="mytitle no-print">The Vanderbilt Strings</div>
+    <!-- <br /> -->
+</div>
+{% endif %}
+<div class="mysignout">
+    {% if mode != 'confirmation' %}
+    <button id="goto_signout" type="submit" name="goto_signout"
+            class="btn mysmbtn no-print">Sign Out
+    </button>
+    {% endif %}
+    <div class="show-on-medium-and-down hide-on-large-only"><br /></div>
+</div>
+
+
+<div class="col s12 center">
+    {% if mode == 'confirmation' %}
+        <h5 class="mycol-indextext myindex">Final Event Details</h5><br />
+    {% else %}
+        <h5 class="mycol-indextext myindex">Final Event Details</h5><br />
+    {% endif %}
+</div>
+
+<button class="btn-floating mybtn-floating btn-large no-print" type="submit" name="goto_questions">
+  <i class="material-icons large myicon-floating">email</i>
+  </button>
+<button class="btn-floating mybtn-floatingb btn-large tooltipped no-print" data-position="left" data-tooltip="Contact Us" type="submit" name="goto_questions">      
+  <i class="material-icons large myicon-floatingb">edit</i>
+  </button>
+
+
+<br /><br />
+<div style="color: black">
+{% if error %}<a href="/events/client_home/{{event.id}}/">Click here to login please!</a>{% else %}
+
+
+
+
+    <div class="row">
+        <div class="col s12 center">
+            <div class="card mycol-panelplain">
+                <div class="">
+                    <br />
+                    <!-- <span class="card-title cyan-text text-lighten-4"><h5><u>Event Details</u></h5></span> -->
+                    <p>
+                      <span class="mycol-subtext mysize-norm">Below are the final event details, as confirmed.<br /></span>
+                        <span class="mycol-subtext mysize-norm">If anything has changed, let us know!<br /></span>
+                        {% if mode != 'confirmation' %}
+                        <!-- <br /><span class="cyan-text text-lighten-4">Click the Home button to return to your client home.</span> -->
+                        {% endif %}
+                      
+                    </p>
+    
+                    <div class="col s12 no-print">&nbsp;</div>
+                    <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+                    <div class="col s12 l6 left-align">
+                        <label class="mycol-subtext">
+                            <input disabled checked type="checkbox" id="date" name="date" class="mycol-subtext">
+                            <span><b>Event Date:</b> &nbsp;{{event.date}}</span>
+                        </label>
+                    </div>
+                    <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+                    
+                    <div class="col s12 no-print">&nbsp;</div>
+                    <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+                    <div class="col s12 l6 left-align">
+                        <label class="mycol-subtext">
+                            <input disabled checked type="checkbox" id="time" name="time" class="mycol-subtext">
+                            <span><b>Contracted Time:</b> &nbsp;{{event.start_time}} - {{event.end_time}}</span>
+                        </label>
+                    </div>
+                    <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+
+
+                    <div class="col s12 no-print">&nbsp;</div>
+                    <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+                    <div class="col s12 l6 left-align">
+                        <label class="mycol-subtext">
+                            <input disabled checked type="checkbox" id="set_time" name="set_time" class="mycol-subtext">
+                            <span><b>Musician Set Time:</b> &nbsp;{{settime}}</span>
+                        </label>
+                    </div>
+                    <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+
+
+
+                    
+                    {% if event.ceremony_time %}
+                    <div class="col s12 no-print">&nbsp;</div>
+                    <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+                    <div class="col s12 l6 left-align">
+                        <label class="mycol-subtext">
+                            <input disabled checked type="checkbox" id="ceremony_time" name="ceremony_time" class="mycol-subtext">
+                            <span><b>Ceremony Time:</b> &nbsp;{{event.ceremony_time}}</span>
+                        </label>
+                    </div>
+                    <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+                    {% endif %}
+
+                    <div class="col s12 no-print">&nbsp;</div>
+                    <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+                    <div class="col s12 l6 left-align">
+                        <label class="mycol-subtext">
+                            <input disabled checked type="checkbox" id="ensemble" name="ensemble" class="mycol-subtext">
+                            <span><b>Ensemble:</b> &nbsp;{{event.ensemble_name}} ({{event.ensemble_number}} musicians)</span>
+                        </label>
+                    </div>
+                    <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+
+                    <div class="col s12 no-print">&nbsp;</div>
+                    <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+                    <div class="col s12 l6 left-align">
+                        <label class="mycol-subtext">
+                            <input disabled checked type="checkbox" id="event_type" name="event_type" class="mycol-subtext">
+                            <span><b>Event Type:</b> &nbsp;{{event.event_type_name}}</span>
+                        </label>
+                    </div>
+                    <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+
+                    {% if event.location %}
+                    <div class="col s12 no-print">&nbsp;</div>
+                    <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+                    <div class="col s12 l6 left-align">
+                        <label class="mycol-subtext">
+                            <input disabled checked type="checkbox" id="location" name="location" class="mycol-subtext">
+                            <span><b>Location:</b> &nbsp;{{event.location.name}}, {{event.location.address}}, {{event.location_details}}</span>
+                        </label>
+                    </div>
+                    <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+                    {% else %}
+                    <div class="col s12 no-print">&nbsp;</div>
+                    <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+                    <div class="col s12 l6 left-align">
+                        <label class="mycol-subtext">
+                            <input disabled checked type="checkbox" id="location" name="location" class="mycol-subtext">
+                            <span><b>Location:</b> &nbsp;{{event.location_name}}, {{event.location_address}}, {{event.location_details}}</span>
+                        </label>
+                    </div>
+                    <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+                    {% endif %}
+                    
+                    
+                    {% if doc_alone %}
+                    <div class="col s12 no-print">&nbsp;</div>
+                    <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+                    <div class="col s12 l6 left-align">
+                        <label class="mycol-subtext">
+                            <input disabled checked type="checkbox" id="dayofcontact" name="dayofcontact" class="mycol-subtext">
+                            <span><b>Day-of Contact:</b> &nbsp;
+                            {% if doc_name %}
+                                {{doc_name}}
+                            {% endif %}
+                            -  
+                            {% if doc_phone %}
+                                {{doc_phone}}
+                            {% endif %}
+                            </span>
+                        </label>
+                    </div>
+                    <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+                    {% else %}
+                    <div class="col s12 no-print">&nbsp;</div>
+                    <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+                    <div class="col s12 l6 left-align">
+                        <label class="mycol-subtext">
+                            <input disabled checked type="checkbox" id="dayofcontact" name="dayofcontact" class="mycol-subtext">
+                            <span><b>Planner:</b> &nbsp;
+                            {% if doc_name %}
+                                {{doc_name}}
+                            {% endif %}
+                            -  
+                            {% if doc_email %}
+                                {{doc_email}}
+                            {% endif %}
+                            </span>
+                        </label>
+                    </div>
+                    <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+                    {% endif %}
+                    
+                    <div class="col s12 no-print">&nbsp;</div>
+                    <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+                    <div class="col s12 l6 left-align">
+                        <label class="mycol-subtext">
+                            <input disabled checked type="checkbox" id="reminder" name="reminder" class="mycol-subtext">
+                                <span><b>Chairs needed:</b> <u>{{event.ensemble_number}}</u >
+                                     armless chairs for the musicians.  Please let your planner or venue know.</span>
+                        </label>
+                    </div>
+                    <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+                    
+                      
+                    <div class="col s12 no-print">&nbsp;</div>
+                    <!-- <div class="col s12">&nbsp;</div> -->
+
+                        <button onclick="window.print();return false;" type="button" class="btn btn-large grey lighten-5 no-print" style="margin-top:2px;">
+                            <i class="material-icons grey-text">print</i>
+                        </button>
+                        &nbsp;&nbsp;&nbsp;&nbsp;               
+                        <!-- <button id="goto_questions" type="submit" name="goto_questions"
+                            class="btn btn-large ev-submitbtn z-depth-2 ev-col12" style="text-transform:capitalize;">Contact Us</button> -->
+                        {% if mode != 'confirmation' %}
+                        <button id="goto_home" type="submit" name="goto_home"
+                            class="btn btn-large ev-submitbtn z-depth-2 mybtn-submit no-print">
+                            <i class="material-icons left mycol-maintext">home</i>HOME</button>
+                        {% endif %}
+                        <div class="row no-print"><br /><br /></div>
+              
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endif %}
+</div>
+</form>
+
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/events_clients.js' %}"></script>
+<script src="{%  static 'js/jSignature.min.js' %}"></script>    
+{% endblock %}
+

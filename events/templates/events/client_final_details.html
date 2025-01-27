@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+{% extends 'events/base4.html' %}
+{% load static %}
+{% load selectable_tags %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+    
+{% block content %}
+<form method = 'POST' action= ''  id="test-form" enctype = "multipart/form-data" novalidate>
+{% csrf_token %}
+
+{% if mode != 'confirmation' %}
+<div style="padding-left:0px;padding-right:0px;margin-left:-20px;margin-right:-20px;">
+    <br /><br />
+    <input id="goto_home" type="submit" name="goto_home" class="linkish" value="The Vanderbilt Strings">
+    <!-- <h4 class="mytitle">The Vanderbilt Strings</h4> -->
+    <br />
+</div>
+{% else %}
+<div style="padding-left:0px;padding-right:0px;margin-left:-20px;margin-right:-20px;">
+    <br /><br />
+    <div class="mytitle">The Vanderbilt Strings</div>
+    <!-- <br /> -->
+</div>
+{% endif %}
+<div class="mysignout">
+    {% if mode != 'confirmation' %}
+    <button id="goto_signout" type="submit" name="goto_signout"
+            class="btn mysmbtn">Sign Out
+    </button>
+    {% endif %}
+    <div class="show-on-medium-and-down hide-on-large-only"><br /></div>
+</div>
+
+
+<div class="col s12 center">
+    {% if mode == 'confirmation' %}
+        <h5 class="mycol-indextext myindex">Confirm Final Details</h5><br />
+    {% else %}
+        <h5 class="mycol-indextext myindex">Confirm Final Details</h5><br />
+    {% endif %}
+</div>
+
+<button class="btn-floating mybtn-floating btn-large" type="submit" name="goto_questions">
+  <i class="material-icons large myicon-floating">email</i>
+  </button>
+<button class="btn-floating mybtn-floatingb btn-large tooltipped" data-position="left" data-tooltip="Contact Us" type="submit" name="goto_questions">      
+  <i class="material-icons large myicon-floatingb">edit</i>
+  </button>
+
+
+
+<br /><br />
+<div style="color: black">
+{% if error %}<a href="/events/client_home/{{event.id}}/">Click here to login please!</a>{% else %}
+
+
+
+
+    <div class="row">
+        <div class="col s12 center">
+            <div class="card mycol-panelplain">
+                <div class="mycol-subtext mycol-panel-pad">
+                    <br />
+                    <!-- <span class="card-title cyan-text text-lighten-4"><h5><u>Event Details Confirmation</u></h5></span> -->
+                    <p class="mycol-subtext mysize-norm">
+                        <span class="">It's going to be a great day!  Here's a look at all of our
+                            details for your event.<br /></span>
+                        <span class="mysize-norm">Fill in any blanks or empty checkmarks, and if anything has changed, let us know.<br /></span>
+                        <span class="">Submit when finished!</span>
+                      <!-- </span><br /> -->
+                    </p>
+    
+                    <div class="col s12">&nbsp;</div>
+                    <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+                    <div class="col s12 l6 left-align">
+                        <label class="">
+                            <input type="checkbox" checked onclick="return false;" id="date" name="date" class="mycol-subtext necc">
+                            <span><b>Event Date:</b> &nbsp;{{event.date}}</span>
+                        </label>
+                    </div>
+                    <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+                    
+                    <div class="col s12">&nbsp;</div>
+                    <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+                    <div class="col s12 l6 left-align">
+                        <label class="">
+                            <input type="checkbox" checked onclick="return false;" id="time" name="time" class="mycol-subtext necc">
+                            <span><b>Contracted Time:</b> &nbsp;{{event.start_time}} - {{event.end_time}}</span>
+                        </label>
+                    </div>
+                    <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+
+
+                    <div class="col s12">&nbsp;</div>
+                    <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+                    <div class="col s12 l6 left-align">
+                        <label class="">
+                            <input type="checkbox" checked onclick="return false;" id="set_time" name="set_time" class="mycol-subtext necc">
+                            <span><b>Musician Set Time:</b> &nbsp;{{settime}}</span>
+                        </label>
+                    </div>
+                    <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+
+
+
+
+                    
+                    {% if event.ceremony_time %}
+                    <div class="col s12">&nbsp;</div>
+                    <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+                    <div class="col s12 l6 left-align">
+                        <label class="">
+                            <input type="checkbox" checked onclick="return false;" id="ceremony_time" name="ceremony_time" class="mycol-subtext necc">
+                            <span><b>Ceremony Time:</b> &nbsp;{{event.ceremony_time}}</span>
+                        </label>
+                    </div>
+                    <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+                    {% else %}
+                        <input hidden type="checkbox" checked onclick="return false;" id="ceremony_time" class="necc">
+                    {% endif %}
+
+                    <div class="col s12">&nbsp;</div>
+                    <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+                    <div class="col s12 l6 left-align">
+                        <label class="">
+                            <input type="checkbox" checked onclick="return false;" id="ensemble" name="ensemble" class="necc mycol-subtext">
+                            <span><b>Ensemble:</b> &nbsp;{{event.ensemble_name}} ({{event.ensemble_number}} musicians)</span>
+                        </label>
+                    </div>
+                    <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+
+                    <div class="col s12">&nbsp;</div>
+                    <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+                    <div class="col s12 l6 left-align">
+                        <label class="">
+                            <input type="checkbox" checked onclick="return false;" id="event_type" name="event_type" class="necc mycol-subtext">
+                            <span><b>Event Type:</b> &nbsp;{{event.event_type_name}}</span>
+                        </label>
+                    </div>
+                    <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+
+                    {% if event.location %}
+                    <div class="col s12">&nbsp;</div>
+                    <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+                    <div class="col s12 l6 left-align">
+                        <label class="">
+                            <input type="checkbox" checked onclick="return false;" id="location" name="location" class="necc mycol-subtext">
+                            <span><b>Location:</b> &nbsp;{{event.location.name}}, {{event.location.address}}, {{event.location_details}}</span>
+                        </label>
+                    </div>
+                    <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+                    {% else %}
+                    <div class="col s12">&nbsp;</div>
+                    <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+                    <div class="col s12 l6 left-align">
+                        <label class="">
+                            <input type="checkbox" checked onclick="return false;" id="location" name="location" class="necc mycol-subtext">
+                            <span><b>Location:</b> &nbsp;{{event.location_name}}, {{event.location_address}}, {{event.location_details}}</span>
+                        </label>
+                    </div>
+                    <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+                    {% endif %}
+                    
+                    <div class="col s12">&nbsp;</div>
+                    
+                    <div class="row mycol-panel-pad2">
+                        <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+                        <div class="col s12 l6 left-align">
+                            <label class="">
+                                {% if doc_alone %}
+                                    <input type="checkbox" {% if doc_name and doc_phone %}checked onclick="return false;"{% endif %} id="dayofcontact" name="dayofcontact" class="necc mycol-subtext">
+                                    <span><b>Day-of Contact:</b> &nbsp;
+                                    {% if doc_name %}
+                                        {{doc_name}}
+                                        <input hidden type="text" id="new_doc_alone_name" value="something" class="mycol-subtext necc2">
+                                    {% else %}
+                                        <input type="text" id="new_doc_alone_name" name="new_doc_alone_name"
+                                            class="mycol-subtext nosubmit browser-default necc2" required placeholder="Enter name (required)">
+                                    {% endif %}
+                                    -  
+                                    {% if doc_phone %}
+                                        {{doc_phone}}
+                                        <input hidden type="text" id="new_doc_alone_phone" value="something" class="necc2">
+                                    {% else %}
+                                        <input type="text" maxlength="24" id="new_doc_alone_phone" name="new_doc_alone_phone"
+                                            class="limitphone mycol-subtext nosubmit browser-default necc2" required placeholder="Phone # (required)">
+                                    {% endif %}
+                                    </span>
+                                {% else %}
+                                    <input type="checkbox" {% if doc_name and doc_email %}checked onclick="return false;"{% endif %} id="dayofcontact" name="dayofcontact" class="necc mycol-subtext">
+                                    <span><b>Planner:</b> &nbsp;
+                                    {% if doc_name %}
+                                        {{doc_name}}
+                                        <input hidden type="text" id="new_doc_name" value="something" class="mycol-subtext necc2">
+                                    {% else %}
+                                        <input type="text" id="new_doc_name" name="new_doc_name"
+                                            class="mycol-subtext nosubmit browser-default necc2" required placeholder="Enter name (required)">
+                                    {% endif %}
+                                    -  
+                                    {% if doc_email %}
+                                        {{doc_email}}
+                                        <input hidden type="text" id="new_doc_email" value="something" class="necc2">
+                                    {% else %}
+                                        <input type="text" id="new_doc_email" name="new_doc_email"
+                                            class="mycol-subtext nosubmit browser-default necc2" required placeholder="Email (required)">
+                                    {% endif %}
+                                    </span>
+                                {% endif %}
+                            </label>
+                        </div>
+                        <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+     
+                        
+                        <div class="col s12">&nbsp;</div>
+                        <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+                        <div class="col s12 l6 left-align">
+                            <label class="">
+                                <input type="checkbox" checked onclick="return false;" id="reminder" name="reminder" class="necc mycol-subtext">
+                                <span><b>Chairs Needed: </b><u>{{event.ensemble_number}}</u >
+                                     armless chairs for the musicians.  Let your planner or venue know.</span>
+                            </label>
+                        </div>
+                        <!-- <div class="col l3 hide-on-med-and-down show-on-large"></div> -->
+                    </div>
+
+
+<!-- The below have been changes as of summer 2023 - NEW:
+The officiant and recessional cue stuff has all been hidden so that no client ever needs to fill this in
+or even confirm it.  They're not deleted simply for compatibility with previous code...
+so the section that says 'need to enter officiant info' and 'need to enter recess cue' is now eliminated and replaced with 
+identical code to the 'else' section, for ease. -->
+
+
+
+  
+                    {% if not event.officiant_info and do_ceremony and not event.waive_music_list %}
+                        <!-- need to enter officiant info -->
+                    <!-- <div class="row mycol-panel-pad2">
+                        <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+                        <div class="col s12 l6 left-align">
+                            <label class="">
+                                <input type="checkbox" id="officiant_info" name="officiant_info" class="necc mycol-subtext">
+                                <span><b>Officiant Info:</b> &nbsp;</span>
+                            </label>
+                            <input type="text" id="new_officiant_info" name="new_officiant_info"
+                                        class="mycol-subtext nosubmit browser-default" style="display:inline;width:60%;"
+                                        placeholder="Name and phone or email">
+                        </div>
+                        <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+                    </div> -->
+                        <input hidden type="checkbox" checked onclick="return false;" id="officiant_info" name="officiant_info" class="necc mycol-subtext">    
+                        <input hidden type="text" id="new_officiant_info" name="new_officiant_info"
+                                    class="mycol-subtext nosubmit browser-default" style=""
+                                    placeholder="Name and phone or email">
+                    {% else %}
+                        <input hidden type="checkbox" checked onclick="return false;" id="officiant_info" name="officiant_info" class="necc mycol-subtext">    
+                        <input hidden type="text" id="new_officiant_info" name="new_officiant_info"
+                                    class="mycol-subtext nosubmit browser-default" style=""
+                                    placeholder="Name and phone or email">
+                    {% endif %}
+                        
+                    {% if not event.recessional_cue and do_ceremony and not event.waive_music_list %}
+                        <!-- need to enter recessional cue -->
+                    <!-- <div class="row mycol-panel-pad2">
+                        <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+                        <div class="col s12 l6 left-align">
+                            <label class="">
+                                <input type="checkbox" id="recessional_cue" name="recessional_cue" class="necc mycol-subtext">
+                                <span><b>Recessional Cue:</b> &nbsp;</span>
+                            </label>
+                            <input type="text" id="new_recessional_cue" name="new_recessional_cue"
+                                        class="mycol-subtext nosubmit browser-default" style="display:inline; width:58%"
+                                        placeholder="e.g. 'couple is introduced'">
+                        </div>
+                        <div class="col l3 hide-on-med-and-down show-on-large">&nbsp;</div>
+                    </div> -->
+                        <input hidden type="checkbox" checked onclick="return false;" id="recessional_cue" name="recessional_cue" class="necc mycol-subtext">
+                        <input hidden type="text" id="new_recessional_cue" name="new_recessional_cue"
+                                    class="mycol-subtext nosubmit browser-default" style=""
+                                    placeholder="e.g. 'couple is introduced'">
+                    {% else %}
+                        <input hidden type="checkbox" checked onclick="return false;" id="recessional_cue" name="recessional_cue" class="necc mycol-subtext">
+                        <input hidden type="text" id="new_recessional_cue" name="new_recessional_cue"
+                                    class="mycol-subtext nosubmit browser-default" style=""
+                                    placeholder="e.g. 'couple is introduced'">
+                    {% endif %}
+
+
+
+                    <!-- <div class="col s12">&nbsp;</div> -->
+                    <div class="col s12">&nbsp;</div>
+
+                                        
+                        <!-- <button id="goto_questions" type="submit" name="goto_questions"
+                            class="btn btn-large ev-submitbtn z-depth-2 ev-col12" style="text-transform:capitalize;">Contact Us</button> -->
+                    <button disabled id="goto_confirm_final_details_done" type="submit" name="goto_confirm_final_details_done"
+                        class="btn btn-large ev-submitbtn z-depth-2 mybtn-submit">SUBMIT</button>
+                    <div class="row"><br /><br /></div>
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endif %}
+</div>
+</form>
+
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/events_clients_confirm.js' %}"></script>
+    
+{% endblock %}
+

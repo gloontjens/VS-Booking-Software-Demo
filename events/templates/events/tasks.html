@@ -1,0 +1,53 @@
+{% extends 'events/base.html' %}
+{% load static %}
+
+
+
+{% block content %}
+    <input type="hidden" id="page_flag" value="tasks">
+    
+    <br /><br />
+    
+    
+    <h5>Reminders for the next 10 days:
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a id="toggle_pastdue" class="btn-small z-depth-3 ev-col11"
+        style="color:red">Show Past Due ({{pastdue|length}})</a></h5>
+   
+    <br />
+    <div id="past_due" class="container noshow" style="width:auto">
+        {% for reminder in pastdue %}
+        
+        {% include 'events/draw_reminder_summary_tasks.html' %}
+        
+        {% endfor %}
+        <hr>
+        <br />
+    </div>
+
+    <div class="container" style="width:auto">
+        {% for reminder in soon %}
+        
+        {% include 'events/draw_reminder_summary_tasks.html' %}
+        
+        {% endfor %}
+    </div>
+    
+    <br />
+    <h5>Activity for the last 7 days:</h5><br />
+    <div class="container" style="width:auto">
+        {% for activity in activities %}
+        
+        {% include 'events/draw_activity_summary.html' %}
+        
+        {% endfor %}
+    </div>
+    
+    
+ 
+{% endblock %}
+
+{% block scripts %}
+    <!-- custom js for the home page -->
+    <script src="{% static 'js/events_home.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends 'events/base-new.html' %}
+{% load static %}
+
+
+
+{% block content %}
+<input type="hidden" id="page_flag" value="payments_due">
+
+<div>
+    {% if payments_pd or payments %}
+    <h4>Payments Due</h4>  <h5>Due in next 4 weeks & past-due:</h5>
+    <h6><i>Click 'PAID' checkbox to confirm you've manually done the payment on Suncoast, or with cash...</i></h6>
+    {% else %}
+    <h4>Payments Due</h4>  <h5>No Payments Due in next 2 weeks, and none past-due.</h5>
+    <h6>&nbsp;</h6>
+    {% endif %}
+</div>
+
+{% for payment in payments_pd %}
+    {% include 'events/draw_payments_due_summary.html' %}
+{% endfor %}
+
+{% for payment in payments %}
+    
+    {% include 'events/draw_payments_due_summary.html' %}
+
+{% endfor %}
+
+
+<div>
+    <br /><br />
+    {% if payments_done %}
+    <h5>Completed in last 2 weeks:</h5>
+    {% else %}
+    <h5>No Payments completed in last 2 weeks.</h5>
+    {% endif %}
+</div> 
+   
+{% for payment in payments_done %}
+    
+    {% include 'events/draw_payments_due_summary.html' %}
+
+{% endfor %}
+    
+<div>
+    <br /><br />
+    <a href="/events/payments_due_older"><h6>Click here to show older completed payments</h6></a>
+</div> 
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
+
+
+{% block scripts %}
+    <!-- custom js for the home page -->
+    <script src="{% static 'js/events_home.js' %}"></script>
+{% endblock %}
+

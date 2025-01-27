@@ -1,0 +1,44 @@
+{% load humanize %}
+
+    <a href="/events/{{ payment.event.id }}/edit" style="color: inherit">
+        <table class="collapsible-table evx-panelbackgroundlight evx-rounded-only z-depth-1" style="border:none !important;">
+            <tr>
+                <td style="width: 260px; padding:7px 5px 4px 6px;" class="truncate center evx-side-date-rem">
+                    {% if payment.done %}
+                        <span style="display:inline" class="truncate evx-side-date-rem evx-reminder-done">
+                    {% elif payment.is_past_due %}
+                        <span style="display:inline" class="truncate evx-side-date-rem evx-reminder-past-due">
+                    {% elif payment.is_this_week %}
+                        <span style="display:inline" class="truncate evx-side-date-rem evx-reminder-this-week">
+                    {% else %}
+                        <span style="display:inline" class="truncate evx-side-date-rem evx-reminder-not-past-due">
+                    {% endif %}
+                        
+                    {% if payment.is_past_due %}Past-Due {{ payment.duedate|naturalday:'n/j'|title }}{% else %}Due {{ payment.duedate|naturalday:'D'|title }}{% endif %}</span> - 
+                    
+                    {% if payment.auto %}<span style="color:orange"><b>[A]</b>&nbsp;</span>{% endif %}
+                    
+                    <span class="evx-side-title-rem">
+                        <b>${{payment.payment|floatformat:"-2"|default:"[TBD]"}} </b>to<b> {{payment.musician.name}}</b>
+                    </span>
+                </td>
+            </tr>
+            <tr style="padding-bottom:3px;margin-bottom:3px;" class="center">
+                <td class="truncate center evx-side-subline-date-rem evx-side-subline-extra" 
+                    style="max-width: 205px; width: fit-content; padding:3px 5px 2px 6px; margin-left:auto; margin-right:auto; margin-bottom:4px;">
+                    <span>
+                        <span>
+                            {{ payment.event.date|date:'n/j/y' }} : 
+                            {% if payment.event.type == "HD" %}[HD] {% endif %}{{ payment.event.name }}
+                        </span>
+                    </span>
+                </td>
+            </tr>
+        </table>
+        <div style="height:10px;">&nbsp;</div>
+    </a>
+
+    
+    
+    
+    

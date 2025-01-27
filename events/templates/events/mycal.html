@@ -1,0 +1,26 @@
+{% extends 'events/base-new.html' %}
+{% load static %}
+
+
+
+{% block content %}
+
+    <br />
+    <input type="hidden" id="page_flag" value="mycal">
+    <br />
+    <div class="container" style="width:95% !important;">
+        <div class="row center">
+            <div id="calendar">
+                {{Calendar}}
+            </div>  
+        </div>
+    </div>  
+    
+    
+     
+{% endblock %}
+
+{% block scripts %}
+    <!-- custom js for the home page -->
+    <script src="{% static 'js/events_home.js' %}"></script>
+{% endblock %}

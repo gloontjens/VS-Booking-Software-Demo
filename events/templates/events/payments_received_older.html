@@ -1,0 +1,42 @@
+{% extends 'events/base-new.html' %}
+{% load static %}
+
+
+
+{% block content %}
+<input type="hidden" id="page_flag" value="payments_rcvd">
+
+<div>
+    {% if payments %}
+    <h4>Payments Received (Older)</h4>  <h5>In the last 6 months:</h5>
+    <br />
+    {% else %}
+    <h4>Payments Received (Older)</h4>  <h5>No Payments Received in the last 6 months.</h5>
+    <br />
+    {% endif %}
+</div>
+
+{% for payment in payments %}
+    
+    {% include 'events/draw_payments_rcvd_summary.html' %}
+
+{% endfor %}
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
+
+
+{% block scripts %}
+    <!-- custom js for the home page -->
+    <script src="{% static 'js/events_home.js' %}"></script>
+{% endblock %}
+

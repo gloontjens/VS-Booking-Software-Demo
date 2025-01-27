@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+{% extends 'events/base4.html' %}
+{% load static %}
+{% load selectable_tags %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+    
+{% block content %}
+
+
+<form method = 'POST' action= ''  id="test-form" enctype = "multipart/form-data" novalidate>
+{% csrf_token %}
+
+
+{% if mode == 'reg' %}
+<div style="padding-left:0px;padding-right:0px;margin-left:-20px;margin-right:-20px;">
+    <br /><br />
+    <input id="goto_home" type="submit" name="goto_home" class="linkish" value="The Vanderbilt Strings">
+    <!-- <h4 class="mytitle">The Vanderbilt Strings</h4> -->
+    <br />
+</div>
+{% else %}
+<div style="padding-left:0px;padding-right:0px;margin-left:-20px;margin-right:-20px;">
+    <br /><br />
+    <div class="mytitle">The Vanderbilt Strings</div>
+    <!-- <br /> -->
+</div>
+{% endif %}
+<div class="mysignout">
+    {% if mode == 'reg' %}
+    <button id="goto_signout" type="submit" name="goto_signout"
+            class="btn mysmbtn">Sign Out
+    </button>
+    {% endif %}
+    <div class="show-on-medium-and-down hide-on-large-only"><br /></div>
+</div>
+
+
+<div class="col s12 center">
+    <h5 class="mycol-indextext myindex">Payment Page</h5><br />
+</div>
+
+<button class="btn-floating mybtn-floating btn-large" type="submit" name="goto_questions">
+  <i class="material-icons large myicon-floating">email</i>
+  </button>
+<button class="btn-floating mybtn-floatingb btn-large tooltipped" data-position="left" data-tooltip="Contact Us" type="submit" name="goto_questions">      
+  <i class="material-icons large myicon-floatingb">edit</i>
+  </button>
+
+
+
+<br /><br />
+<div style="color: black">
+{% if error %}<a href="/events/client_home/{{event.id}}/">Click here to login please!</a>{% else %}
+
+
+
+
+    <div class="row">
+        <div class="col s12 center">
+            <div class="card mycol-panelplain">
+                <div class="mycol-panel-pad2">
+                    <div id="paypal-page-container">
+                        <br />
+                        <span class="mycol-subtext mysize-norm">We are happy to accept checks!<br /><br /></span>
+                        <div class="row">
+                            <div class="col s12 m10 l8 xl6 offset-m1 offset-l2 offset-xl3">
+                                <div class="mycol-subtext mysize-norm" style="text-align:left;">
+                                    &bull;Amount due:  
+                                    <span class="mycol-maintext">${{this_fee}}</span>
+                                    <br />
+                                    &bull;Payable to: 
+                                    <span class="mycol-maintext">Vanderbilt Strings OR Janie Spangler</span>
+                                    <br />
+                                    &bull;Send to: 
+                                    <span class="mycol-maintext">Vanderbilt Strings, 93 3rd St., Bonita Springs, FL 34134</span>
+                                    <br />
+                                    <br />
+                                    <span class="mysize-norm mycol-subtext">
+                                        Let us know to expect your check by clicking below.  Thank you!
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <br /><br />                                        
+                    <button id="goto_gotit" type="submit" name="goto_gotit_{{this_type}}"
+                            class="btn btn-large ev-submitbtn z-depth-2 mybtn-submit">Will Mail Check!</button>
+                    <div class="row"><br /><br /></div>
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input type="hidden" id="amount_to_pay" value="{{this_fee}}">
+    <input type="hidden" id="event_id" value="{{event.id}}">
+    <input type="hidden" id="payment_type" value="{{this_type}}">
+    <input type="hidden" id="email" value="{{email}}">
+
+
+{% endif %}
+</div>
+</form>
+
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/events_clients.js' %}"></script>
+<script src="{% static 'js/jSignature.min.js' %}"></script>    
+
+
+{% endblock %}
+

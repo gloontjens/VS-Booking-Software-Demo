@@ -1,0 +1,172 @@
+{% load static %}
+
+{% for reminder in reminders %}
+    {% if reminder.auto %}
+    <div>
+        <span style="float:left; width:20px">
+        {% if reminder.done %}
+            <span style="position:relative;top:5px;">&nbsp;&#10003;</span>
+        {% else %}
+            &nbsp;
+        {% endif %}
+        </span>
+        <span class="{% if reminder.done %}ev-reminder-auto-done{% endif %}">
+            <span class="{% if reminder.done %}ev-reminder-auto-done
+                            {% elif reminder.is_past_due %}ev-reminder-auto-past-due
+                            {% elif reminder.is_this_week %}ev-reminder-auto-this-week
+                            {% else %}ev-reminder-auto-not-past-due{% endif %}">
+                {% if reminder.done %}&nbsp;
+                {% else %}{{ reminder.date|date:'n/j' }}
+                {% endif %}
+            </span>{% if not reminder.done %}:{% endif %}
+            <span 
+                {% if reminder.done %}
+                    class="ev-reminder-auto-done"
+                {% else %}
+                    class="ev-reminder-auto"
+                {% endif %}
+                >{% if reminder.done %}[A] {% else %}<span style="color:orange;">[A] </span>{% endif %}{{ reminder.name }}
+            </span>
+        </span>
+        <span>
+            {% if reminder.done %}
+            <a id="edit_automation_done_{{reminder.pk}}" class="edit_automation_done" style="position:relative;cursor:default;">
+                <img style="position:relative;top:2px;padding:1px;border:none;"
+                     width="17px" src = "{% static 'images/blank.png' %}">
+            </a>
+            {% else %}
+            <a id="edit_automation_{{reminder.pk}}" class="edit_automation" style="position:relative;cursor:pointer;">
+                <img style="position:relative;top:2px;padding:1px;border:1px solid #ccc;filter:brightness(100%);"
+                     width="17px" src = "{% static 'images/edit_icon_sm.png' %}">
+            </a>
+            {% endif %}
+        </span>
+    </div>
+    {% else %}
+        <div>
+        <label class="" for="id_remind_{{ reminder.pk }}">
+            <input type="checkbox" 
+                {% if form.instance.id and form.instance.date_ispast %}
+                    disabled
+                {% endif %}
+                class="ev-remind-check" 
+                {% if reminder.done %}checked{% endif %} id="id_remind_{{ reminder.pk }}">
+            <span style="padding-left:15px; padding-top:2px">&nbsp;</span>
+        </label>
+        <span class="{% if reminder.done %}ev-reminder-done{% endif %}">
+            <span class="{% if reminder.done %}ev-reminder-done
+                            {% elif reminder.is_past_due %}ev-reminder-past-due
+                            {% elif reminder.is_this_week %}ev-reminder-this-week
+                            {% else %}ev-reminder-not-past-due{% endif %}">
+                {% if reminder.done %}&nbsp;
+                {% else %}{{ reminder.date|date:'n/j' }}
+                {% endif %}
+            </span>{% if not reminder.done %}:{% endif %}
+            {{ reminder.name }}
+        </span>
+        <span>
+            {% if reminder.done %}
+            <a id="edit_regular_done_{{reminder.pk}}" class="edit_regular_done" style="position:relative;cursor:default;">
+                <img style="position:relative;top:2px;padding:1px;border:none;"
+                     width="17px" src = "{% static 'images/blank.png' %}">
+            </a>
+            {% else %}
+            <a id="edit_regular_{{reminder.pk}}" class="edit_regular" style="position:relative;cursor:pointer;">
+                <img style="position:relative;top:2px;padding:1px;border:1px solid #666;filter:brightness(200%);"
+                     width="17px" src = "{% static 'images/edit_icon_sm_bw.png' %}">
+            </a>
+            {% endif %}
+        </span>
+        </div>
+    {% endif %}
+{% endfor %}
+
+
+
+{% if disableds %}
+    <div style="height:15px; text-align:center; padding-top:5px;">
+        <a id="show_disabled_reminders" style="color:black;font-style:bold;cursor:pointer;text-decoration:underline;">
+        -- click to show/hide disabled --</a>
+    </div>
+    <div id="show_disabled_buffer" style="height:4px;" class="">&nbsp;</div>
+    <div id="show_disabled" class="noshow">
+    <div style="height:4px;"></div>
+    {% for disabled in disableds %}
+        {% if disabled.auto %}
+        <div>
+            <span style="float:left; width:20px">
+            {% if disabled.done %}
+                <span style="position:relative;top:5px;">&nbsp;&#10003;</span>
+            {% else %}
+                &nbsp;
+            {% endif %}
+            </span>
+            <span class="{% if disabled.done %}ev-reminder-auto-done{% endif %}">
+                <span class="{% if disabled.done %}ev-reminder-auto-done
+                                {% elif disabled.is_past_due %}ev-reminder-auto-past-due
+                                {% elif disabled.is_this_week %}ev-reminder-auto-this-week
+                                {% else %}ev-reminder-auto-not-past-due{% endif %}">
+                    {% if disabled.done %}&nbsp;
+                    {% else %}{{ disabled.date|date:'n/j' }}
+                    {% endif %}
+                </span>{% if not disabled.done %}:{% endif %}
+                <span 
+                    {% if disabled.done %}
+                        class="ev-reminder-auto-done"
+                    {% else %}
+                        class="ev-reminder-auto"
+                    {% endif %}
+                    >{{ disabled.name }}
+                </span>
+            </span>
+            <span>
+                {% if disabled.done %}
+                <a id="edit_automation_done_{{disabled.pk}}" class="edit_automation_done" style="position:relative;cursor:default;">
+                    <img style="position:relative;top:2px;padding:1px;border:none;"
+                         width="17px" src = "{% static 'images/blank.png' %}">
+                </a>
+                {% else %}
+                <a id="edit_automation_{{disabled.pk}}" class="edit_automation" style="position:relative;cursor:pointer;">
+                    <img style="position:relative;top:2px;padding:1px;border:1px solid #ccc;filter:brightness(100%);"
+                         width="17px" src = "{% static 'images/edit_icon_sm.png' %}">
+                </a>
+                {% endif %}
+            </span>
+        </div>
+        {% else %}
+        <div>
+            <label class="" for="id_remind_{{ disabled.pk }}" style="cursor:not-allowed;">
+                <input type="checkbox"
+                    {% if disabled.done %}checked{% endif %}>
+                <span style="cursor:not-allowed;padding-left:15px; padding-top:2px">&nbsp;</span>
+            </label>
+            <span class="{% if disabled.done %}ev-reminder-done{% endif %}">
+                <span class="{% if disabled.done %}ev-reminder-done
+                                {% elif disabled.is_past_due %}ev-reminder-past-due
+                                {% elif disabled.is_this_week %}ev-reminder-this-week
+                                {% else %}ev-reminder-not-past-due{% endif %}">
+                    {% if disabled.done %}&nbsp;
+                    {% else %}{{ disabled.date|date:'n/j' }}
+                    {% endif %}
+                </span>{% if not disabled.done %}:{% endif %}
+                {{ disabled.name }}
+            </span>
+            <span>
+                {% if disabled.done %}
+                <a id="edit_regular_done_{{disabled.pk}}" class="edit_regular_done" style="position:relative;cursor:default;">
+                    <img style="position:relative;top:2px;padding:1px;border:none;"
+                         width="17px" src = "{% static 'images/blank.png' %}">
+                </a>
+                {% else %}
+                <a id="edit_regular_{{disabled.pk}}" class="edit_regular" style="position:relative;cursor:pointer;">
+                    <img style="position:relative;top:2px;padding:1px;border:1px solid #666;filter:brightness(200%);"
+                         width="17px" src = "{% static 'images/edit_icon_sm_bw.png' %}">
+                </a>
+                {% endif %}
+            </span>
+        </div>
+        {% endif %}
+    {% endfor %}
+    </div>    
+{% endif %}
+

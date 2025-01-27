@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+{% extends 'events/base4.html' %}
+{% load static %}
+{% load selectable_tags %}
+
+
+    
+{% block content %}
+
+
+<form method = 'POST' action= ''  id="test-form" enctype = "multipart/form-data" novalidate>
+{% csrf_token %} 
+
+{% if mode != 'payment' %}
+<div style="padding-left:0px;padding-right:0px;margin-left:-20px;margin-right:-20px;">
+    <br /><br />
+    <input id="goto_home" type="submit" name="goto_home" class="linkish" value="The Vanderbilt Strings">
+    <!-- <h4 class="mytitle">The Vanderbilt Strings</h4> -->
+    <br />
+</div>
+{% else %}
+<div style="padding-left:0px;padding-right:0px;margin-left:-20px;margin-right:-20px;">
+    <br /><br />
+    <div class="mytitle">The Vanderbilt Strings</div>
+    <!-- <br /> -->
+</div>
+{% endif %}
+<div class="mysignout">
+    {% if mode != 'payment' %}
+    <button id="goto_signout" type="submit" name="goto_signout"
+            class="btn mysmbtn">Sign Out
+    </button>
+    {% endif %}
+    <div class="show-on-medium-and-down hide-on-large-only"><br /></div>
+</div>
+
+
+<div class="col s12 center">
+    {% if mode == 'payment' %}
+        <h5 class="mycol-indextext myindex">Payment Page</h5><br />
+    {% else %}
+<!--        <h5 class="mycol-indextext myindex">Client Home</h5><br /> -->
+    {% endif %}
+</div>
+
+<button class="btn-floating mybtn-floating btn-large" type="submit" name="goto_questions">
+  <i class="material-icons large myicon-floating">email</i>
+  </button>
+<button class="btn-floating mybtn-floatingb btn-large tooltipped" data-position="left" data-tooltip="Contact Us" type="submit" name="goto_questions">      
+  <i class="material-icons large myicon-floatingb">edit</i>
+  </button>
+
+
+
+<br />
+<div style="color: black">
+<br />
+{% if error %}<a href="/events/client_home/{{event.id}}/">Click here to login please!</a>{% else %}
+
+    
+    <!-- ***************************  EVENT INFORMATION PANEL ***************************** -->
+    {% if mode != 'payment' %}
+    <div class="row mybackground-login2 valign-wrapper">
+        <div class="col card center mycol-panel col s10 m10 l8 xl6 offset-s1 offset-m1 offset-l2 offset-xl3">
+          <div class="">
+            <div class="">
+                <br />
+                <div class="mycol-maintext-rev">
+                  <span class="mysize-xlarge">{{event.name}} - {{event.event_type_name}}</span>
+                  <p class="mycol-panel-pad"><span class="mysize-norm mybullets">
+                    &bull;&nbsp;&nbsp;{{event.date|date:"l F j, Y"}}<br />
+                    &bull;&nbsp;&nbsp;{{event.start_time|time:"P"|default:"[Start time TBA]"}} - 
+                        {{event.end_time|time:"P"|default:"[End time TBA]"}}<br />
+                    {% if event.type != "HD" %}
+                        {% if event.location.name or event.location_name %}
+                            &bull;&nbsp;&nbsp;{{event.location.name|default_if_none:""}} {{event.location_name|default_if_none:""}}<br />
+                        {% endif %}
+                    {% else %}
+                        This event is on hold
+                    {% endif %}
+                    &bull;&nbsp;&nbsp;{{event.ensemble_name}}<br />
+                    <span id="see-more-details" class="client-noshow" style="display:contents;">
+                        {% if event.type == "HD" %}
+                            Contact us to go ahead and book!
+                        {% else %}
+                            &bull;&nbsp;&nbsp;Musicians will be set by {{settime|time:"P"}}<br />
+                            {% if event.ceremony_time %}
+                                &bull;&nbsp;&nbsp;Ceremony starts at {{event.ceremony_time|time:"P"|default:"TBD"}}<br />
+                            {% endif %}
+                        
+                            &bull;&nbsp;&nbsp;Total Fee: ${{event.fee|floatformat:'2'}} 
+                            {% if event.deposit_fee == 0 or not event.deposit_fee %}
+                                <br />
+                            {% else %}
+                                (deposit: ${{event.deposit_fee|floatformat:'2'}})<br />
+                            {% endif %}
+                            {% if event.contact_name %}
+                                &bull;&nbsp;&nbsp;Our contact is {{event.contact_name|default:"[Contact TBD]"}} 
+                                    - {{event.contact_agency|default:""}} {{event.contact_phone|default:""}} {{event.contact_email|default:""}}<br />
+                            {% elif event.contact.name %}
+                                &bull;&nbsp;&nbsp;Our contact is {{event.contact.name|default:"[Contact TBD]"}}
+                                    - {{event.contact.agency|default:""}} {{event.contact.phone|default:""}} {{event.contact.email|default:""}}<br />
+                            {% endif %}    
+                            {% if event.dayofcontact_name %}
+                                &bull;&nbsp;&nbsp;The day-of contact is {{event.dayofcontact_name|default:"[Day-of Contact TBD]"}} 
+                                    - {{event.dayofcontact_phone|default:""}} {{event.dayofcontact_email|default:""}}<br />
+                            {% elif event.dayofcontact.name %}
+                                &bull;&nbsp;&nbsp;The day-of contact is {{event.dayofcontact.name|default:"[Day-of Contact TBD]"}}
+                                    - {{event.dayofcontact.phone|default:""}} {{event.dayofcontact.email|default:""}}<br />
+                            {% endif %}    
+
+                        {% endif %}
+                    </span>
+                  </span></p>
+                </div>
+                <div>
+                  <input hidden id="showmoredetails" class="clink-noneedwhite" type="submit" name="goto_event_details" value="See More">
+                  <!-- <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                  <button class="btn-floating mybtn-floating btn-large" type="submit" name="goto_questions">
+                    <i class="material-icons medium client-fine">email</i></button> -->
+                </div>
+                <br />
+            </div>
+          </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="row">
+        <div class="col s12 center">
+          <div class="mybackground-home">
+            <div class="card mycol-panelhome">
+                <br />
+                <div class="mycol-maintext-rev">
+                  <span class="mysize-large">It's time to make a payment!</span>
+                  <p><span class="mysize-norm"><br />Please look over the options below and make the payment due by
+                    clicking one of the buttons.
+                    </span></p>
+                </div>
+                <div class="">
+                  <input hidden class="clink-noneedwhite" type="submit" name="goto_questions" value="Contact Us">
+                  <br />&nbsp;
+                </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    {% endif %}    
+
+
+
+    
+    <!-- ***************************  CONTRACT SIGNING PANEL ***************************** -->
+    {% if not event.waive_contract and mode != 'payment' %}
+    <div class="row">
+        <div class="col s12 center">
+            <div class="card mycol-panelplain">
+                <div class="subtext">
+                  <span class="mysize-large">
+                    {% if event.flag_contract_rcvd %}<i class="icons-shift-sp material-icons medium client-fine">check</i>
+                    {% elif event.is_contract_past_due_simple %}<i class="icons-shift-sp material-icons medium client-late">error_outline</i>
+                    {% elif event.is_contract_due_soon %}<i class="icons-shift-sp material-icons medium client-warn">schedule</i>
+                    {% else %}<i class="icons-shift-sp2 material-icons medium client-fine">&nbsp;</i>
+                    <!-- control_point, event, info_outline, mode_edit, new_releases, notification_active
+                        priority_hight, remove_circle_outline, schedule  -->
+                    {% endif %}
+                    Contract</span>
+                  <p class="mysize-small mycol-subtext mycol-panel-pad">
+                    {% if event.flag_contract_rcvd %}
+                        {% if client.transition_contract %}
+                        Signed on <!-- {{client.signature_date|date:"l F j, Y"}} -->{{client.signature_date|date:"n/j/Y"}}
+                        {% else %}
+                        Signed {{client.signature_date|date:"n/j/Y"}}
+                        {% endif %}
+                    {% elif event.type == "HD" %}
+                        Event is on Hold. Contract will be available once
+                        you decide to go ahead.  Contact us when ready!
+                    {% else %}
+                        {% if event.is_contract_past_due_simple %}
+                            Was due by {{event.contract_duedate|date:"n/j/Y"}}.
+                            Sign now so you don't lose your reservation!
+                        {% elif event.is_contract_due_soon %}
+                            Due by {{event.contract_duedate|date:"n/j/Y"}}
+                        {% else %}
+                            {% if not event.contract_duedate %}
+                            Not due yet, but feel free to sign now.
+                            {% else %}
+                            Due by {{event.contract_duedate|date:"n/j/Y"}}, sign any time!
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                  </p>
+                </div>
+                {% if event.flag_contract_rcvd %}
+                    {% if client.transition_contract %}
+                    <div class="mycol-panel-btmfix">
+                        <a class="aclink-fine" target="_blank" href="{{contract_link}}" style="text-transform:capitalize;">View</a>
+                    </div>
+                    {% else %}
+                    <div class="mycol-panel-btmfix">
+                        <a class="aclink-fine" target="_blank" href="{{contract_link}}" style="text-transform:capitalize;">View</a>
+                    </div>
+                    {% endif %}
+                {% elif event.type == "HD" %}
+                    
+                {% elif event.is_contract_past_due_simple %}
+                    <div class="mycol-panel-btmfix">
+                        <input class="clink-late" type="submit" name="goto_sign_contract" value="Sign Now">
+                    </div>
+                {% elif event.is_contract_due_soon %}
+                    <div class="mycol-panel-btmfix">
+                        <input class="clink-warn" type="submit" name="goto_sign_contract" value="Sign Now">
+                    </div>
+                {% else %}
+                    <div class="mycol-panel-btmfix">
+                        <input class="clink-noneed" type="submit" name="goto_sign_contract" value="Sign Now">
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+
+
+
+    <!-- ***************************  PAYMENT PANELS ***************************** -->
+    {% if not event.waive_contract and not event.flag_contract_rcvd %}
+        <div class="row">
+            <div class="col s12 center">
+                <div class="card mycol-panelplain">
+                    <div class="  mycol-subtext">
+                      <span class="mysize-large">
+                        <i class="icons-shift-sp2 material-icons medium client-fine">&nbsp;</i>
+                        Deposit & Payment
+                      </span>
+                      <p class="mysize-small mycol-subtext mycol-panel-pad">...options will be shown after contract is signed.</p>
+                      <div class="mycol-panel-btmfix2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}                          
+    {% if not event.waive_payment %}
+    
+        <!-- if not client.paid_deposit, and deposit fee is 0/null, then allow only full -->
+        {% if not client.paid_deposit %}
+            {% if event.deposit_fee == 0 or event.deposit_fee == 0.00 or not event.deposit_fee %}
+            <!-- show single (combined) full-pay-panel only -->
+            <div class="row">
+                <div class="col s12 center">
+                    <div class="card mycol-panelplain">
+                        <div class="  mycol-subtext">
+                            <span class="mysize-large">
+                            {% if event.is_final_pay_past_due_simple %}
+                                <i class="icons-shift-sp material-icons medium client-late">error_outline</i>
+                            {% elif event.is_final_pay_due_soon %}
+                                <i class="icons-shift-sp material-icons medium client-warn">schedule</i>
+                            {% else %}<i class="icons-shift-sp2 material-icons medium client-fine">&nbsp;</i>
+                            {% endif %}
+                            Full Payment
+                            </span>
+                            <p class="mysize-small mycol-subtext mycol-panel-pad">
+                            
+                            <!-- allow only full total payment! -->
+                            {% if event.is_final_pay_past_due_simple %}
+                                ${{event.fee|floatformat:'2'}} was due
+                                {{event.final_duedate|date:"n/j/Y"}}.  Please pay now.  If your event is
+                                soon, only online payment is possible.  
+                                Online payment fees apply.
+                            {% elif event.is_final_pay_due_soon %}
+                                ${{event.fee|floatformat:'2'}} due
+                                {{event.final_duedate|date:"n/j/Y"}}.  If your event is
+                                soon, only online payment is possible.  
+                                Online payment fees apply.
+                            {% else %}
+                                ${{event.fee|floatformat:'2'}} 
+                                {% if event.final_duedate %}
+                                    due {{event.final_duedate|date:"n/j/Y"}}
+                                {% else %}
+                                    due 4 weeks before your event
+                                {% endif %}
+                                .  Feel free to make payment now. Online payment fees apply.
+                            {% endif %}
+                            </p>
+                        </div>
+                        {% if event.is_final_pay_past_due_simple %}
+                            <div class="mycol-panel-btmfix">
+                                <input class="clink-late" type="submit" name="goto_pay_full_paypal" value="Pay Online">
+                                {% if not event.date_issoon %}
+                                    <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                    <input class="clink-late" type="submit" name="goto_pay_full_mail" value="Send a Check">
+                                {% endif %}
+                            </div>
+                        {% elif event.is_final_pay_due_soon %}
+                            <div class="mycol-panel-btmfix">
+                                <input class="clink-warn" type="submit" name="goto_pay_full_paypal" value="Pay Online">
+                                {% if not event.date_issoon %}
+                                    <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                    <input class="clink-warn" type="submit" name="goto_pay_full_mail" value="Send a Check">
+                                {% endif %}
+                            </div>
+                        {% else %}
+                            <div class="mycol-panel-btmfix">
+                                <input class="clink-noneed" type="submit" name="goto_pay_full_paypal" value="Pay Online">
+                                <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                <input class="clink-noneed" type="submit" name="goto_pay_full_mail" value="Send a Check">
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            
+
+        {% endif %}
+        {% if not client.paid_deposit %}
+            {% if event.deposit_fee and event.deposit_fee != 0 and event.deposit_fee != 0.00%}
+            
+            <!-- show combined deposit-pay-panel and full-pay-panel -->
+            <div class="row">
+                <div class="col s12 center">
+                    <div class="card mycol-panelplain">
+                        <div class="  mycol-subtext">
+                            <span class="mysize-large">
+                            {% if event.is_deposit_past_due_simple %}
+                                <i class="icons-shift-sp material-icons medium client-late">error_outline</i>
+                            {% elif event.is_deposit_due_soon %}
+                                <i class="icons-shift-sp material-icons medium client-warn">schedule</i>
+                            {% else %}<i class="icons-shift-sp2 material-icons medium client-fine">&nbsp;</i>
+                            {% endif %}
+                            {% if event.date_isrealsoon %}Payment in Full
+                            {% else %}Deposit or Full Payment
+                            {% endif %}
+                            </span>
+                            <p class="mysize-small mycol-subtext mycol-panel-pad">
+                            {% if event.date_isrealsoon %}
+                            <!-- allow only full total payment! -->
+                                {% if event.is_deposit_past_due_simple %}
+                                    ${{event.fee|floatformat:'2'}} was due
+                                    {{event.deposit_duedate|date:"n/j/Y"}}.  Please pay now.  If your event is
+                                    soon, only online payment is possible.  
+                                    Online payment fees apply.
+                                {% elif event.is_deposit_due_soon %}
+                                    ${{event.fee|floatformat:'2'}} due
+                                    {{event.deposit_duedate|date:"n/j/Y"}}.   If your event is
+                                    soon, only online payment is possible.  
+                                    Online payment fees apply.
+                                {% else %}
+                                    ${{event.fee|floatformat:'2'}}  
+                                    {% if event.deposit_duedate %}
+                                        due {{event.deposit_duedate|date:"n/j/Y"}}
+                                    {% else %}
+                                        due at time of booking
+                                    {% endif %}
+                                    .  Feel free to make payment now.  Online payment fees apply.
+                                {% endif %}
+                            
+                            {% else %}
+                                {% if event.is_deposit_past_due_simple %}
+                                    Deposit of ${{event.deposit_fee|floatformat:'2'}} was due
+                                    {{event.deposit_duedate|date:"n/j/Y"}}. Please pay now.  If your event is
+                                    soon, only online payment is possible.  
+                                    Online payment fees apply.  If you prefer to pay
+                                    the full fee now, it is ${{event.fee|floatformat:'2'}}.
+                                {% elif event.is_deposit_due_soon %}
+                                    Deposit of ${{event.deposit_fee|floatformat:'2'}} is due on
+                                    {{event.deposit_duedate|date:"n/j/Y"}}.  If your event is
+                                    soon, only online payment is possible.  
+                                    Online payment fees apply.  If you prefer to pay
+                                    the full fee now, it is ${{event.fee|floatformat:'2'}}.
+                                {% else %}
+                                    Deposit of ${{event.deposit_fee|floatformat:'2'}} 
+                                    {% if event.deposit_duedate %}
+                                        due {{event.deposit_duedate|date:"n/j/Y"}}
+                                    {% else %}
+                                        due at time of booking
+                                    {% endif %}
+                                    .  Feel free to make the payment now.
+                                    Online payment fees apply.  If you prefer to pay
+                                    the full fee now, it is ${{event.fee|floatformat:'2'}}.
+                                {% endif %}
+                            {% endif %}
+                            </p>
+                        </div>
+                        {% if event.is_deposit_past_due_simple %}
+                            <div class="mycol-panel-btmfix">
+                                {% if not event.date_isrealsoon %}
+                                    <input class="clink-late" type="submit" name="goto_pay_deposit_paypal" value="Pay Deposit Online">
+                                    <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                {% endif %}
+                                <input class="clink-late" type="submit" name="goto_pay_full_paypal" value="Pay Total Online">
+                                {% if not event.date_issoon %}
+                                    <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                    <input class="clink-late" type="submit" name="goto_pay_deposit_mail" value="Send Deposit Check">
+                                    <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                    <input class="clink-late" type="submit" name="goto_pay_full_mail" value="Send Total Check">
+                                {% endif %}
+                            </div>
+                        {% elif event.is_deposit_due_soon %}
+                            <div class="mycol-panel-btmfix">
+                                {% if not event.date_isrealsoon %}
+                                    <input class="clink-warn" type="submit" name="goto_pay_deposit_paypal" value="Pay Deposit Online">
+                                    <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                {% endif %}    
+                                <input class="clink-warn" type="submit" name="goto_pay_full_paypal" value="Pay Total Online">
+                                {% if not event.date_issoon %}
+                                    <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                    <input class="clink-warn" type="submit" name="goto_pay_deposit_mail" value="Send Deposit Check">
+                                    <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                    <input class="clink-warn" type="submit" name="goto_pay_full_mail" value="Send Total Check">
+                                {% endif %}
+                            </div>
+                        {% else %}
+                            <div class="mycol-panel-btmfix">
+                                <input class="clink-noneed" type="submit" name="goto_pay_deposit_paypal" value="Pay Deposit Online">
+                                <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                <input class="clink-noneed" type="submit" name="goto_pay_full_paypal" value="Pay Total Online">
+                                <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                <input class="clink-noneed" type="submit" name="goto_pay_deposit_mail" value="Send Deposit Check">
+                                <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                <input class="clink-noneed" type="submit" name="goto_pay_full_mail" value="Send Total Check">
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            
+        {% elif client.paid_deposit and not client.paid_final %} 
+            <!-- show deposit-history-panel and final-pay-panel -->
+            <!-- show deposit-history panel -->
+            <div class="row">
+                <div class="col s12 center">
+                    <div class="card mycol-panelplain">
+                        <div class="  mycol-subtext">
+                          <span class="mysize-large">
+                            {% if event.flag_deposit_rcvd %}<i class="icons-shift-sp material-icons medium client-fine">check</i>
+                            {% elif event.is_deposit_past_due_simple %}
+                                <i class="icons-shift-sp material-icons medium client-late">error_outline</i>
+                            {% elif event.is_deposit_due_soon %}
+                                <i class="icons-shift-sp material-icons medium client-warn">schedule</i>
+                            {% else %}<i class="icons-shift-sp2 material-icons medium client-fine">&nbsp;</i>
+                            {% endif %}
+                            Deposit</span>
+                          <p class="mysize-small mycol-subtext mycol-panel-pad">
+                            {% if event.flag_deposit_rcvd %}
+                                {% if client.transition_deposit %}
+                                    Received ${{event.deposit_fee|floatformat:'2'}} on {{event.deposit_rcvddate|date:"n/j/Y"}}
+                                {% else %}
+                                    Received 
+                                    {% if client.paid_online %}
+                                        ${{event.paypal_deposit_fee|floatformat:'2'}} online on {{event.deposit_rcvddate|date:"n/j/Y"}} 
+                                    {% else %}
+                                        check for ${{event.deposit_fee|floatformat:'2'}} on {{event.deposit_rcvddate|date:"n/j/Y"}}
+                                    {% endif %}
+                                {% endif %}
+                            {% else %}
+                                {% if client.paid_online %}
+                                    {% if event.is_deposit_past_due_simple %}
+                                        <b>Past Due.</b>  
+                                    {% endif %}  
+                                    You indicated {{client.paid_deposit_date|date:"n/j/Y"}} that
+                                    you would pay ${{event.paypal_deposit_fee|floatformat:'2'}} online.
+                                    Contact us to make sure we received it.  If you didn't finish, choose an option.
+                                    Due by {{event.deposit_duedate|date:"n/j/Y"}}.
+                                {% else %}
+                                    {% if event.is_deposit_past_due_simple %}
+                                        <b>Past Due.</b>  
+                                    {% endif %}  
+                                    You indicated {{client.paid_deposit_date|date:"n/j/Y"}} that
+                                    you would send a check for ${{event.deposit_fee|floatformat:'2'}}.  <br />
+                                    This page will update when we receive/process it.  If you haven't sent it, choose an option.
+                                    Due by {{event.deposit_duedate|date:"n/j/Y"}}.
+                                {% endif %}
+                            {% endif %}
+                          </p>
+                        </div>
+                        {% if not event.flag_deposit_rcvd %}
+<!--                             <div id="payment_options4" style="display:inline-block;" class="clink-noneed2">View Options &#8661; </div><div>&nbsp;</div> -->
+<!--                             <div id="payment_options_panel4" class="client-noshow"> -->
+                                {% if event.is_deposit_past_due_simple %}
+                                    <div class="mycol-panel-btmfix">
+                                        <input class="clink-late" type="submit" name="goto_pay_deposit_paypal" value="Pay Online">
+                                        {% if not event.date_issoon %}
+                                            <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                            <input class="clink-late" type="submit" name="goto_pay_deposit_mail" value="Send a Check">
+                                        {% endif %}
+                                    </div>
+                                {% elif event.is_deposit_due_soon %}
+                                    <div class="mycol-panel-btmfix">
+                                        <input class="clink-warn" type="submit" name="goto_pay_deposit_paypal" value="Pay Online">
+                                        {% if not event.date_issoon %}
+                                            <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                            <input class="clink-warn" type="submit" name="goto_pay_deposit_mail" value="Send a Check">
+                                        {% endif %}
+                                    </div>
+                                {% else %}
+                                    <div class="mycol-panel-btmfix">
+                                        <input class="clink-noneed" type="submit" name="goto_pay_deposit_paypal" value="Pay Online">
+                                        {% if not event.date_issoon %}
+                                            <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                            <input class="clink-noneed" type="submit" name="goto_pay_deposit_mail" value="Send a Check">
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+                            <!-- </div> -->
+                        {% else %}
+                            {% if client.transition_deposit %}
+                            <!-- <div class="mycol-panel-btmfix">
+                                &nbsp;
+                            </div> -->
+                            {% else %}
+                            <div class="mycol-panel-btmfix">
+                                <a class="aclink-fine" target="_blank" href="{{deposit_link}}" style="text-transform:capitalize;">View Receipt</a>
+                            </div>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- show final-pay panel, but only placeholder if the deposit wasn't truly paid -->
+            <div class="row">
+                <div class="col s12 center">
+                    <div class="card mycol-panelplain">
+                        <div class="  mycol-subtext">
+                          <span class="mysize-large">
+                            {% if event.is_final_pay_past_due_simple %}
+                                <i class="icons-shift-sp material-icons medium client-late">error_outline</i>
+                            {% elif event.is_final_pay_due_soon %}
+                                <i class="icons-shift-sp material-icons medium client-warn">schedule</i>
+                            {% else %}<i class="icons-shift-sp2 material-icons medium client-fine">&nbsp;</i>
+                            {% endif %}
+                            {% if event.flag_deposit_rcvd %}
+                                Final Payment</span>
+                            {% else %}
+                                Final Payment</span><p class="mysize-small mycol-subtext mycol-panel-pad">...will be shown after deposit is received, and due 4 weeks before
+                                your event.</p>
+                                <div class="mycol-panel-btmfix2"></div>
+                            {% endif %}
+                            {% if event.flag_deposit_rcvd %}
+                                <p class="mysize-small mycol-subtext mycol-panel-pad">
+                                  {% if event.is_final_pay_past_due_simple %}
+                                      ${{event.final_fee|floatformat:'2'}} was due
+                                      {{event.final_duedate|date:"n/j/Y"}}. Please pay now.  If your event is
+                                        soon, only online payment is possible.  
+                                        Online payment fees apply.
+                                  {% elif event.is_final_pay_due_soon %}
+                                      ${{event.final_fee|floatformat:'2'}} due
+                                      {{event.final_duedate|date:"n/j/Y"}}. If your event is
+                                        soon, only online payment is possible.  
+                                        Online payment fees apply.
+                                  {% else %}
+                                      ${{event.final_fee|floatformat:'2'}} 
+                                      {% if event.final_duedate %}
+                                          due {{event.final_duedate|date:"n/j/Y"}}.
+                                      {% else %}
+                                          due 4 weeks before your event.
+                                      {% endif %}
+                                      Feel free to make the payment now. Online payment fees apply.
+                                  {% endif %}
+                                </p>
+                            {% endif %}
+                        </div>
+                        {% if event.flag_deposit_rcvd %}
+                            {% if event.is_final_pay_past_due_simple %}
+                                <div class="mycol-panel-btmfix">
+                                    <input class="clink-late" type="submit" name="goto_pay_final_paypal" value="Pay Online">
+                                    {% if not event.date_issoon %}
+                                        <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                        <input class="clink-late" type="submit" name="goto_pay_final_mail" value="Send a Check">
+                                    {% endif %}
+                                </div>
+                            {% elif event.is_final_pay_due_soon %}
+                                <div class="mycol-panel-btmfix">
+                                    <input class="clink-warn" type="submit" name="goto_pay_final_paypal" value="Pay Online">
+                                    {% if not event.date_issoon %}
+                                        <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                        <input class="clink-warn" type="submit" name="goto_pay_final_mail" value="Send a Check">
+                                    {% endif %}
+                                </div>
+                            {% else %}
+                                <div class="mycol-panel-btmfix">
+                                    <input class="clink-noneed" type="submit" name="goto_pay_final_paypal" value="Pay Online">
+                                    <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                    <input class="clink-noneed" type="submit" name="goto_pay_final_mail" value="Send a Check">
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        
+        
+        <!-- *********************************************************************************************** -->
+        {% elif client.paid_final and not client.paid_total %}
+            <!-- show deposit-history-panel and final-history panel -->
+            <!-- show deposit-history panel -->
+            <div class="row">
+                <div class="col s12 center">
+                    <div class="card mycol-panelplain">
+                        <div class="  mycol-subtext">
+                          <span class="mysize-large">
+                            {% if event.flag_deposit_rcvd %}<i class="icons-shift-sp material-icons medium client-fine">check</i>
+                            {% elif event.is_deposit_past_due_simple %}
+                                <i class="icons-shift-sp material-icons medium client-late">error_outline</i>
+                            {% elif event.is_deposit_due_soon %}
+                                <i class="icons-shift-sp material-icons medium client-warn">schedule</i>
+                            {% else %}<i class="icons-shift-sp2 material-icons medium client-fine">&nbsp;</i>
+                            {% endif %}
+                            Deposit</span>
+                          <p class="mysize-small mycol-subtext mycol-panel-pad">
+                            {% if event.flag_deposit_rcvd %}
+                                {% if client.transition_deposit %}
+                                    Received ${{event.deposit_fee|floatformat:'2'}} on {{event.deposit_rcvddate|date:"n/j/Y"}}
+                                {% else %}
+                                    Received 
+                                    {% if client.paid_online %}
+                                        ${{event.paypal_deposit_fee|floatformat:'2'}} online on {{event.deposit_rcvddate|date:"n/j/Y"}} 
+                                    {% else %}
+                                        check for ${{event.deposit_fee|floatformat:'2'}} on {{event.deposit_rcvddate|date:"n/j/Y"}}
+                                    {% endif %}
+                                {% endif %}
+                            {% else %}
+                                {% if client.paid_online %}
+                                    {% if event.is_deposit_past_due_simple %}
+                                        <b>Past Due.</b>  
+                                    {% endif %}  
+                                    You indicated {{client.paid_deposit_date|date:"n/j/Y"}} that
+                                    you would pay ${{event.paypal_deposit_fee|floatformat:'2'}} online.
+                                    Contact us to make sure we received it.  If you didn't finish, choose an option.
+                                    Due by {{event.deposit_duedate|date:"n/j/Y"}}.
+                                {% else %}
+                                    {% if event.is_deposit_past_due_simple %}
+                                        <b>Past Due.</b>  
+                                    {% endif %}  
+                                    You indicated {{client.paid_deposit_date|date:"n/j/Y"}} that
+                                    you would send a check for ${{event.deposit_fee|floatformat:'2'}}.  <br />
+                                    This page will update when we receive/process it.  If you haven't sent it, choose an option.
+                                    Due by {{event.deposit_duedate|date:"n/j/Y"}}.
+                                {% endif %}
+                            {% endif %}
+                          </p>
+                        </div>
+                        {% if not event.flag_deposit_rcvd %}
+                            <!-- <div id="payment_options3" style="display:inline-block;" class="clink-noneed2">View Options &#8661; </div><div>&nbsp;</div>
+                            <div id="payment_options_panel3" class="client-noshow"> -->
+                                {% if event.is_deposit_past_due_simple %}
+                                    <div class="mycol-panel-btmfix">
+                                        <input class="clink-late" type="submit" name="goto_pay_deposit_paypal" value="Pay Online">
+                                        {% if not event.date_issoon %}
+                                            <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                            <input class="clink-late" type="submit" name="goto_pay_deposit_mail" value="Send a Check">
+                                        {% endif %}
+                                    </div>
+                                {% elif event.is_deposit_due_soon %}
+                                    <div class="mycol-panel-btmfix">
+                                        <input class="clink-warn" type="submit" name="goto_pay_deposit_paypal" value="Pay Online">
+                                        {% if not event.date_issoon %}
+                                            <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                            <input class="clink-warn" type="submit" name="goto_pay_deposit_mail" value="Send a Check">
+                                        {% endif %}
+                                    </div>
+                                {% else %}
+                                    <div class="mycol-panel-btmfix">
+                                        <input class="clink-noneed" type="submit" name="goto_pay_deposit_paypal" value="Pay Online">
+                                        {% if not event.date_issoon %}
+                                            <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                            <input class="clink-noneed" type="submit" name="goto_pay_deposit_mail" value="Send a Check">
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+<!--                             </div> -->
+                        {% else %}
+                            {% if client.transition_deposit %}
+                            <!-- <div class="mycol-panel-btmfix">
+                                &nbsp;
+                            </div> -->
+                            {% else %}
+                            <div class="mycol-panel-btmfix">
+                                <a class="aclink-fine" target="_blank" href="{{deposit_link}}" style="text-transform:capitalize;">View Receipt</a>
+                            </div>
+                            {% endif %}
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+            
+            
+                <!-- show final-history panel -->
+            <div class="row">
+                <div class="col s12 center">
+                    <div class="card mycol-panelplain">
+                        <div class="  mycol-subtext">
+                          <span class="mysize-large">
+                            {% if event.flag_final_payment_rcvd %}<i class="icons-shift-sp material-icons medium client-fine">check</i>
+                            {% elif event.is_final_pay_past_due_simple %}
+                                <i class="icons-shift-sp material-icons medium client-late">error_outline</i>
+                            {% elif event.is_final_pay_due_soon %}
+                                <i class="icons-shift-sp material-icons medium client-warn">schedule</i>
+                            {% else %}<i class="icons-shift-sp2 material-icons medium client-fine">&nbsp;</i>
+                            {% endif %}
+                            Final Payment</span>
+                          <p class="mysize-small mycol-subtext mycol-panel-pad">
+                            {% if event.flag_final_payment_rcvd %}
+                                {% if client.transition_final %}
+                                    Received ${{event.final_fee|floatformat:'2'}} on {{event.final_rcvddate|date:"n/j/Y"}}
+                                {% else %}
+                                    Received 
+                                    {% if client.paid_final_online %}
+                                        ${{event.paypal_final_fee|floatformat:'2'}} online on {{event.final_rcvddate|date:"n/j/Y"}} 
+                                    {% else %}
+                                        check for ${{event.final_fee|floatformat:'2'}} on {{event.final_rcvddate|date:"n/j/Y"}}
+                                    {% endif %}
+                                {% endif %}
+                            {% else %}
+                                {% if client.paid_final_online %}
+                                    {% if event.is_final_pay_past_due_simple %}
+                                        <b>Past Due.</b>  
+                                    {% endif %}  
+                                    You indicated {{client.paid_final_date|date:"n/j/Y"}} that
+                                    you would pay ${{event.paypal_final_fee|floatformat:'2'}} online.
+                                    Contact us to make sure we received it.  If you didn't finish, choose an option.
+                                    Due by {{event.final_duedate|date:"n/j/Y"}}.
+                                {% else %}
+                                    {% if event.is_final_pay_past_due_simple %}
+                                        <b>Past Due.</b>  
+                                    {% endif %}  
+                                    You indicated {{client.paid_final_date|date:"n/j/Y"}} that
+                                    you would send a check for ${{event.final_fee|floatformat:'2'}}.  <br />
+                                    This page will update when we receive/process it.  If you haven't sent it, choose an option.
+                                    Due by {{event.final_duedate|date:"n/j/Y"}}.
+                                {% endif %}
+                            {% endif %}
+                          </p>
+                        </div>
+                        {% if not event.flag_final_payment_rcvd %}
+                            <!-- <div id="payment_options2" style="display:inline-block;" class="clink-noneed2">View Options &#8661;</div><div>&nbsp;</div>
+                            <div id="payment_options_panel2" class="client-noshow"> -->
+                                {% if event.is_final_pay_past_due_simple %}
+                                    <div class="mycol-panel-btmfix">
+                                        <input class="clink-late" type="submit" name="goto_pay_final_paypal" value="Pay Online">
+                                        {% if not event.date_issoon %}
+                                            <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                            <input class="clink-late" type="submit" name="goto_pay_final_mail" value="Send a Check">
+                                        {% endif %}
+                                    </div>
+                                {% elif event.is_final_pay_due_soon %}
+                                    <div class="mycol-panel-btmfix">
+                                        <input class="clink-warn" type="submit" name="goto_pay_final_paypal" value="Pay Online">
+                                        {% if not event.date_issoon %}
+                                            <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                            <input class="clink-warn" type="submit" name="goto_pay_final_mail" value="Send a Check">
+                                        {% endif %}
+                                    </div>
+                                {% else %}
+                                    <div class="mycol-panel-btmfix">
+                                        <input class="clink-noneed" type="submit" name="goto_pay_final_paypal" value="Pay Online">
+                                        {% if not event.date_issoon %}
+                                            <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                            <input class="clink-noneed" type="submit" name="goto_pay_final_mail" value="Send a Check">
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+<!--                             </div> -->
+                        {% else %}
+                            {% if client.transition_final %}
+                            <!-- <div class="mycol-panel-btmfix">
+                                &nbsp;
+                            </div> -->
+                            {% else %}
+                            <div class="mycol-panel-btmfix">
+                                <a class="aclink-fine" target="_blank" href="{{final_link}}" style="text-transform:capitalize;">View Receipt</a>
+                            </div>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+           
+        
+        
+        
+        {% elif client.paid_total %}
+            <!-- show full-history-panel (with option for if unpaid, still pay only deposit?-->
+            <div class="row">
+                <div class="col s12 center">
+                    <div class="card mycol-panelplain">
+                        <div class="  mycol-subtext">
+                          <span class="mysize-large">
+                            {% if event.flag_final_payment_rcvd %}<i class="icons-shift-sp material-icons medium client-fine">check</i>
+                            {% elif event.is_deposit_past_due_simple %}
+                                <i class="icons-shift-sp material-icons medium client-late">error_outline</i>
+                            {% elif event.is_deposit_due_soon %}
+                                <i class="icons-shift-sp material-icons medium client-warn">schedule</i>
+                            {% else %}<i class="icons-shift-sp2 material-icons medium client-fine">&nbsp;</i>
+                            {% endif %}
+                            Payment in Full</span>
+                          <p class="mysize-small mycol-subtext mycol-panel-pad">
+                            {% if event.flag_final_payment_rcvd %}
+                                {% if client.transition_total %}
+                                    Received ${{event.fee|floatformat:'2'}} on {{event.final_rcvddate|date:"n/j/Y"}}
+                                {% else %}
+                                    Received  
+                                    {% if client.paid_online %}
+                                        ${{event.paypal_full_fee|floatformat:'2'}} online on {{event.final_rcvddate|date:"n/j/Y"}}  
+                                    {% else %}
+                                        check for ${{event.fee|floatformat:'2'}} on {{event.final_rcvddate|date:"n/j/Y"}}
+                                    {% endif %}
+                                {% endif %}
+                            {% else %}
+                                {% if client.paid_online %}
+                                    {% if event.is_deposit_past_due_simple or event.is_final_pay_past_due_simple %}
+                                        <b>Past Due.</b>  
+                                    {% endif %}  
+                                    You indicated {{client.paid_total_date|date:"n/j/Y"}} that
+                                    you would pay ${{event.paypal_full_fee|floatformat:'2'}} online.
+                                    Contact us to make sure we received it.  If you didn't finish, choose an option.
+                                    Due by {{event.deposit_duedate|date:"n/j/Y"}}.
+                                {% else %}
+                                    {% if event.is_deposit_past_due_simple or event.is_final_pay_past_due_simple %}
+                                        <b>Past Due.</b>  
+                                    {% endif %}  
+                                    You indicated {{client.paid_total_date|date:"n/j/Y"}} that
+                                    you would send a check for ${{event.fee|floatformat:'2'}}.  <br />
+                                    This page will update when we receive/process it.  If you haven't sent it, choose an option.
+                                    Due by {{event.final_duedate|date:"n/j/Y"}}.
+                                {% endif %}
+                            {% endif %}
+                          </p>
+                        </div>
+                        {% if not event.flag_final_payment_rcvd %}
+                            <div id="payment_options" style="display:inline-block;" class="clink-noneed2">View Options &#8661; </div><div>&nbsp;</div>
+                            <div id="payment_options_panel" class="client-noshow">
+                                {% if event.deposit_fee == 0 or event.deposit_fee == 0.00 or not event.deposit_fee %}
+                                    {% if event.is_final_pay_past_due_simple %}
+                                        <div class="mycol-panel-btmfix">
+                                            <input class="clink-late" type="submit" name="goto_pay_full_paypal" value="Pay Online">
+                                            {% if not event.date_issoon %}
+                                                <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                                <input class="clink-late" type="submit" name="goto_pay_full_mail" value="Send a Check">
+                                            {% endif %}
+                                        </div>
+                                    {% elif event.is_final_pay_due_soon %}
+                                        <div class="mycol-panel-btmfix">
+                                            <input class="clink-warn" type="submit" name="goto_pay_full_paypal" value="Pay Online">
+                                            {% if not event.date_issoon %}
+                                                <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                                <input class="clink-warn" type="submit" name="goto_pay_full_mail" value="Send a Check">
+                                            {% endif %}
+                                        </div>
+                                    {% else %}
+                                        <div class="mycol-panel-btmfix">
+                                            <input class="clink-noneed" type="submit" name="goto_pay_full_paypal" value="Pay Online">
+                                            {% if not event.date_issoon %}    
+                                                <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                                <input class="clink-noneed" type="submit" name="goto_pay_full_mail" value="Send a Check">
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}                            
+                                {% else%}
+                                    {% if event.is_deposit_past_due_simple %}
+                                        <div class="mycol-panel-btmfix">
+                                            <input class="clink-late" type="submit" name="goto_pay_full_paypal" value="Pay Total Online">
+                                            {% if not event.date_isrealsoon %}
+                                                <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                                <input class="clink-late" type="submit" name="goto_pay_deposit_paypal" value="Pay Deposit Online">
+                                            {% endif %}
+                                            {% if not event.date_issoon %}
+                                                <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                                <input class="clink-late" type="submit" name="goto_pay_full_mail" value="Send Total Check">
+                                                <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                                <input class="clink-late" type="submit" name="goto_pay_deposit_mail" value="Send Deposit Check">
+                                            {% endif %}
+                                        </div>
+                                    {% elif event.is_deposit_due_soon %}
+                                        <div class="mycol-panel-btmfix">
+                                            <input class="clink-warn" type="submit" name="goto_pay_full_paypal" value="Pay Total Online">
+                                            {% if not event.date_isrealsoon %}
+                                                <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                                <input class="clink-warn" type="submit" name="goto_pay_deposit_paypal" value="Pay Deposit Online">
+                                            {% endif %}
+                                            {% if not event.date_issoon %}
+                                                <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                                <input class="clink-warn" type="submit" name="goto_pay_full_mail" value="Send Total Check">
+                                                <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                                <input class="clink-warn" type="submit" name="goto_pay_deposit_mail" value="Send Deposit Check">
+                                            {% endif %}
+                                        </div>
+                                    {% else %}
+                                        <div class="mycol-panel-btmfix">
+                                            <input class="clink-noneed" type="submit" name="goto_pay_full_paypal" value="Pay Total Online">
+                                            {% if not event.date_isrealsoon %}
+                                                <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                                <input class="clink-noneed" type="submit" name="goto_pay_deposit_paypal" value="Pay Deposit Online">
+                                            {% endif %}
+                                            {% if not event.date_issoon %}    
+                                                <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                                <input class="clink-noneed" type="submit" name="goto_pay_full_mail" value="Send Total Check">
+                                                <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                                <input class="clink-noneed" type="submit" name="goto_pay_deposit_mail" value="Send Deposit Check">
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}                            
+                                {% endif %}
+                            </div>
+                        {% else %}
+                            {% if client.transition_total %}
+                            <!-- <div class="mycol-panel-btmfix">
+                                &nbsp;
+                            </div> -->
+                            {% else %}
+                            <div class="mycol-panel-btmfix">
+                                <a class="aclink-fine" target="_blank" href="{{full_link}}" style="text-transform:capitalize;">View Full Payment Receipt</a>
+                            </div>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        
+        
+        {% endif %}
+        
+    {% endif %}
+    {% endif %}
+
+
+
+
+
+    <!-- ***************************  EXTRA PAYMENT PANEL ***************************** -->
+    
+    {% if not event.waive_contract and not event.flag_contract_rcvd and event.extra_fee > 0 and event.flag_extra_sent %}
+        <div class="row">
+            <div class="col s12 center">
+                <div class="card mycol-panelplain">
+                    <div class="  mycol-subtext">
+                      <span class="mysize-large">
+                        <i class="icons-shift-sp2 material-icons medium client-fine">&nbsp;</i>
+                        Extra Fee Payment
+                      </span>
+                      <p class="mysize-small mycol-subtext mycol-panel-pad">...options will be shown after contract is signed.</p>
+                      <div class="mycol-panel-btmfix2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}                          
+        {% if not event.waive_payment and event.extra_fee > 0  and event.flag_extra_sent%}
+            {% if client.paid_extra %}
+                <div class="row">
+                    <div class="col s12 center">
+                        <div class="card mycol-panelplain">
+                            <div class="  mycol-subtext">
+                              <span class="mysize-large">
+                                {% if event.flag_extra_rcvd %}<i class="icons-shift-sp material-icons medium client-fine">check</i>
+                                {% elif event.is_extra_pay_past_due_simple %}
+                                    <i class="icons-shift-sp material-icons medium client-late">error_outline</i>
+                                {% elif event.is_extra_pay_due_soon %}
+                                    <i class="icons-shift-sp material-icons medium client-warn">schedule</i>
+                                {% else %}<i class="icons-shift-sp2 material-icons medium client-fine">&nbsp;</i>
+                                {% endif %}
+                                Extra Fee Payment</span>
+                              <p class="mysize-small mycol-subtext mycol-panel-pad">
+                                {% if event.flag_extra_rcvd %}
+                                    {% if client.transition_extra %}
+                                        Received ${{event.extra_fee|floatformat:'2'}} on {{event.extra_rcvddate|date:"n/j/Y"}}
+                                    {% else %}
+                                        Received  
+                                        {% if client.paid_extra_online %}
+                                            ${{event.paypal_extra_fee|floatformat:'2'}} online on {{event.extra_rcvddate|date:"n/j/Y"}}
+                                        {% else %}
+                                            check for ${{event.extra_fee|floatformat:'2'}} on {{event.extra_rcvddate|date:"n/j/Y"}}
+                                        {% endif %}
+                                    {% endif %}
+                                {% else %}
+                                    {% if client.paid_extra_online %}
+                                        {% if event.is_extra_pay_past_due_simple %}
+                                            <b>Past Due.</b>  
+                                        {% endif %}  
+                                        You indicated {{client.paid_extra_date|date:"n/j/Y"}} that
+                                        you would pay ${{event.paypal_extra_fee|floatformat:'2'}} online.
+                                        Contact us to make sure we received it.  If you didn't finish, choose an option.
+                                        Due by {{event.extra_duedate|date:"n/j/Y"}}.
+                                    {% else %}
+                                        {% if event.is_extra_pay_past_due_simple %}
+                                            <b>Past Due.</b>  
+                                        {% endif %}  
+                                        You indicated {{client.paid_extra_date|date:"n/j/Y"}} that
+                                        you would send a check for ${{event.extra_fee|floatformat:'2'}}.  <br />
+                                        This page will update when we receive/process it.  If you haven't sent it, choose an option.
+                                        Due by {{event.extra_duedate|date:"n/j/Y"}}.
+                                    {% endif %}
+                                {% endif %}
+                              </p>
+                            </div>
+                            {% if not event.flag_extra_rcvd %}
+                                <div id="payment_options4" style="display:inline-block;" class="clink-noneed2">View Options &#8661; </div><div>&nbsp;</div>
+                                <div id="payment_options_panel4" class="client-noshow">
+                                    {% if event.is_extra_pay_past_due_simple %}
+                                        <div class="mycol-panel-btmfix">
+                                            <input class="clink-late" type="submit" name="goto_pay_extra_paypal" value="Pay Online">
+                                            {% if not event.date_issoon %}
+                                                <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                                <input class="clink-late" type="submit" name="goto_pay_extra_mail" value="Send a Check">
+                                            {% endif %}
+                                        </div>
+                                    {% elif event.is_extra_pay_due_soon %}
+                                        <div class="mycol-panel-btmfix">
+                                            <input class="clink-warn" type="submit" name="goto_pay_extra_paypal" value="Pay Online">
+                                            {% if not event.date_issoon %}
+                                                <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                                <input class="clink-warn" type="submit" name="goto_pay_extra_mail" value="Send a Check">
+                                            {% endif %}
+                                        </div>
+                                    {% else %}
+                                        <div class="mycol-panel-btmfix">
+                                            <input class="clink-noneed" type="submit" name="goto_pay_extra_paypal" value="Pay Online">
+                                            {% if not event.date_issoon %}
+                                                <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                                <input class="clink-noneed" type="submit" name="goto_pay_extra_mail" value="Send a Check">
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            {% else %}
+                                {% if client.transition_extra %}
+                                <!-- <div class="mycol-panel-btmfix">
+                                    &nbsp;
+                                </div> -->
+                                {% else %}
+                                <div class="mycol-panel-btmfix">
+                                    <a class="aclink-fine" target="_blank" href="{{extra_link}}">View Receipt</a>
+                                </div>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            
+            {% else %}
+                <div class="row">
+                    <div class="col s12 center">
+                        <div class="card mycol-panelplain">
+                            <div class="  mycol-subtext">
+                                <span class="mysize-large">
+                                {% if event.is_extra_pay_past_due_simple %}
+                                    <i class="icons-shift-sp material-icons medium client-late">error_outline</i>
+                                {% elif event.is_extra_pay_due_soon %}
+                                    <i class="icons-shift-sp material-icons medium client-warn">schedule</i>
+                                {% else %}<i class="icons-shift-sp2 material-icons medium client-fine">&nbsp;</i>
+                                {% endif %}
+                                Extra Fee Payment
+                                </span>
+                                <p class="mysize-small mycol-subtext mycol-panel-pad">
+                                
+                                {% if event.is_extra_pay_past_due_simple %}
+                                    ${{event.extra_fee|floatformat:'2'}} was due
+                                    {{event.extra_duedate|date:"n/j/Y"}}. Please pay now.  If your event is
+                                        soon, only online payment is possible.  
+                                        Online payment fees apply.
+                                {% elif event.is_extra_pay_due_soon %}
+                                    ${{event.extra_fee|floatformat:'2'}} due on
+                                    {{event.extra_duedate|date:"n/j/Y"}}.  If your event is
+                                        soon, only online payment is possible.  
+                                        Online payment fees apply.
+                                {% else %}
+                                    ${{event.extra_fee|floatformat:'2'}} 
+                                    {% if event.extra_duedate %}
+                                        due {{event.extra_duedate|date:"l F j, Y"}}
+                                    {% else %}
+                                        due 2 weeks before your event
+                                    {% endif %}
+                                    .  Feel free to make the payment now.  Online payment fees apply.
+                                {% endif %}
+                                </p>
+                            </div>
+                            {% if event.is_extra_pay_past_due_simple %}
+                                <div class="mycol-panel-btmfix">
+                                    <input class="clink-late" type="submit" name="goto_pay_extra_paypal" value="Pay Online">
+                                    {% if not event.date_issoon %}
+                                        <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                        <input class="clink-late" type="submit" name="goto_pay_extra_mail" value="Send a Check">
+                                    {% endif %}
+                                </div>
+                            {% elif event.is_extra_pay_due_soon %}
+                                <div class="mycol-panel-btmfix">
+                                    <input class="clink-warn" type="submit" name="goto_pay_extra_paypal" value="Pay Online">
+                                    {% if not event.date_issoon %}
+                                        <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                        <input class="clink-warn" type="submit" name="goto_pay_extra_mail" value="Send a Check">
+                                    {% endif %}
+                                </div>
+                            {% else %}
+                                <div class="mycol-panel-btmfix">
+                                    <input class="clink-noneed" type="submit" name="goto_pay_extra_paypal" value="Pay Online">
+                                    <div class="show-on-medium-and-down hide-on-large-only" style="line-height:8px;">&nbsp;</div>
+                                    <input class="clink-noneed" type="submit" name="goto_pay_extra_mail" value="Send a Check">
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+
+
+
+
+
+
+
+
+    
+    <!-- ***************************  MUSIC LIST PANEL ***************************** -->
+{% if mode != 'payment' %}    
+    {% if not event.waive_contract and not event.flag_contract_rcvd and not event.waive_music_list %}
+            <div class="row">
+                <div class="col s12 center">
+                    <div class="card mycol-panelplain">
+                        <div class="  mycol-subtext">
+                          <span class="mysize-large">
+                            <i class="icons-shift-sp2 material-icons medium client-fine">&nbsp;</i>
+                            Music Requests
+                          </span>
+                          <p class="mysize-small mycol-subtext mycol-panel-pad">...options will be shown after contract is signed.<br />&nbsp;</p>
+                          <div class="mycol-panel-btmfix2"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    {% else %}                          
+        {% if not event.waive_music_list %}
+        <div class="row">
+            <div class="col s12 center">
+                <div class="card mycol-panelplain">
+                    <div class="  mycol-subtext">
+                      <span class="mysize-large">
+                        {% if event.flag_music_list_rcvd %}<i class="icons-shift-sp material-icons medium client-fine">check</i>
+                        {% elif event.is_music_list_past_due_simple %}<i class="icons-shift-sp material-icons medium client-late">error_outline</i>
+                        {% elif event.is_music_list_due_soon %}<i class="icons-shift-sp material-icons medium client-warn">schedule</i>
+                        {% else %}<i class="icons-shift-sp2 material-icons medium client-fine">&nbsp;</i>
+                        <!-- control_point, event, info_outline, mode_edit, new_releases, notification_active
+                            priority_hight, remove_circle_outline, schedule  -->
+                        {% endif %}
+                        Music Requests</span>
+                      <p class="mysize-small mycol-subtext mycol-panel-pad">
+                        {% if event.flag_music_list_rcvd %}
+                            {% if client.transition_music_list %}
+                                Completed on {{client.music_list_date|date:"n/j/Y"}}
+                            {% else %}
+                                Completed on {{client.music_list_date|date:"n/j/Y"}}
+                            {% endif %}
+                        {% else %}
+                            {% if event.is_music_list_past_due_simple %}
+                                Now to the fun part!  Request were due {{event.music_list_duedate|date:"n/j/Y"}}.
+                                Complete the form now, we don't want to run out of time to prepare.  Have a great time picking your favorites,
+                                and reach out anytime if you have questions.  We love brainstorming music ideas!
+                            {% elif event.is_music_list_due_soon %}
+                                Now to the fun part!  Requests are due {{event.music_list_duedate|date:"n/j/Y"}}.  Look around and
+                                make your choices when you're ready.  Have a great time picking your favorites, and reach out
+                                anytime if you have questions. We love brainstorming music ideas!
+                            {% else %}
+                                {% if event.music_list_duedate %}
+                                Now to the fun part!  Requests are due {{event.music_list_duedate|date:"n/j/Y"}}.  Feel free to look around and
+                                make your choices any time you're ready.  Have a great time picking your favorites, and reach out
+                                anytime if you have questions. We love brainstorming music ideas!
+                                {% else %}
+                                Now to the fun part!  Requests are due a month before the event, feel free to look around and
+                                make your choices any time you're ready.  Have a great time picking your favorites, and reach out
+                                anytime if you have questions. We love brainstorming music ideas!
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                      </p>
+                    </div>
+                    {% if event.flag_music_list_rcvd %}
+                        <div class="mycol-panel-btmfix">
+                            <!-- <a class="aclink-fine" target="_blank" href="{{requests_link}}" style="text-transform:capitalize;">View</a> -->
+                            {{event.music_list|safe}}
+                        </div>
+                    {% elif event.is_music_list_past_due_simple %}
+                        <div class="mycol-panel-btmfix">
+                            <input class="clink-late" type="submit" name="goto_submit_music_requests" value="Choose Your Music">
+                        </div>
+                    {% elif event.is_music_list_due_soon %}
+                        <div class="mycol-panel-btmfix">
+                            <input class="clink-warn" type="submit" name="goto_submit_music_requests" value="Choose Your Music">
+                        </div>
+                    {% else %}
+                        <div class="mycol-panel-btmfix">
+                            <input class="clink-noneed" type="submit" name="goto_submit_music_requests" value="Choose Your Music">
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+        </div>
+    
+        {% endif %}
+    {% endif %}
+    
+    <!-- ***************************  FINAL CONFIRMATION PANEL ***************************** -->
+    {% if not event.waive_contract and not event.flag_contract_rcvd %}
+            <div class="row">
+                <div class="col s12 center">
+                    <div class="card mycol-panelplain">
+                        <div class="  mycol-subtext">
+                          <span class="mysize-large">
+                            <i class="icons-shift-sp2 material-icons medium client-fine">&nbsp;</i>
+                            Final Event Details
+                          </span>
+                          <p class="mysize-small mycol-subtext mycol-panel-pad">...will be available to confirm after contract is signed, 
+                            any necessary payments made, and music requests are received.</p>
+                          <div class="mycol-panel-btmfix2"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    {% elif not event.waive_payment and not event.flag_final_payment_rcvd and not event.waive_music_list and not event.flag_music_list_rcvd %}
+        <!-- payment and music list not received, don't allow final event details yet -->
+            <div class="row">
+                <div class="col s12 center">
+                    <div class="card mycol-panelplain">
+                        <div class="  mycol-subtext">
+                          <span class="mysize-large">
+                            <i class="icons-shift-sp2 material-icons medium client-fine">&nbsp;</i>
+                            Final Event Details
+                          </span>
+                          <p class="mysize-small mycol-subtext mycol-panel-pad">...will be available to confirm after payment is complete, and after music requests
+                            are received.</p>
+                          <div class="mycol-panel-btmfix2"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+    {% elif not event.waive_payment and not event.flag_final_payment_rcvd %}
+        <!-- payment not received, don't allow final event details yet        -->
+            <div class="row">
+                <div class="col s12 center">
+                    <div class="card mycol-panelplain">
+                        <div class="  mycol-subtext">
+                          <span class="mysize-large">
+                            <i class="icons-shift-sp2 material-icons medium client-fine">&nbsp;</i>
+                            Final Event Details
+                          </span>
+                          <p class="mysize-small mycol-subtext mycol-panel-pad">...will be available to confirm after payment is complete.</p>
+                          <div class="mycol-panel-btmfix2"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                    
+    {% elif not event.waive_music_list and not event.flag_music_list_rcvd %}
+        <!-- music list not received, don't allow final event details yet -->
+            <div class="row">
+                <div class="col s12 center">
+                    <div class="card mycol-panelplain">
+                        <div class="  mycol-subtext">
+                          <span class="mysize-large">
+                            <i class="icons-shift-sp2 material-icons medium client-fine">&nbsp;</i>
+                            Final Event Details
+                          </span>
+                          <p class="mysize-small mycol-subtext mycol-panel-pad">...will be available to confirm after music requests are received.</p>
+                          <div class="mycol-panel-btmfix2"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                        
+    {% else %}                          
+    <!-- <div class="row"> -->
+        <div class="row">
+            <div class="col s12 center">
+                <div class="card mycol-panelplain">
+                    <div class="  mycol-subtext">
+                      <span class="mysize-large">
+                        {% if event.flag_final_confirmation_rcvd %}<i class="icons-shift-sp material-icons medium client-fine">check</i>
+                        {% elif event.is_final_confirmation_past_due_simple %}<i class="icons-shift-sp material-icons medium client-late">error_outline</i>
+                        {% elif event.is_final_confirmation_due_soon %}<i class="icons-shift-sp material-icons medium client-warn">schedule</i>
+                        {% else %}<i class="icons-shift-sp2 material-icons medium client-fine">&nbsp;</i>
+                        <!-- control_point, event, info_outline, mode_edit, new_releases, notification_active
+                            priority_hight, remove_circle_outline, schedule  -->
+                        {% endif %}
+                        Final Event Details</span>
+                      <p class="mysize-small mycol-subtext mycol-panel-pad">
+                        {% if event.flag_final_confirmation_rcvd %}
+                            {% if client.transition_verify_info %}
+                                Confirmed on {{client.verify_info_date|date:"n/j/Y"}}.
+                            {% else %}
+                                Confirmed on {{client.verify_info_date|date:"n/j/Y"}}.
+                            {% endif %}
+                        {% else %}
+                            {% if event.is_final_confirmation_past_due_simple %}
+                                Was due {{event.confirmation_duedate|date:"F j, Y"}}. 
+                                Confirm the details now and we'll be all set!
+                            {% elif event.is_final_confirmation_due_soon %}
+                                {% if event.confirmation_duedate %}
+                                    Due {{event.confirmation_duedate|date:"l F j, Y"}}.
+                                {% endif %}
+                                Confirm the details now and we'll be all set!
+                            {% else %}
+                                ...will be available to confirm when your event date is closer!
+                            {% endif %}
+                        {% endif %}
+                      </p>
+                    </div>
+                    {% if event.flag_final_confirmation_rcvd %}
+                        <div class="mycol-panel-btmfix">
+                            <input class="clink-fine" type="submit" name="goto_view_final_details" value="View">
+                        </div>
+                    {% elif event.is_final_confirmation_past_due_simple %}
+                        <div class="mycol-panel-btmfix">
+                            <input class="clink-late" type="submit" name="goto_confirm_final_details" value="Confirm">
+                        </div>
+                    {% elif event.is_final_confirmation_due_soon %}
+                        <div class="mycol-panel-btmfix">
+                            <input class="clink-warn" type="submit" name="goto_confirm_final_details" value="Confirm">
+                        </div>
+                    {% else %}
+                        <!-- &nbsp; -->
+                        <div class="mycol-panel-btmfix">
+                            <input hidden class="clink-noneed" type="submit" name="goto_confirm_final_details" value="Confirm">
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    
+    {% endif %}
+    
+{% endif %}    
+    
+    
+    
+     
+    <div class="col s4">
+        <!-- <button id="goto_signout" type="submit" name="goto_signout"
+                class="btn" style="background-color:lightgrey;color:black;">[X] SIGN OUT
+        </button> -->
+    </div>
+    <div class="col s4"></div>
+    <div class="col s4">
+        <!-- <button id="goto_contract_prep" type="submit" name="goto_contract_prep"
+                class="btn z-depth-2 ev-col2">CONTINUE >>
+        </button> -->
+    </div>
+
+
+
+{% endif %}
+
+</div>
+</form>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/events_clients.js' %}"></script>
+<script src="{%  static 'js/jSignature.min.js' %}"></script>
+
+{% endblock %}
+
+    

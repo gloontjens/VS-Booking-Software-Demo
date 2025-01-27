@@ -1,0 +1,1308 @@
+{% extends 'events/base.html' %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load static %}
+{% load phone %}
+{% load tozero %}
+
+
+<!-- if Hold, then auto-hide/show date or hold until field -->
+<!-- if Agency booking, add options to waive deposit/payment,waive contract -->
+<!-- if ensemble_choices sq, st, sd, vs, os auto-add ensemble_number entry
+            add option to choose instruments for all these choices except sq? -->
+<!-- popup rate charts button -->
+
+{% block content %}
+
+<!-- hidden field holds state of page so js can know what to show/hide/highlight in nav bar -->
+{% if form.instance.id %}
+    <input type="hidden" id="page_flag" value="edit">
+    <input type="hidden" id="page_instance" value="{{ form.instance.id }}">
+    <input type="hidden" id="page_popup" value="{{ popup }}">
+{% else %}
+    <input type="hidden" id="page_flag" value="new">
+    <input type="hidden" id="page_instance" value="2">
+    <input type="hidden" id="page_popup" value="none">
+{% endif %}
+
+
+<div id="id_please_wait" class="modal">
+    <div class="modal-content" style="text-align:center">
+      <h4>Saving Event...</h4>
+    </div>
+    <div class="modal-footer">
+      <div id="id_please_wait_bar" class="progress">
+        <div class="indeterminate"></div>
+      </div>
+    </div>
+</div>
+
+
+
+
+
+<div>
+
+    <br /><br />
+    
+    <!-- below div was for jquery-ui dialog box test -->
+    <!-- <div id="dialog-confirm" hidden title="Empty the recycle bin?">
+        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>These items will be permanently deleted and cannot be recovered. Are you sure?</p>
+    </div> -->
+ 
+    <form method="POST" class="" id="form" autocomplete="off">
+    {% csrf_token %}
+    <input type="hidden" id="next" name="next" value="{{ request.META.HTTP_REFERER }}">
+
+    
+    
+    <div class="row">
+        <!-- green lighten-3, yellow lighten-2, red lighten-4, grey lighten-2, ev-badge-norm, ev-badge-disabled -->
+        <div class="col s13"><span class="badge ev-badge-norm flag-empty" id="flag_contract"
+            data-badge-caption="contract"></span></div>            
+        <div class="col s13"><span class="badge flag-empty ev-badge-norm" id="flag_deposit"
+            data-badge-caption="deposit"></span></div>            
+        <div class="col s13"><span class="badge flag-empty ev-badge-norm" id="flag_music_list" 
+            data-badge-caption="music list"></span></div>            
+        <div class="col s13"><span class="badge flag-empty ev-badge-norm" id="flag_musicians"
+            data-badge-caption="musicians"></span></div>            
+        <div class="col s13"><span class="badge flag-empty ev-badge-norm" id="flag_final_pay"
+            data-badge-caption="final pay"></span></div>            
+        <div class="col s13"><span class="badge flag-empty ev-badge-norm" id="flag_confirm"
+            data-badge-caption="confirm"></span></div>            
+        <div class="col s13"><span class="badge flag-empty ev-badge-norm" id="flag_fact_sheets"
+            data-badge-caption="fact sheets"></span></div>            
+    </div>        
+
+    <div class="row">
+        <div class="col s12 m1 ev-top-label">
+
+            <div style="">
+                <label for="{{ form.automation.auto_id }}" class="left" style="margin-left:-15px;">
+                <input type="checkbox" class="filled-in ev-auto-check" name="automation" style=""
+                    {% if form.automation.value %}checked{% endif %} id="{{ form.automation.auto_id }}" />
+                <span style="text-transform:uppercase;display:inline;font-size:13px; color:orange;font-weight:bold; padding-left:23px;">{{ form.automation.label }}</span>
+                </label>
+            </div>
+
+            <span class="ev-remind-activity-label" style="word-wrap:break-word">
+            <span class="hide-on-small-only"><br /></span>Reminders</span>
+            <span class="hide-on-small-only"><br /></span>
+            <a class="btn-small ev-btn-remind" 
+                {% if form.instance.id %}
+                    onclick="return showEditPopup('/remind/{{ form.instance.id }}/create');"
+                {% else %}
+                    onclick="return showEditPopup('/remind/2/create');"
+                {% endif %}
+                id="id_reminder_add" style="z-index: 1;position: relative;">+
+            </a>
+        </div>
+        
+        <div class="col s12 m5 ev-badge-border-reminders" style="overflow: auto">
+            <span class="ev-reminders" id="id_reminders_list">
+                {% include 'events/render_reminderslist.html' %}
+            </span>
+        </div>
+        
+        <!-- <div class="col s12 hide-on-med-and-up"><br /></div> -->
+        
+        <div class="col s12 m1 ev-top-label">
+            <span class="ev-remind-activity-label" style="word-wrap:break-word">Recent Activity</span>
+            <br />
+            <a class="btn-small ev-btn-remind" 
+                {% if form.instance.id %}
+                    onclick="return showEditPopup('/activity/{{ form.instance.id }}/create');"
+                {% else %}
+                    onclick="return showEditPopup('/activity/2/create');"
+                {% endif %}
+                id="id_activity_add" style="z-index: 1;position: relative;">+
+            </a>
+        </div>
+        <div class="col s12 m5 ev-badge-border-actions" style="overflow: auto">
+            <span class="ev-reminders" id="id_activities_list">
+                {% for activity in activities %}
+                        <span class="ev-activity-list">{{ activity.date|date:'n/j' }}: {{ activity.name }}
+                        </span><br />
+                {% endfor %}
+            </span>
+       </div>
+    </div>
+        
+    <div class="col s12" style="height:20px">
+    </div>
+            
+
+               
+    <div class="row">
+    
+        <div class="fieldError">{{ form.non_field_errors }}</div>
+        
+        <div class="col s10 m8 l5 xl3 offset-s1 offset-m2 ev-round z-depth-1 ev-shaded2" id="ev-pad-right"><div class="ev-pad"><br /></div>
+            <div class="col s7 m7 l7 xl7" style="padding-left:0px;">
+                <div class="input-field ev-shortline">
+                    <i class="material-icons prefix ev-icons">report</i>
+                    {{ form.type|add_class:"dummyvalidate" }}
+                    {{ form.type.label_tag }}
+                    <div class="error-text">{{ form.type.errors }}</div>
+                    <span class="helper-text">{{ form.type.help_text }}</span>
+                </div>
+            </div>
+            <div class="col s5 m5 l5 xl5">
+                <div class="input-field col s12 m12 l12 xl12 datepicker ev-shortline" id="toggle_hold"
+                            {% if form.instance.id and form.type.value == 'HD' %}
+                                style=""
+                            {% else %}
+                                style="display: none"
+                            {% endif %}
+                            >
+                    <!-- {{ form.hold_until|add_class:"dummyvalidate" }} {{form.hold_until.value|date:"D d M Y"}}
+                                                                {{ form.hold_until.name }} -->
+                    <input type="text" name="{{ form.hold_until.name }}" 
+                            value="{{form.hold_until.value|date:'n/j/y'}}" class="dummyvalidate"
+                            id="{{form.hold_until.auto_id}}">
+                    {{ form.hold_until.label_tag }}
+                    <div class="error-text">{{ form.hold_until.errors }}</div>
+                    <span class="helper-text">{{ form.hold_until.help_text }}</span>
+                </div>
+            </div>
+            <div class="col s5 m5 l5 xl5" id="toggle_agency_booking" 
+                            {% if form.instance.id and form.type.value == 'AB' %}
+                                style=""
+                            {% else %}
+                                style="display: none"
+                            {% endif %}
+                            >
+                <div class="col s12 m12 l12 xl12">
+                    <div class="ev-pad2"><br /></div>
+                    <label for="{{ form.waive_contract.auto_id }}" style="margin-left:-15px;">
+                    <input type="checkbox" class="filled-in" name="waive_contract"
+                        {% if form.waive_contract.value %}checked{% endif %} id="{{ form.waive_contract.auto_id }}" />
+                    <span style="font-size:13px; padding-left:23px; margin-right:-60px">{{ form.waive_contract.label }}</span>
+                    </label>
+                    <br />
+                    <div class="error-text">{{ form.waive_contract.errors }}</div>
+                    <label for="{{ form.waive_payment.auto_id }}" style="margin-left:-15px;">
+                        <input type="checkbox" class="filled-in" name="waive_payment"
+                                {% if form.waive_payment.value %}checked{% endif %} id="{{ form.waive_payment.auto_id }}" />
+                        <span style="font-size:13px; padding-left:23px;margin-right:-60px">{{ form.waive_payment.label }}</span>
+                    </label>
+                    <div class="error-text">{{ form.waive_payment.errors }}</div>
+                </div>
+            </div>
+        </div>
+
+        {% if form.instance.id %}        
+        <div class="col s12 m10 l7 xl5 offset-m1 ev-round z-depth-1 ev-shaded" id="ev-pad-right"><div class="ev-pad"><br /></div>
+            <div class="col s11 m11 l11 xl11" style="padding-left:0px;">
+                <div class="input-field ev-shortline">
+                    <i class="material-icons prefix ev-icons">account_circle</i>
+                    {{ form.name|add_class:"dummyvalidate ev-fields-bold" }}{{ form.name.label_tag }}
+                    <div class="error-text">{{ form.name.errors }}</div>
+                    <span class="helper-text">{{ form.name.help_text }}</span>
+                </div>
+            </div>
+            <div class="col s1 m1 l1 xl1 ev-veryshortline" style="padding-left:4px;">
+                <div class="ev-pad2"><br /></div>
+                <div class="input-field" style="margin-top:0px;">
+                    <a class="tooltipped" target="_blank" data-tooltip="Go to client's home site" href="https://events.vanderbiltstrings.com/events/client_home/{{ form.instance.id }}/">
+                        <span style="font-size:32px;">&#8599;</span>
+                    </a>
+                </div>
+            </div> 
+        </div>
+        {% else %}
+        <div class="col s12 m10 l7 xl5 offset-m1 ev-round z-depth-1 ev-shaded" id="ev-pad-right"><div class="ev-pad"><br /></div>
+            <div class="col s12 m12 l12 xl12" style="padding-left:0px;">
+                <div class="input-field ev-shortline">
+                    <i class="material-icons prefix ev-icons">account_circle</i>
+                    {{ form.name|add_class:"dummyvalidate ev-fields-bold" }}{{ form.name.label_tag }}
+                    <div class="error-text">{{ form.name.errors }}</div>
+                    <span class="helper-text">{{ form.name.help_text }}</span>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
+      
+        <div class="col s8 m6 l4 xl3 offset-s2 offset-m3 ev-round z-depth-1 ev-shaded2"><div class="ev-pad"><br /></div>
+            <div class="col s12 m12 l12 xl12" style="padding-left:0px;">
+                <div class="input-field ev-shortline">
+                    <i class="material-icons prefix ev-icons">accessibility</i>
+                    {{ form.friendly_name|add_class:"dummyvalidate" }}
+                    {{ form.friendly_name.label_tag }}
+                    <div class="error-text">{{ form.friendly_name.errors }}</div>
+                    <span class="helper-text">{{ form.friendly_name.help_text }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s10 m8 l5 xl3 offset-s1 offset-m2 ev-round z-depth-1 ev-shaded" id="ev-pad-right"><div class="ev-pad"><br /></div>
+            <div class="col s12 m12 l12 xl12" style="padding-left:0px;">
+                <div class="input-field datepicker ev-veryshortline">
+                    <i class="material-icons prefix ev-icons">event</i>
+                    <input type="text" name="{{ form.date.name }}" 
+                            value="{{form.date.value|date:'l, F j, Y'}}" class="dummyvalidate"
+                            required id="{{form.date.auto_id}}">
+                    
+                    {{ form.date.label_tag }}
+                    <div class="error-text">{{ form.date.errors }}</div>
+                    <span class="helper-text">{{ form.date.help_text }}</span>
+                </div>
+            </div>
+            <div class="col s5 m5 l5 xl5" style="padding-left:0px;">
+                <div class="input-field timepicker ev-shortline">
+                    <i class="material-icons prefix ev-icons">access_time</i>
+                    {{ form.start_time|add_class:"dummyvalidate" }}
+                    {{ form.start_time.label_tag }}
+                    <div class="error-text">{{ form.start_time.errors }}</div>
+                    <span class="helper-text">{{ form.start_time.help_text }}</span>
+                </div> 
+            </div>
+            <div class="col s3 m3 l3 xl3" style="padding-left:0px;">   
+                <div class="input-field timepicker ev-shortline">
+                    {{ form.end_time|add_class:"dummyvalidate" }}
+                    {{ form.end_time.label_tag }}
+                    <div class="error-text">{{ form.end_time.errors }}</div>
+                    <span class="helper-text">{{ form.end_time.help_text }}</span>
+                </div>
+            </div>
+            <div class="col s4 m4 l4 xl4" style="padding-left:0px;">    
+                <div class="input-field timepicker ev-shortline">
+                    {{ form.ceremony_time|add_class:"dummyvalidate" }}
+                    {{ form.ceremony_time.label_tag }}
+                    <div class="error-text">{{ form.ceremony_time.errors }}</div>
+                    <span class="helper-text">{{ form.ceremony_time.help_text }}</span>
+                </div>
+            </div>    
+        </div>
+        
+        <div class="col s12 m10 l7 xl5 offset-m1 ev-round z-depth-1 ev-shaded2" id="ev-pad-right"><div class="ev-pad"><br /></div>
+            <div class="col s12 m12 l12 xl12" style="padding-left:0px;">
+                <div class="input-field ev-veryshortline" style="z-index:0;">
+                    <i class="material-icons prefix ev-icons">stars</i>
+                    {{ form.event_type|add_class:"dummyvalidate" }}
+                    {{ form.event_type.label_tag }}
+                    <div class="error-text">{{ form.event_type.errors }}</div>
+                    <span class="helper-text" style="z-index:-1;">{{ form.event_type.help_text }}</span>
+                </div>
+            </div>
+
+            <div class="col s9 m9 l9 xl9" style="padding-left:0px;">
+                <div class="input-field ev-shortline" style="z-index:0;">
+                    <i class="material-icons prefix ev-icons">group</i>
+                    {{ form.ensemble|add_class:"dummyvalidate" }}
+                    {{ form.ensemble.label_tag }}
+                    <div class="error-text">{{ form.ensemble.errors }}</div>
+                    <span class="helper-text" style="z-index:-1;">{{ form.ensemble.help_text }}</span>
+                </div>
+            </div>
+            <div class="col s3 m3 l3 xl3">
+                <div class="input-field ev-shortline">
+                    {{ form.ensemble_number|add_class:"dummyvalidate updateFees updateMusicians" }}
+                    <label for="{{ form.ensemble_number.auto_id }}">
+                        {{ form.ensemble_number.label }}
+                    </label>
+                    <div class="error-text">{{ form.ensemble_number.errors }}</div>
+                    <span class="helper-text">{{ form.ensemble_number.help_text }}</span>
+                </div>
+            </div>
+        </div>
+        
+                    
+        <div class="col s8 m6 l4 xl3 offset-s2 offset-m3 ev-round z-depth-1 ev-shaded"><div class="ev-pad"><br /></div>
+            <div class="col s9 m9 l9 xl9" style="padding-left:0px;">
+                <div class="input-field ev-veryshortline" style="z-index: 0;">
+                    <i class="material-icons prefix ev-icons">attach_money</i>
+                    {{ form.fee|add_class:"dummyvalidate updateFees"}}
+                    {{ form.fee.label_tag }}
+                    <div class="error-text">{{ form.fee.errors }}</div>
+                    <span class="helper-text">{{ form.fee.help_text }}</span>
+                </div>
+            </div>
+            <div class="col s3 m3 l3 xl3 ev-veryshortline" style="padding-left:4px;">
+                <div class="ev-pad2"><br /></div>
+                <div class="input-field" style="margin-top:0px;">
+                    <button type="button" class="btn ev-btn modal-trigger" data-target="ratechartmodal" style="z-index: 1;position: relative;"></button>
+                </div>
+            </div> 
+            <div class="col s5 m5 l5 xl5">
+                <div class="input-field ev-shortline">
+                    {{ form.musician_fee|add_class:"dummyvalidate updateFees" }}
+                    {{ form.musician_fee.label_tag }}
+                    <div class="error-text">{{ form.musician_fee.errors }}</div>
+                    <span class="helper-text">{{ form.musician_fee.help_text }}</span>
+                </div>
+            </div>    
+            <div class="col s4 m4 l4 xl4">
+                <div class="input-field ev-shortline">
+                    <!-- <input readonly id="{{ form.contracting_fee.auto_id }}" type="number" min="0" 
+                            name="contracting_fee"> -->
+                    {{ form.contracting_fee|add_class:"dummyvalidate updateFeesContracting" }}
+                    {{ form.contracting_fee.label_tag }}
+                    <div class="error-text">{{ form.contracting_fee.errors }}</div>
+                    <span class="helper-text">{{ form.contracting_fee.help_text }}</span>
+                </div>
+            </div>
+            <div class="col s3 m3 l3 xl3" style="padding-left:0px; margin-left:-6px;">
+                <span class="ev-helper-text ev-pad2"><br /><br /><br />Details</span>
+                <div class="switch">
+                    <label><input type="checkbox" id="fee_button"><span class="lever"></span></label>
+                </div>
+            </div>
+            
+            <div class="col s12 m12 l12 xl12 ev-slider2 ev-closed2" id="toggle_fee">   
+                <div class="col s6 m6 l6 xl6">
+                    <div class="input-field ev-shortline">
+                        {{ form.deposit_fee|add_class:"dummyvalidate updateFeesDeposit" }}
+                        {{ form.deposit_fee.label_tag }}
+                        <div class="error-text">{{ form.deposit_fee.errors }}</div>
+                        <span class="helper-text">{{ form.deposit_fee.help_text }}</span>
+                    </div>
+                </div>    
+                <!-- <div class="col s6 m6 l6 xl6">
+                    <div class="input-field ev-shortline datepicker">
+                        <input type="text" name="{{ form.deposit_date.name }}" 
+                            value="{{form.deposit_date.value|date:'n/j/y'}}" class="dummyvalidate"
+                            id="{{form.deposit_date.auto_id}}">
+                        {{ form.deposit_date.label_tag }}
+                        <div class="error-text">{{ form.deposit_date.errors }}</div>
+                        <span class="helper-text">{{ form.deposit_date.help_text }}</span>
+                    </div>
+                </div>     -->
+                <div class="col s6 m6 l6 xl6">
+                    <div class="input-field ev-shortline">
+                        {{ form.final_fee|add_class:"dummyvalidate updateFeesFinal" }}
+                        {{ form.final_fee.label_tag }}
+                        <div class="error-text">{{ form.final_fee.errors }}</div>
+                        <span class="helper-text">{{ form.final_fee.help_text }}</span>
+                    </div>
+                </div>    
+                <!-- <div class="col s6 m6 l6 xl6">
+                    <div class="input-field ev-shortline datepicker">
+                        <input type="text" name="{{ form.final_date.name }}" 
+                            value="{{form.final_date.value|date:'n/j/y'}}" class="dummyvalidate"
+                            id="{{form.final_date.auto_id}}">
+                        {{ form.final_date.label_tag }}
+                        <div class="error-text">{{ form.final_date.errors }}</div>
+                        <span class="helper-text">{{ form.final_date.help_text }}</span>
+                    </div>
+                </div>     -->
+                <div class="col s12 m12 l12 xl12">
+                    <label for="{{ form.cash_fee.auto_id }}" class="ev-shortline" style="">
+                        <input type="checkbox" class="filled-in" name="cash_fee"
+                                {% if form.cash_fee.value %}checked{% endif %} id="{{ form.cash_fee.auto_id }}" />
+                        <span style="padding-left:30px;padding-bottom:30px;">{{ form.cash_fee.label }}</span>
+                    </label>
+                </div> 
+            </div> 
+        </div>
+    </div>
+
+    
+    <div class="row">
+        <div class="col s10 m8 l5 xl3 offset-s1 offset-m2 ev-round ev-pad-right z-depth-1 ev-shaded2" id="ev-pad-right"><div class="ev-pad"><br /></div>
+            <div class="col s12 m12 l12 xl12 ev-lessshortline" style="padding-left:0px;">
+                <div class="input-field ev-veryshortline" style="z-index:0;">
+                    <i class="material-icons prefix ev-icons">contacts</i>
+                    {{ form.contact|add_class:"dummyvalidate" }}              
+                    {{ form.contact.label_tag }}
+                    <div class="error-text">{{ form.contact.errors }}</div>
+                    <span class="helper-text" style="z-index:-1;">{{ form.contact.help_text }}</span>
+                </div>
+            </div>
+            <div class="col s10 m10 l10 xl10" style="padding-left:0px;">
+                <div class="input-field ev-shortline">
+                    {{ form.contact_details|add_class:"dummyvalidate materialize-textarea" }}              
+                    {{ form.contact_details.label_tag }}
+                    <div class="error-text">{{ form.contact_details.errors }}</div>
+                    <span class="helper-text">{{ form.contact_details.help_text }}</span>
+                </div>
+            </div>
+            <div class="col s2 m2 l2 xl2 ev-shortline" style="padding-left:0px; margin-left:-12px;">
+                <br /><span class="ev-helper-text ev-pad2">Details</span>
+                <div class="switch">
+                    <label><input type="checkbox" id="contact_button"><span class="lever"></span></label>
+                </div>
+            </div>
+            
+            <div class="col s12 m12 l12 xl12 ev-slider ev-closed" id="toggle_contact_add">
+                <div class="input-field col s6 m6 l6 xl6 ev-veryshortline">
+                    {{ form.contact_agency|add_class:"dummyvalidate" }}
+                    {{ form.contact_agency.label_tag }}
+                    <div class="error-text">{{ form.contact_agency.errors }}</div>
+                    <span class="helper-text">{{form.contact_agency.help_text }}</span>
+                </div>
+                <div class="input-field col s5 m5 l5 xl5 ev-veryshortline">
+                    <input type="text" class="dummyvalidate" id="id_contact_phone_0"
+                            {% if form.contact_phone.value %}
+                                value="{{form.contact_phone.value}}"
+                            {% endif %}
+                            name="contact_phone_0" maxlength="100" />
+                    {{ form.contact_phone.label_tag }}
+                    <div class="error-text">{{ form.contact_phone.errors }}</div>
+                    <span class="helper-text">{{form.contact_phone.help_text }}</span>
+                </div>
+                <div class="input-field col s8 m8 l8 xl8 ev-veryshortline">
+                    {{ form.contact_email|add_class:"dummyvalidate" }}
+                    {{ form.contact_email.label_tag }}
+                    <div class="error-text">{{ form.contact_email.errors }}</div>
+                    <span class="helper-text">{{form.contact_email.help_text }}</span>
+                </div>
+                <div class="col s3 m3 l3 xl3 input-field">
+                    <label for="{{ form.contact_add.auto_id }}">
+                        <input type="checkbox" class="filled-in" name="contact_add"
+                                {% if form.contact_add.value %}checked{% endif %} id="{{ form.contact_add.auto_id }}" />
+                        <span style="padding-left:25px">{{ form.contact_add.label }}</span>
+                    </label>
+                    <div class="error-text">{{ form.contact_add.errors }}</div>
+                </div>
+            </div>
+                
+            <div class="col s12 m12 l12 xl12 ev-slider ev-closed" id="toggle_contact_show">
+                <div class="col s7 m7 l7 xl7">
+                    <label>Agency:</label><br />
+                    <div class="truncate" id="contact_show_agency">{{ form.contact_agency.value }}</div>
+                </div>
+                <div class="col s5 m5 l5 xl5">
+                    <label>Phone:</label><br />
+                    <div class="truncate" id="contact_show_phone">{{ form.contact_phone.value }}</div>
+                </div>
+                <div class="col s9 m9 l9 xl9">
+                    <label>Email:</label><br />
+                    <div class="truncate" id="contact_show_email">{{ form.contact_email.value }}</div>
+                </div>
+                <div class="col s3 m3 l3 xl3">
+                    <a id="edit_contact" style="cursor: pointer; cursor: hand;">
+                    <img style="width:20px;height:20px;vertical-align:-19px;border:1px solid black;"
+                         src = "{% static '/images/edit_icon_sm.png' %}"></a>
+                    <div class="ev-pad"><br />&nbsp;</div>       
+                </div>
+            </div>
+        </div> 
+        
+        <div class="col s12 m10 l7 xl5 offset-m1 ev-round z-depth-1 ev-shaded" id="ev-pad-right"><div class="ev-pad"><br /></div>
+            <div class="col s12 m12 l12 xl12 ev-lessshortline" style="padding-left:0px;">
+                <div class="input-field ev-veryshortline" style="z-index:0;">    
+                    <i class="material-icons prefix ev-icons">add_location</i>
+                    {{ form.location|add_class:"dummyvalidate" }}              
+                    {{ form.location.label_tag }}
+                    <div class="error-text">{{ form.location.errors }}</div>
+                    <span class="helper-text" style="z-index:-1;">{{ form.location.help_text }}</span>
+                </div>
+            </div>
+            <div class="col s8 m8 l8 xl8">
+                <div class="input-field ev-shortline" style="z-index:0;">
+                    {{ form.location_details|add_class:"dummyvalidate materialize-textarea" }}              
+                    {{ form.location_details.label_tag }}
+                    <div class="error-text">{{ form.location_details.errors }}</div>
+                    <span class="helper-text" style="z-index:-1">{{ form.location_details.help_text }}</span>
+                </div>
+            </div>
+            <div class="col s2 m2 l2 xl2 ev-shortline input-field" style="padding-left:-4px;">
+                <label for="{{ form.location_outdoors.auto_id }}" style="">
+                    <input type="checkbox" class="filled-in" name="location_outdoors"
+                            {% if form.location_outdoors.value %}checked{% endif %} id="{{ form.location_outdoors.auto_id }}" />
+                    <span style="font-size:14px; z-index:1; margin-left: -15px; padding-left:23px">{{ form.location_outdoors.label }}</span>
+                </label>
+            </div>
+            <div class="col s2 m2 l2 xl2 ev-shortline input-field" style="padding-left:6px;">
+                <span class="ev-helper-text ev-pad2"><br />Details</span>
+                <div class="switch">
+                    <label><input type="checkbox" id="location_button"><span class="lever"></span></label>
+                </div>
+            </div>
+        
+            
+            <div class="col s12 m12 l12 xl12 ev-slider ev-closed" id="toggle_location_add">
+                <div class="input-field col s7 m7 l7 xl7 ev-veryshortline">
+                    {{ form.location_address|add_class:"dummyvalidate" }}
+                    {{ form.location_address.label_tag }}
+                    <div class="error-text">{{ form.location_address.errors }}</div>
+                    <span class="helper-text">{{form.location_address.help_text }}</span>
+                </div>
+                <div class="input-field col s4 m4 l4 xl4 ev-veryshortline">
+                    {{ form.location_link|add_class:"dummyvalidate" }}
+                    {{ form.location_link.label_tag }}
+                    <div class="error-text">{{ form.location_link.errors }}</div>
+                    <span class="helper-text">{{form.location_link.help_text }}</span>
+                </div>
+                <div class="input-field col s6 m6 l6 xl6 ev-veryshortline">
+                    {{ form.location_email|add_class:"dummyvalidate" }}
+                    {{ form.location_email.label_tag }}
+                    <div class="error-text">{{ form.location_email.errors }}</div>
+                    <span class="helper-text">{{form.location_email.help_text }}</span>
+                </div>
+                <div class="input-field col s3 m3 l3 xl3 ev-veryshortline">
+                    <input type="text" class="dummyvalidate" id="id_location_phone_0"
+                            {% if form.location_phone.value %}
+                                value="{{form.location_phone.value}}"
+                            {% endif %}
+                            name="location_phone_0" maxlength="100" />
+                    {{ form.location_phone.label_tag }}
+                    <div class="error-text">{{ form.location_phone.errors }}</div>
+                    <span class="helper-text">{{form.location_phone.help_text }}</span>
+                </div>
+                <div class="col s2 m2 l2 xl2 input-field ev-veryshortline">
+                    <label for="{{ form.location_add.auto_id }}">
+                        <input type="checkbox" class="filled-in" name="location_add"
+                                {% if form.location_add.value %}checked{% endif %} id="{{ form.location_add.auto_id }}" />
+                        <span>{{ form.location_add.label }}</span>
+                    </label>
+                    <div class="error-text">{{ form.location_add.errors }}</div>
+                </div>
+            </div>
+            
+            <div class="col s12 m12 l12 xl12 ev-slider ev-closed" id="toggle_location_show">
+                <div class="col xl7">
+                    <label>Address:</label><br />
+                    <div class="truncate" id="location_show_address">{{form.location_address.value}}</div>
+                </div>
+                <div class="col s5 m5 l5 xl5">
+                    <label>Link:</label><br />
+                    <div class="truncate" id="location_show_link">{{form.location_link.value}}</div>
+                </div>
+                <div class="col s7 m7 l7xl7 ev-shortline">
+                    <label>Email:</label><br />
+                    <div class="truncate" id="location_show_email">{{form.location_email.value}}</div>
+                </div>
+                <div class="col s4 m4 l4 xl4">
+                    <label>Phone:</label><br />
+                    <div class="truncate" id="location_show_phone">{{form.location_phone.value}}</div>
+                </div>
+                <div class="col s1 m1 l1 xl1">
+                    <a id="edit_venue" style="cursor: pointer; cursor: hand;">
+                    <img style="width:20px;height:20px;vertical-align:-19px;border:1px solid black;"
+                         src = "{% static '/images/edit_icon_sm.png' %}"></a>
+                    <div class="ev-pad"><br />&nbsp;</div>        
+                </div>
+            </div>
+        </div>    
+
+        
+        <div class="col s8 m6 l4 xl3 offset-s2 offset-m3 ev-round z-depth-1 ev-shaded2"><div class="ev-pad"><br /></div>
+            <div class="col s12 m12 l12 xl12 ev-lessshortline" style="padding-left:0px;">
+                <div class="input-field ev-veryshortline" style="z-index:0;">
+                    <i class="material-icons prefix ev-icons">contact_phone</i>
+                    {{ form.dayofcontact|add_class:"dummyvalidate" }}              
+                    {{ form.dayofcontact.label_tag }}
+                    <div class="error-text">{{ form.dayofcontact.errors }}</div>
+                    <span class="helper-text" style="z-index:-1;">{{ form.dayofcontact.help_text }}</span>
+                </div>
+            </div>
+            <div class="col s10 m10 l10 xl10">
+                <div class="input-field ev-shortline">
+                    {{ form.dayofcontact_details|add_class:"dummyvalidate materialize-textarea" }}              
+                    {{ form.dayofcontact_details.label_tag }}
+                    <div class="error-text">{{ form.dayofcontact_details.errors }}</div>
+                    <span class="helper-text">{{ form.dayofcontact_details.help_text }}</span>
+                </div>
+            </div>
+            <div class="col s2 m2 l2 xl2 ev-shortline" style="padding-left:0px; margin-left:-12px;">
+                <br /><span class="ev-helper-text ev-pad2">Details</span>
+                <div class="switch">
+                    <label><input type="checkbox" id="dayofcontact_button"><span class="lever"></span></label>
+                </div>
+            </div>
+
+                 
+            <div class="col s12 m12 l12 xl12 ev-slider ev-closed" id="toggle_dayofcontact_add">
+                <div class="input-field col s5 m5 l5 xl5 ev-veryshortline">
+                    <input type="text" class="dummyvalidate" id="id_dayofcontact_phone_0"
+                            {% if form.dayofcontact_phone.value %}
+                                value="{{form.dayofcontact_phone.value}}"
+                            {% endif %}
+                            name="dayofcontact_phone_0" maxlength="100" />
+                    {{ form.dayofcontact_phone.label_tag }}
+                    <div class="error-text">{{ form.dayofcontact_phone.errors }}</div>
+                    <span class="helper-text">{{form.dayofcontact_phone.help_text }}</span>
+                </div>
+                <div class="input-field col s6 m6 l6 xl6 ev-veryshortline">
+                    {{ form.dayofcontact_email|add_class:"dummyvalidate" }}
+                    {{ form.dayofcontact_email.label_tag }}
+                    <div class="error-text">{{ form.dayofcontact_email.errors }}</div>
+                    <span class="helper-text">{{form.dayofcontact_email.help_text }}</span>
+                </div>
+                <div class="col s11 m11 l11 xl11 input-field ev-veryshortline">
+                    <label for="{{ form.dayofcontact_add.auto_id }}">
+                        <input type="checkbox" class="filled-in" name="dayofcontact_add"
+                                {% if form.dayofcontact_add.value %}checked{% endif %} id="{{ form.dayofcontact_add.auto_id }}" />
+                        <span>{{ form.dayofcontact_add.label }}</span>
+                    </label>
+                    <div class="error-text">{{ form.dayofcontact_add.errors }}</div>
+                </div>
+            </div>
+            
+            <div class="col s12 m12 l12 xl12 ev-slider ev-closed" id="toggle_dayofcontact_show">
+                <div class="col s5 m5 l5 xl5">
+                    <label>Phone:</label><br />
+                    <div class="truncate" id="dayofcontact_show_phone">{{form.dayofcontact_phone.value}}</div>
+                </div>
+                <div class="col s6 m6 l6 xl6">
+                    <label>Email:</label><br />
+                    <div class="truncate" id="dayofcontact_show_email">{{form.dayofcontact_email.value}}</div>
+                </div>
+                <div class="col s1 m1 l1 xl1 ev-shortline">
+                    <a id="edit_dayofcontact" style="cursor: pointer; cursor: hand;">
+                    <img style="width:20px;height:20px;vertical-align:-19px;border:1px solid black;"
+                         src = "{% static '/images/edit_icon_sm.png' %}"></a> 
+                    <div class="ev-pad"><br />&nbsp;</div>       
+                </div>
+            </div>
+        </div>     
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="row">
+        <div class="ev-musicians col s10 m8 l5 xl3 offset-s1 offset-m2 ev-round ev-pad-right z-depth-1 ev-shaded2" 
+                style="margin-right: 4.166666666%"><div class="ev-pad"><br /></div>
+            <div id="musicianslist">
+                {% if form.ensemble_number.value  %}
+                    <div class="col s2">    
+                        {% for i in form.ensemble_number.value|times %}
+                            <input class="musinput browser-default" 
+                                    id="id_rerank_{{i}}" type="text" value="{{i}}"><br />
+                        {% endfor %}   
+                    </div>    
+                    <div class="col s6">
+                        {% for musician in musicianlistyes %}
+                            <span class="truncate">
+                                {% if musician.gotit %}
+                                    <span style="color:green !important;">&#x2714;</span>
+                                {% endif %}
+                                {{ musician.musician.name }}
+                            </span>
+                        {% endfor %}
+                    </div>
+                    <div class="col s4">
+                        {% for musician in musicianlistyes %}
+                            {% if musician.musician.instrument2 %}
+                            <select class="browser-default ev-select musinputinst" id="id_rerank_{{musician.rank}}">
+                                <option value="{{ musician.musician.instrument }}" 
+                                    {% if musician.instrument == musician.musician.instrument %}
+                                        selected="selected"{% endif %}>{{ musician.musician.instrument }}
+                                </option>
+                                <option value="{{ musician.musician.instrument2 }}" 
+                                    {% if musician.instrument == musician.musician.instrument2 %}
+                                        selected="selected"{% endif %}>{{ musician.musician.instrument2 }}
+                                </option>
+                            </select>
+                            {% else %}
+                                <div class="ev-noselect">{{ musician.instrument }}</div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="col s12">(Musician list is waiting for ensemble)<br /></div>
+                {% endif %}
+            </div>
+            
+            <div class="col s10 m10 l10 xl10 ev-lessshortline"><br /><span id="musicians_hr" class="noshow"></span></div>
+            <div class="col s2 m2 l2 xl2" style="height:58px;padding-left:0px; margin-left:-12px; padding-bottom:8px;margin-top:-16px;">
+                <br /><span class="ev-helper-text ev-pad2">Details</span>
+                <div class="switch">
+                    <label><input type="checkbox" id="musicians_button"><span class="lever"></span></label>
+                </div>
+            </div>
+
+            <div class="col s12 m12 l12 xl12 ev-slider3 ev-closed3" id="toggle_musicians">
+                <div class="input-field col s7 ev-shortline">
+                    {{ form.musician }}
+                    {{ form.musician.label_tag }}
+                </div>
+                <div class="input-field col s4 ev-shortline">
+                    {{ form.instrument }}
+                    {{ form.instrument.label_tag }}
+                </div>
+                <div class="input-field col s1 ev-shortline">
+                    <button class="btn-small ev-btn4 ev-col9 z-depth-1" id="addmusician_btn"
+                        type="button">
+                    <span class="ev-btn4-text">+</span>
+                    </button>
+                </div>
+
+                <div id="musiciansaskedlist" style="color: black;">
+                {% if musiciansasked %}
+                        <div class="col s8 ev-veryshortline">&nbsp;</div>
+                        <div class="col s1 ev-veryshortline" style="font-size:10px;margin-left:-13px;">
+                            Invited
+                        </div>
+                        <div class="col s1 ev-veryshortline" style="font-size:10px;margin-left:10px;">
+                            YES
+                        </div>
+                        <div class="col s1 ev-veryshortline" style="font-size:10px;margin-left:1px;">
+                            NO
+                        </div>
+                        <div class="col s1 ev-veryshortline" style="font-size:10px;margin-left:-2px;">
+                            Delete
+                        </div>
+                    {% for musician in musiciansasked %}
+                        <div class="col s8 ev-veryshortline">
+                            <span class="truncate">{{ musician.musician.name }}</span>
+                        </div>
+                        <div class="col s1 ev-veryshortline"><span {% if musician.musician.name == "Janie Spangler" %}
+                                        class="addmusician_asked_noverify"{% else %}class="addmusician_asked"{% endif %}  
+                                    id="id_addmus_{{ musician.id }}"
+                                    style="cursor: pointer; cursor: hand;">
+                                {% if musician.asked %}&check;{% else %}<span style="color:#ccc">&#9744</span>{% endif %}
+                            </span>
+                        </div>
+                        <div class="col s1 ev-veryshortline"><span class="addmusician_yes" 
+                                    id="id_addmus_{{ musician.id }}"
+                                    style="cursor: pointer; cursor: hand;">
+                                {% if musician.yes %}&check;{% else %}<span style="color:#ccc">&#9744</span>{% endif %}
+                            </span>
+                        </div>
+                        <div class="col s1 ev-veryshortline"><span class="addmusician_no" 
+                                    id="id_addmus_{{ musician.id }}"
+                                    style="cursor: pointer; cursor: hand;">
+                                {% if musician.no %}&check;{% else %}<span style="color:#ccc">&#9744</span>{% endif %}
+                            </span>
+                        </div>
+                        <div class="col s1 ev-veryshortline" style="color: red;">
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="addmusician_delete" 
+                                    id="id_addmus_{{ musician.id }}"
+                                    style="cursor: pointer; cursor: hand;">x
+                                    </span>
+                            
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="col s12 ev-veryshortline">
+                        (no musicians asked or added yet)
+                    </div>
+                {% endif %}
+                </div>
+                
+                <div class="input-field col s5 ev-veryshortline">
+                    <a class="btn ev-btn2 ev-col9 z-depth-1" 
+                        {% if form.instance.id %}
+                            onclick="return showEditPopup('/musician/{{ form.instance.id }}/create');"
+                        {% else %}
+                            onclick="return showEditPopup('/musician/2/create');"
+                        {% endif %}>
+                    <span class="ev-btn2-text">New</span></a>
+                    
+                
+                    
+                    
+                    
+                </div>
+                <div class="input-field col s7 ev-veryshortline">
+                    <button name="_musicians_submit" type="submit" id="xbtn_musicians"
+                        class="btn ev-btn3 z-depth-3 ev-submitbtn4 waves-effect waves-light ev-col2">
+                    <span class="ev-btn3-text">Send Invites...</span></button>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+        
+        <div class="ev-notes col s12 m10 l7 xl5 offset-m1 ev-round z-depth-1 ev-shaded" 
+                style="padding-bottom:6px;padding-top:6px;" id="ev-pad-right"><div class="ev-pad"><br /></div>
+            {{ form.notes }} 
+        </div>
+        
+        <div class="ev-musiclist col s8 m6 l4 xl3 offset-s2 offset-m3 ev-round z-depth-1 ev-shaded2"
+                        style="padding-top:6px;"><div class="ev-pad"><br /></div>
+            
+            <label for="{{ form.waive_music_list.auto_id }}" style="">
+                <input type="checkbox" class="filled-in" name="waive_music_list"
+                        {% if form.waive_music_list.value %}checked{% endif %} id="{{ form.waive_music_list.auto_id }}" />
+                <span style="font-size:14px; z-index:1; margin-left: 0px; padding-left:23px;margin-bottom:6px;">
+                    {{ form.waive_music_list.label }}</span>
+            </label>
+            <div class="{% if form.waive_music_list.value %}noshow{% endif %}" id="waive_music_list_panel">
+                {{ form.music_list }}
+                
+                
+                
+            <!-- <div class="col s3 m3 l3 xl3" style="padding-left:0px; margin-left:-6px;">
+                <span class="ev-helper-text ev-pad2"><br /><br /><br />Details</span>
+                <div class="switch">
+                    <label><input type="checkbox" id="fee_button"><span class="lever"></span></label>
+                </div>
+            </div> -->
+                
+                
+                
+                
+                
+                <div class="input-field ev-shortline">
+                    <!-- <i class="material-icons prefix">accessibility</i> -->
+                    {{ form.recessional_cue|add_class:"dummyvalidate" }}
+                    {{ form.recessional_cue.label_tag }}
+                    <div class="error-text">{{ form.recessional_cue.errors }}</div>
+                    <span class="helper-text">{{ form.recessional_cue.help_text }}</span>
+                </div>
+                <div class="input-field ev-shortline">
+                    <!-- <i class="material-icons prefix">accessibility</i> -->
+                    {{ form.officiant_info|add_class:"dummyvalidate" }}
+                    {{ form.officiant_info.label_tag }}
+                    <div class="error-text">{{ form.officiant_info.errors }}</div>
+                    <span class="helper-text">{{ form.officiant_info.help_text }}</span>
+                </div>
+            </div>
+       </div>    
+    </div>    
+    
+    
+    
+    
+    <div class="" id="" style="display:none">
+        {{ form.event_type_name }}
+        {{ form.ensemble_name }}
+        {{ form.contact_name }}
+        {{ form.dayofcontact_name }}
+        {{ form.location_name }}
+        
+        {{ form.color_contract }}
+        {{ form.color_deposit }}
+        {{ form.color_music_list }}
+        {{ form.color_musicians }}
+        {{ form.color_final_payment }}
+        {{ form.color_final_confirmation }}
+        {{ form.color_fact_sheets }}
+        
+        {{ form.contract_sentdate }}
+        {{ form.deposit_sentdate }}
+        {{ form.final_sentdate }}
+        {{ form.music_list_sentdate }}
+        {{ form.musicians_sentdate }}
+        {{ form.confirmation_sentdate }}
+        {{ form.fact_sheets_sentdate }}
+        
+        {{ form.contract_rcvddate }}
+        {{ form.deposit_rcvddate }}
+        {{ form.final_rcvddate }}
+        {{ form.music_list_rcvddate }}
+        {{ form.musicians_rcvddate }}
+        {{ form.confirmation_rcvddate }}
+        {{ form.fact_sheets_rcvddate }}
+        
+        {{ form.contract_rcptdate }}
+        {{ form.deposit_rcptdate }}
+        {{ form.final_rcptdate }}
+
+        {{ form.contract_duedate }}
+        {{ form.deposit_duedate }}
+        {{ form.final_duedate }}
+        {{ form.music_list_duedate }}
+        {{ form.musicians_duedate }}
+        {{ form.confirmation_duedate }}
+        {{ form.fact_sheets_duedate }}
+        
+        {{ form.contract_senddate }}
+        {{ form.deposit_senddate }}
+        {{ form.final_senddate }}
+        {{ form.music_list_senddate }}
+        {{ form.musicians_senddate }}
+        {{ form.confirmation_senddate }}
+        {{ form.fact_sheets_senddate }}
+        
+        {{ form.flag_hold }}        
+        {{ form.flag_contract_sent }}
+        {{ form.flag_contract_rcvd }}
+        {{ form.flag_contract_rcpt }}
+        {{ form.flag_deposit_sent }}
+        {{ form.flag_deposit_rcvd }}
+        {{ form.flag_deposit_rcpt }}        
+        {{ form.flag_music_list_sent }}
+        {{ form.flag_music_list_rcvd }}
+        {{ form.flag_musicians_sent }}
+        {{ form.flag_musicians_rcvd }}
+        {{ form.flag_final_payment_sent }}
+        {{ form.flag_final_payment_rcvd }}
+        {{ form.flag_final_payment_rcpt }}        
+        {{ form.flag_final_confirmation_sent }}
+        {{ form.flag_final_confirmation_rcvd }}
+        {{ form.flag_fact_sheets_sent }}
+        {{ form.flag_fact_sheets_rcvd }}
+        
+        {{ form.hold_released }}
+        {{ form.event_archived }}
+        {{ form.event_reminders_done }}        
+        
+        {{ form.signature }}
+        {{ form.signature_date }}
+        
+        {{ form.version }}
+        {{ form.date_entered }}
+    </div>
+    <br />
+    <br />
+    <p>&nbsp;</p>
+    
+    
+    {% if form.instance.id %}
+        <button id="submitbtn" type="submit" name="_submit"
+            class="btn fixed-action-btn2 btn-large ev-submitbtn z-depth-5 ev-col4">SAVE</button>
+    {% else %}
+        <button id="submitbtn" type="submit" name="_submit"
+            class="btn fixed-action-btn2 btn-large ev-submitbtn z-depth-5 ev-col4">SAVE</button>
+    {% endif %}
+    
+    <div class="fixed-action-btn ev-action-btn" id="id_more_button">
+        <a class="ev-submitbtn2 z-depth-3 btn-large ev-col8">....</a>
+        <ul>
+            <li id="mbtn_archive"><button name="_archive_submit" type="submit" id="mbtn_style_archive"
+                    class="btn-floating ev-submitbtn3 z-depth-3 ev-col8 btn-clrred" style="width:74px;">
+                Archive</button></li>
+            <li id="mbtn_more">
+            <!-- <button name="_more_submit" type="submit" id="mbtn_style_more"
+                    class="btn-floating ev-submitbtn3 z-depth-3 ev-col8" style="width:74px">
+                All Forms-></button> -->
+            
+                <button name="_more_submit" type="button" id="mbtn_style_more" 
+                    class="btn-floating modal-trigger z-depth-3 ev-col8" data-target="morebuttonmodal" 
+                    style="width:74px; color:black;">Forms-->
+                </button>
+            </li>
+            <li id="mbtn_email"><button name="_email_submit" type="submit" id="mbtn_style_email"
+                    class="btn-floating ev-submitbtn3 z-depth-3 ev-col8" style="width:74px">
+                Email...</button></li>
+            <li id="mbtn_invoice"><button name="_invoice_submit" type="submit" id="mbtn_style_invoice" 
+                    class="btn-floating ev-submitbtn3 z-depth-3 ev-col8" style="width:74px">
+                Invoice</button></li>
+        </ul>
+    </div>    
+
+
+
+    
+    <div class="fixed-action-btn" id="id_action_button">
+        <a class="ev-submitbtn2 z-depth-3 btn-large ev-col2 ev-hsend-btn"
+            style="width:90px;padding-left:20px;">SEND...</a>
+        <ul>
+            <li id="btn_factsheet"><button name="_factsheet_submit" type="submit" id="btn_style_factsheet" 
+                    class="btn-floating ev-submitbtn3 z-depth-3 ev-col2" style="width:92px">
+                Fact Sheets</button></li>
+            <li id="btn_musicians"><button name="_musicians_submit" type="submit" id="btn_style_musicians"
+                    class="btn-floating ev-submitbtn3 z-depth-3 ev-col2" style="width:92px">
+                Invite...</button></li>
+            <li id="btn_confirmation"><button name="_confirmation_submit" type="submit" id="btn_style_confirmation"
+                    class="btn-floating ev-submitbtn3 z-depth-3 ev-col2" style="width:92px">
+                Confirm</button></li>
+                
+            <li id="btn_receipt_finalpay"><button name="_receipt_finalpay_submit" type="submit" id="btn_style_receipt_finalpay"
+                    class="btn-floating ev-submitbtn3 z-depth-3 ev-col2" style="width:92px">
+                Rcpt Final</button></li>
+                
+            <li id="btn_finalpay"><button name="_finalpay_submit" type="submit" id="btn_style_finalpay"
+                    class="btn-floating ev-submitbtn3 z-depth-3 ev-col2" style="width:92px">
+                Final Pay</button></li>
+            <li id="btn_musiclist"><button name="_musiclist_submit" type="submit" id="btn_style_musiclist"
+                    class="btn-floating ev-submitbtn3 z-depth-3 ev-col2" style="width:92px">
+                Music List</button></li>
+                
+            <li id="btn_receipt_deposit"><button name="_receipt_deposit_submit" type="submit" id="btn_style_receipt_deposit"
+                    class="btn-floating ev-submitbtn3 z-depth-3 ev-col2" style="width:92px">
+                Rcpt Dept</button></li>
+            <li id="btn_receipt_contract"><button name="_receipt_contract_submit" type="submit" id="btn_style_receipt_contract"
+                    class="btn-floating ev-submitbtn3 z-depth-3 ev-col2" style="width:92px">
+                Rcpt Contr</button></li>
+                
+            <li id="btn_deposit"><button name="_deposit_submit" type="submit" id="btn_style_deposit"
+                    class="btn-floating ev-submitbtn3 z-depth-3 ev-col2" style="width:92px">
+                Deposit</button></li>
+            <li id="btn_contract"><button name="_contract_submit" type="submit" id="btn_style_contract"
+                    class="btn-floating ev-submitbtn3 z-depth-3 ev-col2" style="width:92px">
+                Contract</button></li>
+            <li id="btn_depositcontract"><button name="_depositcontract_submit" type="submit" id="btn_style_depositcontract"
+                    class="btn-floating ev-submitbtn3 z-depth-3 ev-col2" style="width:92px">
+                Dept+Contr</button></li>
+            <li id="btn_hold"><button name="_hold_submit" type="submit" id="btn_style_hold"
+                    class="btn-floating ev-submitbtn3 z-depth-3 ev-col2" style="width:92px">
+                Hold...</button></li>
+                
+        </ul>
+    </div>
+
+
+    
+    </form>    
+
+</div> 
+
+<div id="ratechartmodal" class="modal modal-fixed-footer">
+    <div class="modal-content">
+        <h4>Rate Charts</h4>
+        <p>Click on any rate to add it automatically</p>
+            
+            
+            
+
+        <!-- <a href="javascript:void(0);" onclick="enterRates('Standard 2019','1');" 
+            class="modal-close waves-effect waves-green btn-flat">choose one hours</a>
+        <a href="javascript:void(0);" onclick="enterRates('Standard 2019','2');" 
+            class="modal-close waves-effect waves-green btn-flat">choose two hours</a>
+        <a href="javascript:void(0);" onclick="enterRates('Standard 2019','3');" 
+            class="modal-close waves-effect waves-green btn-flat">choose three hours</a>
+        <a href="javascript:void(0);" onclick="enterRates('Standard 2019','4');" 
+            class="modal-close waves-effect waves-green btn-flat">choose four hours</a> -->
+         
+        {% for rate in rates %}
+            <div><p><br /></p></div>
+            <div class="ev-modal">
+                <h5><p>{{ rate.name }}</p></h5>
+            </div>
+            <div class="ev-modal">
+                <table class="highlight">
+                    <thead>
+                        <tr>
+                            <th>Group</th>
+                            <th>1 Hour</th>
+                            <th>2 Hours</th>
+                            <th>3 Hours</th>
+                            <th>4 Hours</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Solo</td>
+                            <td>
+                                <a href="javascript:void(0);"
+                                   onclick="enterRates('{{ rate.name }}','1', '1');"
+                                   class="modal-close waves-effect waves-green ev-rates">
+                                   {{ rate.solo }}
+                                </a>
+                            </td>
+                            <td>
+                                <a href="javascript:void(0);"
+                                   onclick="enterRates('{{ rate.name }}','2', '1');"
+                                   class="modal-close waves-effect waves-green ev-rates">
+                                    {{ rate.two_solo }}
+                                </a>
+                            </td>
+                            <td>
+                                <a href="javascript:void(0);"
+                                   onclick="enterRates('{{ rate.name }}','3', '1');"
+                                   class="modal-close waves-effect waves-green ev-rates">
+                                    {{ rate.three_solo }}
+                                </a>
+                            </td>
+                            <td>
+                                <a href="javascript:void(0);"
+                                   onclick="enterRates('{{ rate.name }}','4', '1');"
+                                   class="modal-close waves-effect waves-green ev-rates">
+                                    {{ rate.four_solo }}
+                                </a>
+                            </td>
+                        <tr>
+                        <tr>
+                            <td>Duo</td>
+                            <td>
+                                <a href="javascript:void(0);"
+                                   onclick="enterRates('{{ rate.name }}','1', '2');"
+                                   class="modal-close waves-effect waves-green ev-rates">
+                                   {{ rate.duo }}
+                                </a>
+                            </td>
+                            <td>
+                                <a href="javascript:void(0);"
+                                   onclick="enterRates('{{ rate.name }}','2', '2');"
+                                   class="modal-close waves-effect waves-green ev-rates">
+                                    {{ rate.two_duo }}
+                                </a>
+                            </td>
+                            <td>
+                                <a href="javascript:void(0);"
+                                   onclick="enterRates('{{ rate.name }}','3', '2');"
+                                   class="modal-close waves-effect waves-green ev-rates">
+                                    {{ rate.three_duo }}
+                                </a>
+                            </td>
+                            <td>
+                                <a href="javascript:void(0);"
+                                   onclick="enterRates('{{ rate.name }}','4', '2');"
+                                   class="modal-close waves-effect waves-green ev-rates">
+                                    {{ rate.four_duo }}
+                                </a>
+                            </td>
+                        <tr>
+                        <tr>
+                            <td>Trio</td>
+                            <td>
+                                <a href="javascript:void(0);"
+                                   onclick="enterRates('{{ rate.name }}','1', '3');"
+                                   class="modal-close waves-effect waves-green ev-rates">
+                                   {{ rate.trio }}
+                                </a>
+                            </td>
+                            <td>
+                                <a href="javascript:void(0);"
+                                   onclick="enterRates('{{ rate.name }}','2', '3');"
+                                   class="modal-close waves-effect waves-green ev-rates">
+                                    {{ rate.two_trio }}
+                                </a>
+                            </td>
+                            <td>
+                                <a href="javascript:void(0);"
+                                   onclick="enterRates('{{ rate.name }}','3', '3');"
+                                   class="modal-close waves-effect waves-green ev-rates">
+                                    {{ rate.three_trio }}
+                                </a>
+                            </td>
+                            <td>
+                                <a href="javascript:void(0);"
+                                   onclick="enterRates('{{ rate.name }}','4', '3');"
+                                   class="modal-close waves-effect waves-green ev-rates">
+                                    {{ rate.four_trio }}
+                                </a>
+                            </td>
+                        <tr>
+                        <tr>
+                            <td>Quartet</td>
+                            <td>
+                                <a href="javascript:void(0);"
+                                   onclick="enterRates('{{ rate.name }}','1', '4');"
+                                   class="modal-close waves-effect waves-green ev-rates">
+                                   {{ rate.quartet }}
+                                </a>
+                            </td>
+                            <td>
+                                <a href="javascript:void(0);"
+                                   onclick="enterRates('{{ rate.name }}','2', '4');"
+                                   class="modal-close waves-effect waves-green ev-rates">
+                                    {{ rate.two_quartet }}
+                                </a>
+                            </td>
+                            <td>
+                                <a href="javascript:void(0);"
+                                   onclick="enterRates('{{ rate.name }}','3', '4');"
+                                   class="modal-close waves-effect waves-green ev-rates">
+                                    {{ rate.three_quartet }}
+                                </a>
+                            </td>
+                            <td>
+                                <a href="javascript:void(0);"
+                                   onclick="enterRates('{{ rate.name }}','4', '4');"
+                                   class="modal-close waves-effect waves-green ev-rates">
+                                    {{ rate.four_quartet }}
+                                </a>
+                            </td>
+                        <tr>
+                        <tr>
+                            <td>Musician Pay</td>
+                            <td>{{ rate.musician }}</td>
+                            <td>{{ rate.two_musician }}</td>
+                            <td>{{ rate.three_musician }}</td>
+                            <td>{{ rate.four_musician }}</td>
+                        <tr>
+                    </tbody>
+                </table>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+    </div>
+</div>
+  
+
+
+
+
+<div id="morebuttonmodal" class="modal modal-fixed-footer">
+    <div class="modal-content">
+        <h6>Choose which type of form you want to send:</h6>
+        <br />  
+              
+        <a href="javascript:void(0);" 
+            onclick="moreButtonSubmit('_hold_submit');" class="modal-close waves-effect waves-green">
+            Hold Reminder Email</a>
+        <br />
+
+        <a href="javascript:void(0);" 
+            onclick="moreButtonSubmit('_contract_submit');" class="modal-close waves-effect waves-green">
+            Contract Request</a>
+        <br />
+        
+        <a href="javascript:void(0);" 
+            onclick="moreButtonSubmit('_contract_print_submit');" class="modal-close waves-effect waves-green">
+            Send print-version of Contract</a>
+        <br />
+
+        <a href="javascript:void(0);" 
+            onclick="moreButtonSubmit('_receipt_contract_submit');" class="modal-close waves-effect waves-green">
+            Receipt for receiving Contract</a>
+        <br />
+        
+        <a href="javascript:void(0);" 
+            onclick="moreButtonSubmit('_deposit_submit');" class="modal-close waves-effect waves-green">
+            Deposit Request</a>
+        <br />
+        
+        <a href="javascript:void(0);" 
+            onclick="moreButtonSubmit('_depositcontract_submit');" class="modal-close waves-effect waves-green">
+            Deposit + Contract Request</a>
+        <br />
+        
+        <a href="javascript:void(0);" 
+            onclick="moreButtonSubmit('_receipt_deposit_submit');" class="modal-close waves-effect waves-green">
+            Receipt for receiving Deposit</a>
+        <br />
+        
+        <a href="javascript:void(0);" 
+            onclick="moreButtonSubmit('_musiclist_submit');" class="modal-close waves-effect waves-green">
+            Music List Request</a>
+        <br />
+        
+        <a href="javascript:void(0);" 
+            onclick="moreButtonSubmit('_musicians_submit');" class="modal-close waves-effect waves-green">
+            Invite musicians to play</a>
+        <br />
+
+        <a href="javascript:void(0);" 
+            onclick="moreButtonSubmit('_finalpay_submit');" class="modal-close waves-effect waves-green">
+            Final Payment Request</a>
+        <br />
+        
+        <a href="javascript:void(0);" 
+            onclick="moreButtonSubmit('_receipt_finalpay_submit');" class="modal-close waves-effect waves-green">
+            Receipt for receiving Final Payment</a>
+        <br />
+        
+        <a href="javascript:void(0);" 
+            onclick="moreButtonSubmit('_confirmation_submit');" class="modal-close waves-effect waves-green">
+            Final Event Details Confirmation</a>
+        <br />
+        
+        <a href="javascript:void(0);" 
+            onclick="moreButtonSubmit('_factsheet_submit');" class="modal-close waves-effect waves-green">
+            Fact Sheets</a>
+        <br />
+
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+    </div>
+
+</div>
+ 
+         
+{% endblock %}
+
+
+{% block scripts %}
+    <!-- custom js for the home page -->
+    <script src="{% static 'js/events.js' %}"></script>
+{% endblock %}
+

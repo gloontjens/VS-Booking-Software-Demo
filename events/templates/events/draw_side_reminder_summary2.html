@@ -1,0 +1,28 @@
+    <span class="">
+    <a href="/events/{{ reminder.event.id }}/edit" style="color: inherit">
+        <table class="collapsible-table">
+            <tr>
+                <td style="width: 250px" class="truncate">
+                        {% if reminder.done %}
+                        <span style="display:inline" class="truncate ev-reminder-done">
+                        {% elif reminder.is_past_due %}
+                        <span style="display:inline" class="truncate ev-reminder-past-due">
+                        {% elif reminder.is_this_week %}
+                        <span style="display:inline" class="truncate ev-reminder-this-week">
+                        {% else %}
+                        <span style="display:inline" class="truncate ev-reminder-not-past-due">
+                        {% endif %}
+                    {{ reminder.date|date:'D n/j' }}</span> : 
+                    <b>
+                    {% if reminder.auto %}<span style="color:orange"><b>[A]</b>&nbsp;</span>{% endif %}
+                    {{ reminder.name }}</b>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="truncate" style="width: 250px; color: #999;">
+                for {{ reminder.event.date|date:'n/j/y' }} : 
+                {% if reminder.event.type == "HD" %}[HD] {% endif %}{{ reminder.event.name }}</td>
+                </td>
+        </table>
+    </a>
+    </span>

@@ -1,0 +1,135 @@
+{% extends 'events/base-new.html' %}
+{% load static %}
+
+
+
+{% block content %}
+    <input type="hidden" id="page_flag" value="search">
+    
+    <br /><br />
+    
+    <div class="container" style="width:auto">
+        <div class="row">
+            <div class="col s7 center">    
+            {% if past %}
+                <form method="GET" action="/events/search/">
+                    <input id="search" type="text" name="q" value="{{ query_string }}" hidden>
+                    <input id="search_past" name="p" value=False hidden>
+                    <input id="search_archived" name="a" value=False hidden>
+                    <input id="search_newest" name="n" value="{{ newest }}" hidden>
+                    <button type="submit" class="btn-small z-depth-3 ev-col2">Hide past/done/arch</button>
+                </form>
+            
+            {% else %}
+                <form method="GET" action="/events/search/">
+                    <input id="search" type="text" name="q" value="{{ query_string }}" hidden>
+                    <input id="search_past" name="p" value=True hidden>
+                    <input id="search_archived" name="a" value=True hidden>
+                    <input id="search_newest" name="n" value="{{ newest }}" hidden>
+                    <button type="submit" class="btn-small z-depth-3 ev-col2">Show past/done/arch</button>
+                </form>
+            {% endif %}
+            </div>
+            <div class="col s5 center">
+            {% if newest %}
+                <form method="GET" action="/events/search/">
+                    <input id="search2" type="text" name="q" value="{{ query_string }}" hidden>
+                    <input id="search2_past" name="p" value="{{ past }}" hidden>
+                    <input id="search2_archived" name="a" value=False hidden>
+                    <input id="search2_newest" name="n" value=False hidden>
+                    <button type="submit" class="btn-small z-depth-3 ev-col2">Oldest First</button>
+                </form>
+            
+            {% else %}
+                <form method="GET" action="/events/search/">
+                    <input id="search2" type="text" name="q" value="{{ query_string }}" hidden>
+                    <input id="search2_past" name="p" value="{{ past }}" hidden>
+                    <input id="search2_archived" name="a" value=True hidden>
+                    <input id="search2_newest" name="n" value=True hidden>
+                    <button type="submit" class="btn-small z-depth-3 ev-col2">Newest First</button>
+                </form>
+            {% endif %}
+            </div>   
+        </div>
+    </div>    
+    
+    <h5>Search Results for "{{ query_string }}":</h5>
+    <br />
+    
+    <div class="container" style="width:auto">
+        {% for event in found_entries %}
+
+        {% include 'events/draw_event_summary_wy.html' %}
+                
+        {% endfor %}
+    </div>
+    
+    <br />
+    <button type="button" id="search_results_show_extras" class="btn z-depth-3 ev-col7">Show Full Results...</button>
+    
+    
+    
+    
+    <div id="search_results_extras" class="noshow">
+        
+        <h5>In reminders:</h5>
+        
+        <div class="container" style="width:auto">
+            {% for reminder in found_reminders %}
+    
+            {% include 'events/draw_reminder_summary.html' %}
+                    
+            {% endfor %}
+        </div>
+        
+        <br />
+        <h5>In activity:</h5>
+        <div class="container" style="width:auto">
+            {% for activity in found_activities %}
+    
+            {% include 'events/draw_activity_summary.html' %}
+                    
+            {% endfor %}
+        </div>
+       
+        <br />
+        <h5>In musicians booked/asked:</h5>
+        <div class="container" style="width:auto">
+            {% for musician in found_musicians %}
+    
+            {% include 'events/draw_musician_summary.html' %}
+                    
+            {% endfor %}
+        </div>
+    
+        <br />
+        <h5>In payments due:</h5>
+        <div class="container" style="width:auto">
+            {% for payment in found_paymentsdue %}
+    
+            {% include 'events/draw_payments_due_summary.html' %}
+                    
+            {% endfor %}
+        </div>
+    
+        <br />
+        <h5>In payments received:</h5>
+        <div class="container" style="width:auto">
+            {% for payment in found_paymentsreceived %}
+    
+            {% include 'events/draw_payments_rcvd_summary.html' %}
+                    
+            {% endfor %}
+        </div>
+    </div>
+
+    <br /><br /><br />
+
+ 
+{% endblock %}
+
+{% block scripts %}
+    <!-- custom js for the home page -->
+    <script src="{% static 'js/events_home.js' %}"></script>
+{% endblock %}
+

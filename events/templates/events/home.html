@@ -1,0 +1,126 @@
+{% extends 'events/base.html' %}
+{% load static %}
+
+
+
+{% block content %}
+    <input type="hidden" id="page_flag" value="home">
+    
+    <br /><br />
+    {% if soonevents %}
+    <h5>Events in the next 2 weeks:</h5><br />
+    {% else %}
+    <h5>No events in the next 2 weeks.</h5><br />
+    {% endif %}
+    
+    <div class="container" style="width:95% !important;">
+        {% for event in soonevents %}
+        
+        {% include 'events/draw_event_summary.html' %}
+        
+        {% endfor %}
+    </div>
+    
+    <br />
+    
+    {% if soonreminder %}
+    <h5>Reminders for the next week:&nbsp;&nbsp;
+    {% else %}
+    <h5>No reminders for the next week.&nbsp;&nbsp;
+    {% endif %}
+        <span id="dummyfocus" style="display:inline-block;margin-top:-3px;vertical-align:top;">               
+        <button type="button" id="include_auto_reminders" class="auto-button {% if sidestate.6 %}auto-pressed{% endif %}">SHOW AUTO</button>
+        </span>       
+
+    {% if pastduereminder_exists %}
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+        <span style="display:inline-block;margin-top:-3px;vertical-align:top;">               
+        <button type="button" id="include_pastdue_reminders" class="auto-button2 {% if sidestate.9 %}auto-pressed{% endif %}">SHOW PAST-DUE</button>
+        </span></h5>       
+        
+        <!-- <a id="toggle_pastdue_home" class="btn-small z-depth-3 ev-col11" 
+            style="color: red">Hide Past Due ({{pastduereminder|length}})</a></h5> -->
+            
+            
+        <div id="past_due_home" class="container {% if not sidestate.9 %}noshow{% endif %}" style="width:95% !important;">
+            <br />
+            {% for reminder in pastduereminder %}
+            
+            {% include 'events/draw_reminder_summary_tasks2.html' %}
+            
+            {% endfor %}
+        </div>
+    {% else %}
+        </h5>
+    {% endif %}
+
+    <div class="container" style="width:95% !important;">
+        {% for reminder in soonreminder %}
+        
+        {% include 'events/draw_reminder_summary_tasks.html' %}
+        
+        {% endfor %}
+    </div>
+
+
+
+    <br />
+    {% if pays_pd or pays %}
+    <h5>Payments Due in the next week (and past-due):</h5><br />
+    {% else %}
+    <h5>No payments due in the next week.</h5><br />
+    {% endif %}
+    
+    <div class="container" style="width:95% !important;">
+        {% for payment_pd in pays_pd %}
+            {% include 'events/draw_payments_due_pd_summary.html' %}
+        {% endfor %}
+        
+        {% for payment in pays %}
+            
+            {% include 'events/draw_payments_due_summary.html' %}
+        
+        {% endfor %}
+    </div>
+
+
+
+    
+    <br />
+    {% if recentactivities %}
+    <h5>Activity in the last week:</h5><br />
+    {% else %}
+    <h5>No activity in the last week.</h5><br />
+    {% endif %}
+    
+    <div class="container" style="width:95% !important;">
+        {% for activity in recentactivities %}
+        
+        {% include 'events/draw_activity_summary.html' %}
+        
+        {% endfor %}
+    </div>
+
+    <br />
+    {% if newevents %}
+    <h5>New Events entered in the last 2 weeks:</h5><br />
+    {% else %}
+    <h5>No new events entered in the last 2 weeks.</h5><br />
+    {% endif %}
+    <div class="container" style="width:95% !important;">
+        {% for event in newevents %}
+        
+        {% include 'events/draw_event_summary.html' %}
+        
+        {% endfor %}
+    </div>
+    <br /><br />
+    
+ 
+{% endblock %}
+
+{% block scripts %}
+    <!-- custom js for the home page -->
+    <script src="{% static 'js/events_home.js' %}"></script>
+{% endblock %}

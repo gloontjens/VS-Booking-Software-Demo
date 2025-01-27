@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+{% extends 'events/base5.html' %}
+{% load static %}
+{% load selectable_tags %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load static %}
+    
+{% block content %}
+
+
+<form method = 'POST' action= ''  id="test-form" enctype = "multipart/form-data" novalidate>
+{% csrf_token %}
+{% if mode != 'musiclist' %}
+<div style="padding-left:0px;padding-right:0px;margin-left:-20px;margin-right:-20px;">
+    <br /><br />
+    <input id="goto_home" type="submit" name="goto_home" class="linkish" value="The Vanderbilt Strings">
+    <!-- <h4 class="mytitle">The Vanderbilt Strings</h4> -->
+    <br />
+</div>
+{% else %}
+<div style="padding-left:0px;padding-right:0px;margin-left:-20px;margin-right:-20px;">
+    <br /><br />
+    <div class="mytitle">The Vanderbilt Strings</div>
+    <!-- <br /> -->
+</div>
+{% endif %}
+<div class="mysignout">
+    {% if mode != 'musiclist' %}
+    <button id="goto_signout" type="submit" name="goto_signout"
+            class="btn mysmbtn">Sign Out
+    </button>
+    {% endif %}
+    <div class="show-on-medium-and-down hide-on-large-only"><br /></div>
+</div>
+
+
+<div class="col s12 center">
+    <h5 class="mycol-indextext myindex">Music Requests</h5>
+</div>
+
+<button class="btn-floating mybtn-floating btn-large" type="submit" name="goto_questions">
+  <i class="material-icons large myicon-floating">email</i>
+  </button>
+<button class="btn-floating mybtn-floatingb btn-large tooltipped" data-position="left" data-tooltip="Contact Us" type="submit" name="goto_questions">      
+  <i class="material-icons large myicon-floatingb">edit</i>
+  </button>
+
+<br />
+<div style="color: black">
+<br /><br />
+{% if error %}<a href="/events/client_home/{{event.id}}/">Click here to login please!</a>{% else %}
+
+
+
+
+    <div class="row">
+        <div class="col s12 center">
+            <div class="card mycol-panelplain">
+                <div class="mycol-panel-pad">
+                    <!-- <span class="mycol-subtext mysize-large">
+                        <br />
+                        Complete the form, then click Submit.
+                    </span> -->
+                   
+                    <span class="mysize-norm mycol-subtext">
+                       
+
+                       {% if do_ceremony %}
+                       <div class="col s12">
+                            <br />
+                            <div class="mysize-large mycol-maintext"><b>CEREMONY MUSIC</b></div>
+                            <div class="mysize-small mycol-maintext">
+                                The choices below are our recommendations :)<br />If you have another song in mind,
+                                choose "Other...", begin typing the song name to search our library, and select it.
+                                <br />If your song is not in our library, type it in and we'll do our best to get it!
+                            </div>
+                            <br />
+                       </div>
+                       
+                    
+                    
+                    <div class="row">
+                       <div class="col l2 show-on-large hide-on-med-and-down">&nbsp;</div>
+                       <div class="col s12 l2" style="align: left; text-align: left;">
+                           <div class="reqlabel mysize-norm">Guest Arrival:</div>
+                       </div>
+                       <div class="col s12 l6">
+                         <div class="mysize-small" style="align: left; text-align: left;padding-left:12px;">
+                         Leave this to us.  We will play soft background music chosen to compliment your ceremony selections.
+                         </div>
+                       </div>
+                       <!-- <div class="col l2 show-on-large hide-on-med-and-down">&nbsp;<br /><br /></div> -->
+                    </div>
+
+                    
+                    
+                    
+                    
+                    
+                    <div class="row">   
+                       <div class="col l2 show-on-large hide-on-med-and-down">&nbsp;<br /></div>
+                       <div class="col s12 l2 left" style="align: left; text-align: left;">
+                           <div class="reqlabel" style="">Parent & Grandparents:
+                               <!-- <span class="reqlabelsmall">(incl. grandparents, officiant, groomsmen, etc)</span> -->
+                           </div>
+                       </div>
+                       <div class="col s12 l6">
+                         <div style="align: left; text-align: left;">
+                           <select class="mycol-subtext reqselect browser-default" id="parents" name="parents">
+                               {% for parent in parents %}
+                                   <option value="{{parent}}">{{parent}}</option>
+                               {% endfor %}
+                           </select>
+                           <div id="parents_other" class="client-noshow">
+                               <input type="text" name="parents_custom" id="id_parents_custom" 
+                                   data-selectable-url="/selectable/events-musiclistlookup/" 
+                                   data-selectable-type="text" data-selectable-allow-new="false" 
+                                   class="mycol-subtext nosubmit reqerror reqinput browser-default ui-autocomplete-input ui-widget ui-widget-content ui-corner-left" 
+                                   autocomplete="off" data-form-type="" placeholder="Type your request here">
+                           </div> 
+                              
+                           <div class="reqcustomentry client-noshow" id="parents_customentry">
+                               <i>Begin typing to search our complete list, then select; If you don't see your song, write it in!</i>
+                           </div>
+                           <div class="reqnotinlibrary client-noshow" id="parents_notinlibrary">
+                               <i>If this song isn't in our library, we'll do our best to find it!  If we can make it work there is a $25 fee per custom song.</i>
+                           </div>
+                           <input hidden type="text" name="parents_custom_notinlist" id="id_parents_custom_notinlist">
+                         </div>
+                         
+                       </div>
+                       <!-- <div class="col l2 show-on-large hide-on-med-and-down">&nbsp;<br /></div> -->
+                       
+                    </div>   
+                       
+                       <div hidden id="parents_extra" class="client-noshow mycol-panel-pad">
+                       <div class="row">
+                           <!-- <div class="col s12 show-on-small show-on-medium hide-on-large-only">&nbsp;</div> -->
+                           <!-- <div class="col l12 show-on-large hide-on-med-and-down">&nbsp;</div> -->
+                           <div class="col l2 show-on-large hide-on-med-and-down">&nbsp;</div>
+                           <div class="col s12 l2" style="align: left; text-align: left;">
+                               <div class="reqlabelmed"># people processing?</div>
+                           </div>
+                           <!-- <div class="col s1 l1">&nbsp;</div> -->
+                           <div class="col s10 l4">
+                             <div style="align: left; text-align: left;">
+                               <div>
+                                   <input type="number" class="mycol-subtext reqinputshortnum browser-default" 
+                                       placeholder="#" name="parents_num" value="{% if parents_num %}{{parents_num}}{% endif %}">
+                               </div>
+                             </div>
+                           </div>
+                           <!-- <div class="col s1 l1">&nbsp;</div> -->
+                           <!-- <div class="col l2 show-on-large hide-on-med-and-down">&nbsp;</div> -->
+
+                       </div>
+                       </div>  
+                       
+                       
+                       
+
+
+
+                    <div class="row mysize-norm mycol-subtext mycol-panel-pad">
+                       <!-- <div class="col s12 show-on-small show-on-medium hide-on-large-only">&nbsp;</div> -->
+                       <!-- <div class="col l12 show-on-large hide-on-med-and-down">&nbsp;</div> -->
+                       
+                       
+                       <div class="col l2 show-on-large hide-on-med-and-down">&nbsp;<br /></div>
+                       <div class="col s12 l2" style="align: left; text-align: left;">
+                           <div style="line-height:19px;" class="reqlabel mysize-norm">Groom & Groomsmen:<br />
+                               <span class="reqlabelsmall">(choose if separate song wanted)</span>
+                           </div>
+                       </div>
+                       <div class="col s12 l6">
+                         <div style="align: left; text-align: left;">
+                           <select class="mycol-subtext reqselect browser-default" id="groomsmens" name="groomsmens">
+                               {% for groomsmen in groomsmens %}
+                                   <option value="{{groomsmen}}">{{groomsmen}}</option>
+                               {% endfor %}
+                           </select>
+                           <div id="groomsmens_other" class="client-noshow">
+                               <input type="text" name="groomsmens_custom" id="id_groomsmens_custom" 
+                                   data-selectable-url="/selectable/events-musiclistlookup/" 
+                                   data-selectable-type="text" data-selectable-allow-new="false" 
+                                   class="mycol-subtext nosubmit reqerror reqinput browser-default ui-autocomplete-input ui-widget ui-widget-content ui-corner-left" 
+                                   autocomplete="off" data-form-type="" placeholder="Type your request here">
+                           </div> 
+                              
+                           <div class="reqcustomentry client-noshow" id="groomsmens_customentry">
+                               <i>Begin typing to search our complete list, then select; If you don't see your song, write it in!</i>
+                           </div>
+                           <div class="reqnotinlibrary client-noshow" id="groomsmens_notinlibrary">
+                               <i>If this song isn't in our library, we'll do our best to find it!  If we can make it work there is a $25 fee per custom song.</i>
+                           </div>
+                           <input hidden type="text" name="groomsmens_custom_notinlist" id="id_groomsmens_custom_notinlist">
+                         </div>
+                       </div>
+                       <!-- <div class="col l2 show-on-large hide-on-med-and-down">&nbsp;<br /><br /></div> -->
+                    </div>
+
+
+
+
+                       
+                       
+                       
+                       
+
+                    <div class="row">
+                       <!-- <div class="col s12 show-on-small show-on-medium hide-on-large-only">&nbsp;</div> -->
+                       <!-- <div class="col l12 show-on-large hide-on-med-and-down">&nbsp;</div> -->
+                       
+                       
+                       <div class="col l2 show-on-large hide-on-med-and-down">&nbsp;</div>
+                       <div class="col s12 l2" style="align: left; text-align: left;">
+                           <div style="line-height:19px;" class="reqlabel" style="">Bridal Party:<br />
+                               <span class="reqlabelsmall">(incl. flowergirls, ringbearers)</span>
+                           </div>
+                       </div>
+                       <div class="col s12 l6">
+                         <div style="align: left; text-align: left;">
+                           <select class="mycol-subtext reqselect browser-default" id="bridesmaids" name="bridesmaids">
+                               {% for bridesmaid in bridesmaids %}
+                                   <option value="{{bridesmaid}}">{{bridesmaid}}</option>
+                               {% endfor %}
+                           </select>
+                           <div id="bridesmaids_other" class="client-noshow">
+                               <input type="text" name="bridesmaids_custom" id="id_bridesmaids_custom" 
+                                   data-selectable-url="/selectable/events-musiclistlookup/" 
+                                   data-selectable-type="text" data-selectable-allow-new="false" 
+                                   class="mycol-subtext nosubmit reqerror reqinput browser-default ui-autocomplete-input ui-widget ui-widget-content ui-corner-left" 
+                                   autocomplete="off" data-form-type="" placeholder="Type your request here">
+                           </div> 
+                              
+                           <div class="reqcustomentry client-noshow" id="bridesmaids_customentry">
+                               <i>Begin typing to search our complete list, then select; If you don't see your song, write it in!</i>
+                           </div>
+                           <div class="reqnotinlibrary client-noshow" id="bridesmaids_notinlibrary">
+                               <i>If this song isn't in our library, we'll do our best to find it!  If we can make it work there is a $25 fee per custom song.</i>
+                           </div>
+                           <input hidden type="text" name="bridesmaids_custom_notinlist" id="id_bridesmaids_custom_notinlist">
+                         </div>
+                       </div>
+                       <!-- <div class="col l2 show-on-large hide-on-med-and-down">&nbsp;</div> -->
+                    </div>   
+                       
+                       
+                       
+                       <div hidden id="bridesmaids_extra" class="client-noshow mycol-panel-pad">
+                         <div class="row">
+                           <!-- <div class="col s12 show-on-small show-on-medium hide-on-large-only">&nbsp;</div> -->
+                           <!-- <div class="col l12 show-on-large hide-on-med-and-down">&nbsp;</div> -->
+                           <div class="col l2 show-on-large hide-on-med-and-down">&nbsp;</div>
+                           <div class="col s12 l2" style="align: left; text-align: left;">
+                               <div class="reqlabelmed"># people processing?</div>
+                           </div>
+                           <!-- <div class="col s1 l1">&nbsp;</div> -->
+                           <div class="col s10 l4">
+                             <div style="align: left; text-align: left;">
+                               <div style="align: left; text-align: left;">
+                                   <input type="number" class="mycol-subtext reqinputshortnum browser-default" style="align: left; text-align: left;" 
+                                       placeholder="#" name="bridesmaids_num" value="{% if bridesmaids_num %}{{bridesmaids_num}}{% endif %}">
+                               </div>
+                             </div>
+                           </div>
+                         </div>
+                         <div class="row">
+                           <!-- <div class="col s2 l2">&nbsp;<br /><br /></div> -->
+                           <!-- <div class="col l2 show-on-large hide-on-med-and-down">&nbsp;</div> -->
+
+                           <!-- <div class="col s12 show-on-small show-on-medium hide-on-large-only">&nbsp;</div> -->
+                           <!-- <div class="col l12 show-on-large hide-on-med-and-down">&nbsp;</div> -->
+                           <div class="col l2 show-on-large hide-on-med-and-down">&nbsp;</div>
+                           <div class="col s12 l2" style="align: left; text-align: left;">
+                               <div class="reqlabelmed" style="align: left; text-align: left;">Will there be flowergirl/ringbearer(s)?</div>
+                           </div>
+                           <!-- <div class="col s2 l2">&nbsp;</div> -->
+                           <div class="col s10 l4">
+                             <div style="align: left; text-align: left;">
+                               <select class="mycol-subtext reqinputshortnum-nojs browser-default" id="id_flowergirls" name="flowergirls"
+                                   style="">
+                                   <option class="black-text" value="No" {% if not flowergirls %}selected{% endif %}>No</option>
+                                   <option class="black-text" value="Yes" {% if flowergirls %}selected{% endif %}>Yes</option>
+                               </select>
+                               <label for="flowergirls"></label>
+                             </div>
+                           </div>
+                         </div>
+                           <!-- <div class="col s1 l1">&nbsp;</div> -->
+                           <!-- <div class="col l2 show-on-large hide-on-med-and-down">&nbsp;</div> -->
+                       </div>
+                      
+                       
+
+
+                    <div class="row mysize-norm mycol-subtext mycol-panel-pad">
+                       <!-- <div class="col s12 show-on-small show-on-medium hide-on-large-only">&nbsp;</div> -->
+                       <!-- <div class="col l12 show-on-large hide-on-med-and-down">&nbsp;</div> -->
+                       
+                       
+                       <div class="col l2 show-on-large hide-on-med-and-down">&nbsp;<br /></div>
+                       <div class="col s12 l2" style="align: left; text-align: left;">
+                           <div class="reqlabel mysize-norm">Bridal Processional:</div>
+                       </div>
+                       <div class="col s12 l6">
+                         <div style="align: left; text-align: left;">
+                           <select class="mycol-subtext reqselect browser-default" id="brides" name="brides">
+                               {% for bride in brides %}
+                                   <option value="{{bride}}">{{bride}}</option>
+                               {% endfor %}
+                           </select>
+                           <div id="brides_other" class="client-noshow">
+                               <input type="text" name="brides_custom" id="id_brides_custom" 
+                                   data-selectable-url="/selectable/events-musiclistlookup/" 
+                                   data-selectable-type="text" data-selectable-allow-new="false" 
+                                   class="mycol-subtext nosubmit reqerror reqinput browser-default ui-autocomplete-input ui-widget ui-widget-content ui-corner-left" 
+                                   autocomplete="off" data-form-type="" placeholder="Type your request here">
+                           </div> 
+                              
+                           <div class="reqcustomentry client-noshow" id="brides_customentry">
+                               <i>Begin typing to search our complete list, then select; If you don't see your song, write it in!</i>
+                           </div>
+                           <div class="reqnotinlibrary client-noshow" id="brides_notinlibrary">
+                               <i>If this song isn't in our library, we'll do our best to find it!  If we can make it work there is a $25 fee per custom song.</i>
+                           </div>
+                           <input hidden type="text" name="brides_custom_notinlist" id="id_brides_custom_notinlist">
+                         </div>
+                       </div>
+                       <!-- <div class="col l2 show-on-large hide-on-med-and-down">&nbsp;<br /><br /></div> -->
+                    </div>
+                    
+                    
+                    
+
+                    <div class="row mysize-norm mycol-subtext mycol-panel-pad">   
+                       <!-- <div class="col s12 show-on-small show-on-medium hide-on-large-only">&nbsp;</div> -->
+                       <!-- <div class="col l12 show-on-large hide-on-med-and-down">&nbsp;</div> -->
+                       
+                       <div class="col l2 show-on-large hide-on-med-and-down">&nbsp;</div>
+                       <div class="col s12 l2" style="align: left; text-align: left;">
+                           <div class="reqlabel">In-Ceremony Music:<br />
+                               <!-- <span class="reqlabelsmall">(sand ceremony, unity candle, etc)</span> -->
+                           </div>
+                       </div>
+                       <div class="col s12 l6">
+                         <div style="align: left; text-align: left;">
+                           <select class="mycol-subtext reqselect browser-default" id="ceremonymusics" name="ceremonymusics">
+                               {% for ceremonymusic in ceremonymusics %}
+                                   <option value="{{ceremonymusic}}">{{ceremonymusic}}</option>
+                               {% endfor %}
+                           </select>
+                           <div id="ceremonymusics_other" class="client-noshow">
+                               <input type="text" name="ceremonymusics_custom" id="id_ceremonymusics_custom" 
+                                   data-selectable-url="/selectable/events-musiclistlookup/" 
+                                   data-selectable-type="text" data-selectable-allow-new="false" 
+                                   class="mycol-subtext nosubmit reqerror reqinput browser-default ui-autocomplete-input ui-widget ui-widget-content ui-corner-left" 
+                                   autocomplete="off" data-form-type="" placeholder="Type your request here">
+                           </div> 
+                              
+                           <div class="reqcustomentry client-noshow" id="ceremonymusics_customentry">
+                               <i>Begin typing to search our complete list, then select; If you don't see your song, write it in!</i>
+                           </div>
+                           <div class="reqnotinlibrary client-noshow" id="ceremonymusics_notinlibrary">
+                               <i>If this song isn't in our library, we'll do our best to find it!  If we can make it work there is a $25 fee per custom song.</i>
+                           </div>
+                           <input hidden type="text" name="ceremonymusics_custom_notinlist" id="id_ceremonymusics_custom_notinlist">
+                         </div>
+                       </div>
+                       
+                    </div>   
+                       
+                       
+                       <!-- <div class="col l2 show-on-large hide-on-med-and-down">&nbsp;<br /><br /></div> -->
+                       <div id="ceremonymusics_extra" class="client-noshow mycol-panel-pad">
+                           <!-- <div class="col s12 show-on-small show-on-medium hide-on-large-only">&nbsp;</div> -->
+                           <!-- <div class="col l12 show-on-large hide-on-med-and-down">&nbsp;</div> -->
+                         <div class="row">
+                           <div class="col l2 show-on-large hide-on-med-and-down">&nbsp;</div>
+                           <div class="col s12 l2" style="align: left; text-align: left;">
+                               <div class="mycol-subtext reqlabelmed">What for? (e.g. "Sand Ceremony")</div>
+                           </div>
+                           <!-- <div class="col s1 l1">&nbsp;</div> -->
+                           <div class="col s10 l4">
+                             <div style="align: left; text-align: left;">
+                               <div>
+                                   <input type="text" class="mycol-subtext reqinputshort browser-default" 
+                                       placeholder="Type your answer here" name="ceremonymusics_type">
+                               </div>
+                             </div>
+                           </div>
+                         </div>
+                         <div class="row">
+                           <!-- <div class="col s1 l1">&nbsp;</div> -->
+                           <!-- <div class="col l2 show-on-large hide-on-med-and-down">&nbsp;</div> -->
+                           <!-- <div class="col l12 show-on-large hide-on-med-and-down">&nbsp;</div> -->
+                           <div class="col l2 show-on-large hide-on-med-and-down">&nbsp;</div>
+                           <div class="col s12 l2" style="align: left; text-align: left;">
+                               <div class="mycol-subtext reqlabelmed">When in the ceremony flow? (e.g. "After vows")</div>
+                           </div>
+                           <!-- <div class="col s1 l1">&nbsp;</div> -->
+                           <div class="col s10 l4">
+                             <div style="align: left; text-align: left;">
+                               <div>
+                                   <input type="text" class="mycol-subtext reqinputshort browser-default" 
+                                       placeholder="Type your answer here" name="ceremonymusics_when">
+                               </div>
+                             </div>
+                           </div>
+                         </div>
+                           <!-- <div class="col s1 l1">&nbsp;</div> -->
+                           <!-- <div class="col l2 show-on-large hide-on-med-and-down">&nbsp;</div> -->
+                       </div>
+                      
+                    
+                    
+                    
+                    
+
+                       <!-- <div class="col s12 show-on-small show-on-medium hide-on-large-only">&nbsp;</div> -->
+                       <!-- <div class="col l12 show-on-large hide-on-med-and-down">&nbsp;</div> -->
+                       
+                    <div class="row mysize-norm mycol-subtext mycol-panel-pad">  
+                       <div class="col l2 show-on-large hide-on-med-and-down">&nbsp;</div>
+                       <div class="col s12 l2" style="align: left; text-align: left;">
+                           <div class="reqlabel">Recessional:</div>
+                       </div>
+                       <div class="col s12 l6">
+                         <div style="align: left; text-align: left;">
+                           <select class="mycol-subtext reqselect browser-default" id="recessionals" name="recessionals">
+                               {% for recessional in recessionals %}
+                                   <option value="{{recessional}}">{{recessional}}</option>
+                               {% endfor %}
+                           </select>
+                           <div id="recessionals_other" class="client-noshow">
+                               <input type="text" name="recessionals_custom" id="id_recessionals_custom" 
+                                   data-selectable-url="/selectable/events-musiclistlookup/" 
+                                   data-selectable-type="text" data-selectable-allow-new="false" 
+                                   class="mycol-subtext nosubmit reqerror reqinput browser-default ui-autocomplete-input ui-widget ui-widget-content ui-corner-left" 
+                                   autocomplete="off" data-form-type="" placeholder="Type your request here">
+                           </div> 
+                              
+                           <div class="reqcustomentry client-noshow" id="recessionals_customentry">
+                               <i>Begin typing to search our complete list, then select; If you don't see your song, write it in!</i>
+                           </div>
+                           <div class="reqnotinlibrary client-noshow" id="recessionals_notinlibrary">
+                               <i>If this song isn't in our library, we'll do our best to find it!  If we can make it work there is a $25 fee per custom song.</i>
+                           </div>
+                           <input hidden type="text" name="recessionals_custom_notinlist" id="id_recessionals_custom_notinlist">
+                         </div>
+                       </div>
+                    </div>
+                       <!-- <div class="col l2 show-on-large hide-on-med-and-down">&nbsp;<br /><br /></div> -->
+                       
+                       <div id="recessionals_extra" class="client-noshow mycol-panel-pad">
+                       <div class="row">
+                           <!-- <div class="col s12 show-on-small show-on-medium hide-on-large-only">&nbsp;</div> -->
+                           <!-- <div class="col l12 show-on-large hide-on-med-and-down">&nbsp;</div> -->
+                           <div class="col l2 show-on-large hide-on-med-and-down">&nbsp;</div>
+                           <div class="col s12 l2" style="align: left; text-align: left;">
+                               <div class="reqlabelmed">Cue to start? (e.g. "after couple introduction")</div>
+                           </div>
+                           <!-- <div class="col s1 l1">&nbsp;</div> -->
+                           <div class="col s10 l4">
+                             <div style="align: left; text-align: left;">
+                               <div>
+                                   <input type="text" class="mycol-subtext reqinputshort browser-default" 
+                                       placeholder="Type your answer here" name="recessionals_cue">
+                               </div>
+                             </div>
+                           </div>
+                           <!-- <div class="col s1 l1">&nbsp;</div> -->
+                           <!-- <div class="col l2 show-on-large hide-on-med-and-down">&nbsp;</div> -->
+                       </div>
+                       </div>
+                       
+                       
+                       <div class="col s12">&nbsp;</div>
+                       <div class="col s12">&nbsp;</div>
+                       
+                       
+                       {% endif %}
+
+                       {% if do_cocktails %}
+                       <div class="col s12">
+                           <div class="mysize-large mycol-maintext"><b>COCKTAIL HOUR MUSIC</b></div><br />
+                       </div>
+                       {% elif do_reception %}
+                       <div class="col s12">
+                           <div class="mysize-large mycol-maintext"><b>RECEPTION MUSIC</b></div><br />
+                       </div>
+                       {% elif do_background %}
+                       <div class="col s12">
+                           <div class="mysize-large mycol-maintext"><b>BACKGROUND MUSIC</b></div><br />
+                       </div>
+                       {% elif do_misc %}
+                       <div class="col s12">
+                           <div class="mysize-large mycol-maintext"><b>EVENT MUSIC</b></div><br />
+                       </div>
+                       {% endif %}
+
+                       
+                       {% if do_cocktails or do_reception or do_background or do_misc %}
+
+
+                            <input hidden type="text" class="mycol-subtext reqinputshort browser-default" 
+                                placeholder="Type your answer here" name="backgrounds" id="backgrounds" value="House Mix">
+                            <input hidden type="text" class="mycol-subtext reqinputshort browser-default" 
+                                placeholder="Type your answer here" name="receptions" id="receptions" value="House Mix">
+                            <input hidden type="text" class="mycol-subtext reqinputshort browser-default" 
+                                placeholder="Type your answer here" name="cocktails" id="cocktails" value="House Mix">
+
+
+
+                            {% include 'events/client_cocktails_render.html' %}
+                            
+                       {% endif %}
+                       
+                       
+                       {% if do_dinner %}
+                           <br /><br />
+                           <div class="col s12">
+                                <br /><br />
+                               <div class="mysize-large mycol-maintext"><b>DINNER MUSIC</b></div><br />
+                           </div>
+
+
+                            <input hidden type="text" class="mycol-subtext reqinputshort browser-default" 
+                                placeholder="Type your answer here" name="dinners" id="dinners" value="House Mix">
+                       
+                            {% include 'events/client_dinner_render.html' %}
+                       
+                       {% endif %}
+                       
+                       <div class="col s12">&nbsp;</div>
+                       <div class="col s12 mysize-norm">
+                           Thank you! We look forward to performing your selections with the style and quality that you can expect
+                           from the Vanderbilt Strings!<br />
+                       </div>
+
+
+                   </span><br />
+                   <br />
+                   <div class="col s12">&nbsp;</div>
+                   <div class="col s12">&nbsp;</div>
+                   
+                   <button id="goto_requests_done" type="submit" name="goto_requests_done"
+                           class="btn btn-large ev-submitbtn z-depth-2 mybtn-submit">SUBMIT</button>
+             
+                    
+                   <div class="row"> <div class="col s12">&nbsp;<br /><br /></div></div>
+               </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endif %}
+</div>
+</form>
+
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/events_clients.js' %}"></script>
+<script src="{% static 'js/jSignature.min.js' %}"></script>    
+
+
+{% endblock %}
+

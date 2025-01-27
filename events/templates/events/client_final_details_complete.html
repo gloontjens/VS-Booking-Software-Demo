@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+{% extends 'events/base4.html' %}
+{% load static %}
+{% load selectable_tags %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+    
+{% block content %}
+<form method = 'POST' action= ''  id="test_form" enctype = "multipart/form-data" novalidate>
+{% csrf_token %}
+
+
+{% if mode != 'confirmation' %}
+<div style="padding-left:0px;padding-right:0px;margin-left:-20px;margin-right:-20px;">
+    <br /><br />
+    <input id="goto_home" type="submit" name="goto_home" class="linkish" value="The Vanderbilt Strings">
+    <!-- <h4 class="mytitle">The Vanderbilt Strings</h4> -->
+    <br />
+</div>
+{% else %}
+<div style="padding-left:0px;padding-right:0px;margin-left:-20px;margin-right:-20px;">
+    <br /><br />
+    <div class="mytitle">The Vanderbilt Strings</div>
+    <!-- <br /> -->
+</div>
+{% endif %}
+<div class="mysignout">
+    {% if mode != 'confirmation' %}
+    <button id="goto_signout" type="submit" name="goto_signout"
+            class="btn mysmbtn">Sign Out
+    </button>
+    {% endif %}
+    <div class="show-on-medium-and-down hide-on-large-only"><br /></div>
+</div>
+
+
+<div class="col s12 center">
+    {% if mode == 'confirmation' %}
+        <!-- <h5 class="mycol-indextext myindex">Thank You!</h5><br /> -->
+    {% else %}
+        <!-- <h5 class="mycol-indextext myindex">Thank You!</h5><br /> -->
+    {% endif %}
+</div>
+
+<button class="btn-floating mybtn-floating btn-large" type="submit" name="goto_questions">
+  <i class="material-icons large myicon-floating">email</i>
+  </button>
+<button class="btn-floating mybtn-floatingb btn-large tooltipped" data-position="left" data-tooltip="Contact Us" type="submit" name="goto_questions">      
+  <i class="material-icons large myicon-floatingb">edit</i>
+  </button>
+
+
+
+<br /><br />
+<div style="color: black">
+{% if error %}<a href="/events/client_home/{{event.id}}/">Click here to login please!</a>{% else %}
+
+
+
+
+    <div class="row">
+        <div class="col s12 center">
+            <div class="card mycol-panelplain">
+                <div class="">
+                    <div class="row mybackground-login2 valign-wrapper">
+                    <div class="col card center mycol-panel col s10 m10 l8 xl6 offset-s1 offset-m1 offset-l2 offset-xl3">
+
+                        <br />
+                        <span class="mycol-subtext mysize-large">Thank you, details confirmed!</span>
+                        <p>
+                          <span class="mycol-subtext mysize-norm"><br />
+                            {% if mode != 'confirmation' %}
+                              We're all set and looking forward to playing for you!<br />
+                            {% else %}
+                              We're all set and looking forward to playing for you!<br />
+                            {% endif %}
+                          </span>
+                          <br />
+                        </p>
+    
+    
+                        <div class="col s12"><br /></div>  
+                        {% if mode != 'confirmation' %}                 
+                        <button id="goto_home" type="submit" name="goto_home"
+                            class="btn btn-large ev-submitbtn z-depth-2 mybtn-submit">
+                            <i class="material-icons left mycol-maintext">home</i>HOME</button>
+                        {% endif %}
+                        <div class="row"><br /><br /></div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="" id="" style="display:none">
+        
+    </div>    
+
+
+
+
+
+
+
+
+
+
+
+
+{% endif %}
+</div>
+</form>
+
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/events_clients.js' %}"></script>
+<script src="{%  static 'js/jSignature.min.js' %}"></script>    
+{% endblock %}
+

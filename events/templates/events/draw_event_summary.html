@@ -1,0 +1,118 @@
+{% load tozero %}
+{% load humanize %}
+
+        <div class="row">
+            <a href="/events/{{ event.id }}/edit" style="color: inherit">
+            <div class="col s12 m10 offset-m1 evx-rounded-only z-depth-1 {% if event.date_ispast or event.event_archived %}evx-panelbackgroundold{% else %}evx-panelbackground{% endif %}" id="ev-pad-right">
+                <table class="homepagetable" style="border:none !important;">
+                    <col width="30%">
+                    <col width="35%">
+                    <col width="35%">
+                    <tr style="border:none !important;">
+                        <td rowspan="2" style="line-height:22px;" class="{% if event.date_ispast or event.event_archived %}evx-smallold{% else %}evx-small{% endif %}">
+                            {% if event.event_archived %}<span style=""><b>[ARCHIVED] </b></span>{% endif %}
+                            {{ event.date|naturalday:"D M j"|title }}
+                            <br />
+                            {{ event.start_time|date:"g:i"|default:" " }}-{{ event.end_time|date:"g:i A"|default:" " }}
+                            <br />
+                            
+                            
+                            <div style="display: inline-flex;">
+                            {% if event.type == 'HD' %}
+                                <span class="evx-circle-sm" style="background-color:{{ event.color_contract}}">
+                                    <i class="material-icons prefix evx-progress-sm">pan_tool</i>
+                                </span>
+                            {% else %}    
+                                <span class="evx-circle-sm" style="background-color:{{ event.color_contract}}">
+                                    <i class="material-icons prefix evx-progress-sm">event_note</i>
+                                </span>
+                            {% endif %}
+                            {% if event.waive_contract %}
+                            <span class="evx-crossout-sm"><i class="material-icons prefix evx-progress2-sm">do_not_disturb_alt</i></span>
+                            {% endif %}
+                            </div>
+                            
+                            <div style="display: inline-flex;">    
+                            <span class="evx-circle-sm" style="background-color:{{ event.color_deposit}}">
+                                <i class="material-icons prefix evx-progress-sm">attach_money</i>
+                            </span>
+                            {% if event.waive_payment or event.deposit_senddate == event.final_senddate or event.deposit_fee == 0 %}
+                            <span class="evx-crossout-sm"><i class="material-icons prefix evx-progress2-sm">do_not_disturb_alt</i></span>
+                            {% endif %}
+                            </div>
+                            
+                            <div style="display: inline-flex;">    
+                            <span class="evx-circle-sm" style="background-color:{{ event.color_music_list}}">
+                                <i class="material-icons prefix evx-progress-sm">queue_music</i>
+                            </span>
+                            {% if event.waive_music_list %}
+                            <span class="evx-crossout-sm"><i class="material-icons prefix evx-progress2-sm">do_not_disturb_alt</i></span>
+                            {% endif %}
+                            </div>
+                            
+                            <div style="display: inline-flex;">    
+                            <span class="evx-circle-sm" style="background-color:{{ event.color_musicians}}">
+                                <i class="material-icons prefix evx-progress-sm">wc</i>
+                            </span>
+                            </div>
+                            
+                            <div style="display: inline-flex;">    
+                            <span class="evx-circle-sm" style="background-color:{{ event.color_final_payment}}">
+                                <i style="margin-left:-4px;" class="material-icons prefix evx-progress-sm">attach_money</i>
+                                <i style="margin-left:-15px;margin-right:-4px;" class="material-icons prefix evx-progress-sm">attach_money</i>
+                            </span>
+                            {% if event.waive_payment %}
+                            <span class="evx-crossout-sm"><i class="material-icons prefix evx-progress2-sm">do_not_disturb_alt</i></span>
+                            {% endif %}
+                            </div>
+                            {% if event.extra_fee %}
+                            <span class="evx-circle-xsm evx-extrapay-sm" style="background-color:{{ event.color_extra_payment }}">
+                                <span class="evx-progress3-sm">+</span></span>
+                            {% endif %}
+
+                            <div style="display: inline-flex;">    
+                            <span class="evx-circle-sm" style="background-color:{{ event.color_final_confirmation}}">
+                                <i class="material-icons prefix evx-progress-sm">event_available</i>
+                            </span>
+                            </div>
+
+                            <div style="display: inline-flex;">    
+                            <span class="evx-circle-sm" style="background-color:{{ event.color_fact_sheets}}">
+                                <i class="material-icons prefix evx-progress-sm">playlist_add_check</i>
+                            </span>
+                            </div>
+                            
+                            <div style="display: inline-flex;" class="{% if not event.automation %}noshow{% endif %}">
+                                <span style="color:orange;position:relative;top:-2px;">[A]</span>
+                            </div>
+
+                        </td>
+                        <td colspan="2" class="center {% if event.date_ispast or event.event_archived %}evx-mediumold{% else %}evx-medium{% endif %}">
+                            <b>{% if event.type == "HD" %}[HOLD]: {% endif %}{{ event.name }}</b>
+                            &nbsp;-&nbsp;
+                            <b>{% if event.event_type %}
+                                {{ event.event_type }}
+                            {% else %}
+                                {{ event.event_type_name|default:" " }}
+                            {% endif %}</b>
+                        </td>
+                    </tr>
+                    <tr style="border:none !important;">
+                        <td colspan="2" class="center {% if event.date_ispast or event.event_archived %}evx-tinyold{% else %}evx-tiny{% endif %}">{% if event.location %}
+                                {{ event.location }}
+                            {% else %}
+                                {{ event.location_name|default:" " }}
+                            {% endif %}
+                            &nbsp;&nbsp;(
+                            {% if event.ensemble %}
+                                {{ event.ensemble }}
+                            {% else %}
+                                {{ event.ensemble_name|default:" " }}
+                            {% endif %})
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            </a>
+        </div>
+    

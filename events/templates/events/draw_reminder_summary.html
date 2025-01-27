@@ -1,0 +1,187 @@
+{% load humanize %}
+    <span class="{% if reminder.5 %}auto-reminder{% endif %} {% if reminder.5 and not sidestate.6 %}noshow{% endif %}">
+    {% if reminder.0 == 'not' %}
+        <div class="row">
+            <a href="/events/{{ reminder.3 }}/edit" style="color: inherit">
+            <div class="col s12 m10 offset-m1 evx-rounded-only z-depth-1 evx-panelbackgroundlight" id="ev-pad-right">
+                <table class="homepagetable" style="border:none !important;">
+                    <col width="37.5%">
+                    <col width="62.5%">
+                    <tr class="{% if reminder.5 %}auto-reminder3{% endif %} {% if reminder.5 and not sidestate.6 %}noshow{% endif %}">
+                        <td class="center" style="vertical-align:top;">
+                            <span class="evx-main-subline-extra evx-rounded-only-extra evx-panelbackground-subline">
+                                <span class="evx-tiny">
+                                    {{ reminder.1|date:"M j, 'y" }}:&nbsp;&nbsp;
+                                </span>
+                                <span class="evx-tinyevent">
+                                    {% if '[HD]' in reminder.2 %}
+                                        <b>[HOLD]{{ reminder.2|cut:'[HD]'}}</b>
+                                    {% else %}
+                                        <b>{{ reminder.2 }}</b>
+                                    {% endif %}
+                                </span>
+                            </span>
+                        </td>    
+                        <td>
+                            {% for rem in reminder.4 %} 
+                                {% if rem.2 and rem.3 %}
+                                    <span class="evx-indent-second {% if rem.3 %}auto-reminder2{% endif %} {% if rem.3 and not sidestate.6 %}noshow{% endif %}">
+                                        <b><i><span style="color:#d48c07;"><b>[AUTO]</b>&nbsp;</span>Past-Due ({{ rem.0|naturalday:'n/j'|title }})</i></b>: &nbsp;<i>{{ rem.1 }}</i>
+                                    </span>
+                                    <span class="{% if rem.3 %}auto-reminder2{% endif %} {% if rem.3 and not sidestate.6 %}noshow{% endif %}"><br /></span>
+                                {% elif rem.2 %}
+                                    <span class="evx-indent-second"><b><i>Past-Due ({{ rem.0|naturalday:'n/j'|title }})</i></b>: &nbsp;{{ rem.1 }}</span><br />
+                                {% elif rem.3 %}
+                                    <span class="evx-indent-second {% if rem.3 %}auto-reminder2{% endif %} {% if rem.3 and not sidestate.6 %}noshow{% endif %}">
+                                        <b><span style="color:#d48c07;"><b>[AUTO]</b>&nbsp;</span>Due ({{ rem.0|naturalday:'n/j'|title }})</b>: &nbsp;{{ rem.1 }}
+                                    </span>
+                                    <span class="{% if rem.3 %}auto-reminder2{% endif %} {% if rem.3 and not sidestate.6 %}noshow{% endif %}"><br /></span>
+                                {% else %}
+                                    <span class="evx-indent-second"><b>Due {{ rem.0|naturalday:'n/j'|title }}</b>: &nbsp;{{ rem.1 }}</span><br />
+                                {% endif %}
+                             {% endfor %}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            </a>
+        </div>
+
+    {% else %}
+
+        <div class="row" style="margin-top: -7px;">
+            <a href="/events/{{ reminder.3 }}/edit" style="color: inherit">
+            <div class="col s12 m10 offset-m1 evx-roundedonly z-depth-1 evx-panelbackgroundlight" id="ev-pad-right">
+                <table class="homepagetable" style="border:none !important;">
+                    <col width="37.5%">
+                    <col width="62.5%">
+                    <tr  class="{% if reminder.5 %}auto-reminder3{% endif %} {% if reminder.5 and not sidestate.6 %}noshow{% endif %}">
+                        <td class="center" style="vertical-align:top;">
+                            <span class="evx-main-subline-extra evx-rounded-only-extra evx-panelbackgroundold-subline">
+                                {% if reminder.0 == 'arch' or reminder.0 == 'pastarch' %}<span class="tinyold"><b>[ARCHIVED] </b></span>{% endif %}
+                                <span class="evx-tinyold">
+                                    {{ reminder.1|date:"M j, 'Y" }}:&nbsp;&nbsp;
+                                <span>
+                                </span class="evx-tinyeventold">
+                                    {% if '[HD]' in reminder.2 %}
+                                        <b>[HOLD]{{ reminder.2|cut:'[HD]'}}</b>
+                                    {% else %}
+                                        <b>{{ reminder.2 }}</b>
+                                    {% endif %}
+                                </span>
+                            </span>
+                        </td>    
+                        <td>
+                            {% for rem in reminder.4 %} 
+                                {% if rem.2 and rem.3 %}
+                                    <span class="evx-indent-second {% if rem.3 %}auto-reminder2{% endif %} {% if rem.3 and not sidestate.6 %}noshow{% endif %}">
+                                        <b><i><span style="color:#d48c07;"><b>[AUTO]</b>&nbsp;</span>Past-Due ({{ rem.0|naturalday:'n/j'|title }})</i></b>: &nbsp;<i>{{ rem.1 }}</i>
+                                    </span>
+                                    <span class="{% if rem.3 %}auto-reminder2{% endif %} {% if rem.3 and not sidestate.6 %}noshow{% endif %}"><br /></span>
+                                {% elif rem.2 %}
+                                    <span class="evx-indent-second"><b><i>Past-Due ({{ rem.0|naturalday:'n/j'|title }})</i></b>: &nbsp;{{ rem.1 }}</span><br />
+                                {% elif rem.3 %}
+                                    <span class="evx-indent-second {% if rem.3 %}auto-reminder2{% endif %} {% if rem.3 and not sidestate.6 %}noshow{% endif %}">
+                                        <b><span style="color:#d48c07;"><b>[AUTO]</b>&nbsp;</span>Due ({{ rem.0|naturalday:'n/j'|title }})</b>: &nbsp;{{ rem.1 }}
+                                    </span>
+                                    <span class="{% if rem.3 %}auto-reminder2{% endif %} {% if rem.3 and not sidestate.6 %}noshow{% endif %}"><br /></span>
+                                {% else %}
+                                    <span class="evx-indent-second"><b>Due {{ rem.0|naturalday:'n/j'|title }}</b>: &nbsp;{{ rem.1 }}</span><br />
+                                {% endif %}
+                             {% endfor %}
+                        </td>
+                   </tr>
+                </table>
+            </div>
+            </a>
+        </div>
+
+    {% endif %}
+    </span>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% comment %}
+                     <tr>
+                        {% if reminder.done %}
+                        <td rowspan="1" class="evx-remactdatetext evx-reminder-done">
+                            {% if reminder.auto %}Scheduled{% else %}
+                            Done {% endif %}
+                             {{ reminder.date|naturalday:'D M j'|title }} 
+                        </td>
+                        {% elif reminder.is_past_due %}
+                        <td rowspan="1" class="evx-remactdatetext evx-reminder-past-due">
+                            {% if reminder.auto %}Scheduled {% else %}
+                            Past-Due {% endif %}
+                             ({{ reminder.date|naturalday:'D M j'|title }}) 
+                        </td>
+                        {% elif reminder.is_this_week %}
+                        <td rowspan="1" class="evx-remactdatetext evx-reminder-this-week">
+                            {% if reminder.auto %}Scheduled{% else %}
+                            Due{% endif %}
+                             {{ reminder.date|naturalday:'D'|title }} 
+                        </td>
+                        {% else %}
+                        <td rowspan="1" class="evx-remactdatetext evx-reminder-not-past-due">
+                            {% if reminder.auto %}Scheduled{% else %}
+                            Due{% endif %}
+                             {{ reminder.date|naturalday:'D M j'|title }} 
+                        </td>
+                        {% endif %}
+                             <!-- |date:'D M j' -->
+                        
+                        <td colspan="1" class="center evx-remacttext"><b>
+                            {% if reminder.auto %}<span style="color:orange;"><b>[AUTO]</b>&nbsp;</span>{% endif %}
+                            {{ reminder.name }}</b>
+                        </td>
+                        
+                            <!-- <a href="/events/mark_reminder_done/{{reminder.id}}" 
+                            {% if reminder.event.date_ispast or reminder.done %} disabled {% endif %}
+                            class="btn-flat btn-small
+                                ev-col10" style="font-size:11px; margin:2px;padding:2px">
+                                <i class="material-icons left" style="margin-left:0px;margin-right:0px">check_box_outline_blank</i>Done</a> -->
+
+
+                        <td colspan="1" class="center">
+                          <span class="evx-main-subline-extra evx-rounded-only {% if reminder.event.date_ispast or reminder.event.event_archived %}evx-panelbackgroundold-subline{% else %}evx-panelbackground-subline{% endif %}"> 
+                            <span class="{% if reminder.event.date_ispast or reminder.event.event_archived %}evx-tinyold{% else %}evx-tiny{% endif %}">
+                                {{ reminder.event.date|date:"M j, 'y" }}:&nbsp;&nbsp;
+                            </span>
+                            <span class="{% if reminder.event.date_ispast or reminder.event.event_archived %}evx-tinyeventold{% else %}evx-tinyevent{% endif %}">
+                                <b>{% if reminder.event.type == "HD" %}[HOLD]: {% endif %}{{ reminder.event.name }}</b>
+                                <!-- &nbsp;-&nbsp;
+                                <b>{% if reminder.event.event_type %}
+                                    {{ reminder.event.event_type }}
+                                {% else %}
+                                    {{ reminder.event.event_type_name|default:" " }}
+                                {% endif %}</b> -->
+                            </span>
+                          </span>
+                        </td>
+                    </tr>
+{% endcomment %}      

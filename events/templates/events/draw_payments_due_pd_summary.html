@@ -1,0 +1,69 @@
+{% comment %}<!-- {% if payment_pd.event.date_ispast or payment_pd.event.event_archived %} -->{% endcomment %}
+{% load humanize %}
+
+<div class="row">
+    <a href="/events/{{ payment_pd.event.id }}/edit" style="color: inherit">
+    <div class="col s12 m10 offset-m1 evx-rounded-only z-depth-1 evx-panelbackgroundlight" id="ev-pad-right">
+        <table class="homepagetable" style="border:none !important;">
+            <col width="25%">
+            <col width="37.5%">
+            <col width="37.5%">
+            {% if payment_pd.done %}
+                <tr>
+                    <td>{% if payment_pd.event.event_archived %}<span style=""><b>[ARCHIVED] </b></span>{% endif %}
+                        <i><span style="color:#666666;">{% if payment_pd.auto %}[AUTO] {% endif %}Done on {{payment_pd.donedate}}</span><i></td>
+                    <td>${{payment_pd.payment|default:"[TBD]"}} to {{payment_pd.musician.name}}</td>
+                    <td style="background-color: white; color:#gray;">for {{ payment_pd.event.date|date:'D M j Y' }} event 
+                        {% if payment_pd.event.type == "HD" %}[HOLD]: {% endif %}{{ payment_pd.event.name }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td class="evx-remactdatetext">
+                        {% if payment_pd.auto %}
+                            <b>[AUTO]</b> 
+                        {% else %}
+                            <label>
+                            <input type="checkbox" id="mark_pay_done" name="mark_pay_done"
+                                class="paid_check" pay_id="{{payment_pd.id}}" value="yes" style="top:-8px;"
+                                />
+                            <span style="padding-left:20px;top:0px;padding-right:8px;" >
+                                <span style="padding-top:3px;">PAID</span>
+                            </span>
+                            </label>
+                        {% endif %}
+                        {% if payment_pd.done %}
+                            <span class="evx-reminder-done">&nbsp;&nbsp;Done {{payment_pd.duedate|naturalday:'D n/j'|title}} 
+                        {% elif payment_pd.is_past_due %}
+                            <span class="evx-reminder-past-due">&nbsp;&nbsp;Past-Due ({{payment_pd.duedate|naturalday:'D n/j'|title}})
+                        {% elif payment_pd.is_this_week %}
+                            <span class="evx-reminder-this-week">&nbsp;&nbsp;Due {{payment_pd.duedate|naturalday:'D n/j'|title}} 
+                        {% else %}
+                            <span class="evx-reminder-not-past-due">&nbsp;&nbsp;Due {{payment_pd.duedate|naturalday:'D n/j'|title}}
+                        {% endif %}
+                        </span>
+                    </td>
+                    <td class="center evx-remactdatetext"><b>${{payment_pd.payment|default:"[TBD]"}} </b>to<b> {{payment_pd.musician.name}}</b></td>
+                    
+                    <td class="center"> 
+                      <span class="evx-main-subline-extra evx-rounded-only {% if payment_pd.event.date_ispast or payment_pd.event.event_archived %}evx-panelbackgroundold-subline{% else %}evx-panelbackground-subline{% endif %}">
+                        <span class="{% if payment_pd.event.date_ispast or payment_pd.event.event_archived %}evx-tinyold{% else %}evx-tiny{% endif %}">
+                            {{ payment_pd.event.date|date:'M j' }}:&nbsp;&nbsp;
+                        </span>
+                        <span class="{% if payment_pd.event.date_ispast or payment_pd.event.event_archived %}evx-tinyeventold{% else %}evx-tinyevent{% endif %}">
+                            <b>{% if payment_pd.event.type == "HD" %}[HOLD]: {% endif %}{{ payment_pd.event.name }}</b>
+                            <!-- &nbsp;-&nbsp;
+                            <b>{% if reminder.event.event_type %}
+                                {{ reminder.event.event_type }}
+                            {% else %}
+                                {{ reminder.event.event_type_name|default:" " }}
+                            {% endif %}</b> -->
+                        </span>
+                      </span>
+                    </td>
+                    
+                </tr>
+            {% endif %}
+        </table>
+    </div>
+    </a>
+</div>

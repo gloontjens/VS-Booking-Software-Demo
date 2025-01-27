@@ -1,0 +1,44 @@
+{% load humanize %}
+
+    <a href="/events/{{ reminder.event.id }}/edit" style="color: inherit">
+        <table class="collapsible-table evx-panelbackgroundlight evx-rounded-only z-depth-1" style="border:none !important;">
+            <tr>
+                <td style="width: 260px; padding:7px 5px 4px 6px;" class="truncate center evx-side-date-rem">
+                    {% if reminder.done %}
+                        <span style="display:inline" class="truncate evx-side-date-rem evx-reminder-done">
+                    {% elif reminder.is_past_due %}
+                        <span style="display:inline" class="truncate evx-side-date-rem evx-reminder-past-due">
+                    {% elif reminder.is_this_week %}
+                        <span style="display:inline" class="truncate evx-side-date-rem evx-reminder-this-week">
+                    {% else %}
+                        <span style="display:inline" class="truncate evx-side-date-rem evx-reminder-not-past-due">
+                    {% endif %}
+                    
+                    <b>{% if reminder.is_past_due %}Past-Due - {% endif %}</b></span>
+                    
+                    {% if reminder.auto %}<span style="color:orange"><b>[A]</b>&nbsp;</span>{% endif %}
+                    
+                    <span style="display:inline;" class="evx-side-title-rem truncate">
+                        {{ reminder.name }}
+                    </span>
+                </td>
+            </tr>
+            <tr style="padding-bottom:3px;margin-bottom:3px;" class="center">
+                <td class="truncate center evx-side-subline-date-rem evx-side-subline-extra" 
+                    style="max-width: 205px; width: fit-content; padding:3px 5px 2px 6px; margin-left:auto; margin-right:auto; margin-bottom:4px;">
+                    <span>
+                        <span>
+                            {{ reminder.event.date|date:'n/j/y' }} : 
+                            {% if reminder.event.type == "HD" %}[HD] {% endif %}{{ reminder.event.name }}
+                        </span>
+                    </span>
+                </td>
+            </tr>
+        </table>
+        <div style="height:10px;">&nbsp;</div>
+    </a>
+
+    
+    
+    
+    

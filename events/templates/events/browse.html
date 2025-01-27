@@ -1,0 +1,59 @@
+{% extends 'events/base-new.html' %}
+{% load static %}
+
+
+
+{% block content %}
+    
+    <input type="hidden" id="page_flag" value="browse">
+
+    <br /><br />
+    
+    <button class="btn-small z-depth-3 ev-col2"><a href="/events/browse_today/{{ browse_mode }}" style="color:white">Reset to Today</a></button>
+    
+    {% if events %}
+        {% if browse_mode == 'WEEK' %}
+            <h5>Events the week of {{ from|date:"D M j, Y" }}
+        {% elif browse_mode == 'MONTH' %}
+            <h5>Events in {{ from|date:"F Y"}}
+        {% elif browse_mode == 'DAY' %}
+            <h5>Events on {{ until|date:"D M j, Y"}}
+        {% endif %}
+    {% else %}
+        {% if browse_mode == 'WEEK' %}
+            <h5>No Events the week of {{ from|date:"D M j, Y" }}
+        {% elif browse_mode == 'MONTH' %}
+            <h5>No Events in {{ from|date:"F Y"}}
+        {% elif browse_mode == 'DAY' %}
+            <h5>No Events on {{ until|date:"D M j, Y"}}
+        {% endif %}
+    {% endif %}    
+        
+        
+    {% if skip == '1' %}
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>[skipped empty period]</i>:</h5><br />
+    {% else %}
+        {% if events %}
+            :</h5><br />
+        {% else %}
+            </h5><br />
+        {% endif %}
+    {% endif %}
+    
+    
+    <div class="container" style="width:95% !important;">
+        {% for event in events %}
+        
+        {% include 'events/draw_event_summary_wy.html' %}
+        
+        {% endfor %}
+    </div>
+    
+    
+ 
+{% endblock %}
+
+{% block scripts %}
+    <!-- custom js for the home page -->
+    <script src="{% static 'js/events_home.js' %}"></script>
+{% endblock %}

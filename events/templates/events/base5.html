@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+{% load static %}
+
+{% load selectable_tags %}
+
+<!-- client base page -->
+
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="Vanderbilt Strings Events" content="Vanderbilt Strings Events" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>Vanderbilt Strings Events</title>
+        <meta name="robots" content="noindex">
+        
+        <!--    CSS FILES  -->        
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <link type="text/css" rel="stylesheet" href="{% static 'css/materialize.css' %}"  media="screen,projection"/>
+        <link rel="stylesheet" href="{% static 'css/dj.selectable.css' %}">
+        <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/themes/base/jquery-ui.css" type="text/css">
+        <link rel="stylesheet" href="{% static 'css/events.css' %}">
+        <link rel="stylesheet" href="{% static 'css/events_clients_2.css' %}">
+        
+        <!--    FONT & ICON FILES    -->
+        <!-- <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css"> -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href='http://fonts.googleapis.com/css?family=Courgette|PT+Sans+Narrow|Cabin:400,700' rel='stylesheet' type='text/css' />
+        <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i|Roboto+Mono:300,400,700|Roboto+Slab:300,400,700" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+        
+        <!--    RANDOM FILES   -->
+        <link rel="shortcut icon" href="{%  static 'images/favicon.png' %}">
+        
+        {{ form.media }}
+
+        <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Ensures optimal rendering on mobile devices. -->
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" /> <!-- Optimal Internet Explorer compatibility -->        
+    </head>
+    
+    <body>
+    
+       
+        <div class="content container">
+ 
+            <div class="row">
+                <div class="col s12 center">
+                    
+                    <!-- <div style="margin-bottom:-14px !important;padding-bottom;-14px !important; padding-left:0px;padding-right:0px;margin-left:-20px;margin-right:-20px;">
+                        
+                        <h4>The Vanderbilt Strings</h4>
+                        
+                    </div> -->
+
+                    {% block content %}
+                    {% endblock %}
+
+                </div>
+            </div>
+            
+ 
+ 
+ 
+    
+    <!-- {% include_jquery_libs %} -->
+     
+           
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script> -->
+
+    <!-- jquery ui -->
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.js"></script>
+
+
+    <!-- Then Materialize JavaScript on top of Bootstrap JavaScript -->
+    <script type="text/javascript" src="{% static 'js/materialize.js' %}"></script>
+    
+    <!-- Then Selectable module js -->
+    <script type="text/javascript" src="{% static 'js/jquery.dj.selectable.js' %}"></script>
+
+    <!-- Then are-you-sure code js -->
+    <script type="text/javascript" src="{% static 'js/jquery.are-you-sure.js' %}"></script>
+
+    {% block scripts %}
+    {% endblock %}
+
+    </body>
+</html>
+        
+        

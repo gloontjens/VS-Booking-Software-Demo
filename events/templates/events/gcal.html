@@ -1,0 +1,36 @@
+{% extends 'events/base-new.html' %}
+{% load static %}
+
+
+
+{% block content %}
+
+    <br /><br />
+    <input type="hidden" id="page_flag" value="gcal">
+    
+    <div class="container" style="width:auto">
+        <div class="row center">
+            <a class="btn ev-col2 waves-effect waves-light" 
+                href="../../../../events/mycal/"> 
+                Return to normal calendar</a>
+        </div>
+        <div class="row center">
+            <iframe src="https://calendar.google.com/calendar/embed?height=600&amp;wkst=1&amp;bgcolor=%23ffffff&amp;ctz=America%2FNew_York&amp;src={{ GOOGLE_CALENDAR_SRC }}&amp;color=%23AD1457&amp;showTitle=0&amp;showPrint=0&amp;showCalendars=0&amp;showTz=0;dates={{startdate}}/{{enddate}}&amp;" style="border-width:0" width="1000" height="600" frameborder="0" scrolling="no"></iframe>
+        </div>
+    </div>
+     
+     
+{% endblock %}
+
+{% block scripts %}
+    <!-- custom js for the home page -->
+    <script src="{% static 'js/events_home.js' %}"></script>
+{% endblock %}
+
+
+
+
+
+
+
+

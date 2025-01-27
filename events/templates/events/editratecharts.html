@@ -1,0 +1,240 @@
+{% extends 'events/base-new.html' %}
+{% load static %}
+
+
+
+{% block content %}
+<input type="hidden" id="page_flag" value="rates">
+
+
+<div class = "container">
+    
+    <form method='POST' action='' enctype = "multipart/form-data" id="reminder-form">{% csrf_token %}
+
+    <h4>Edit/Add Rate Charts</h4>
+    <p>Enter New Values - whole dollars only (contracting fees automatically calculated when all needed values are entered);
+        you should also enter/edit the chart name below.<br /><br />
+        <i>The "Importance" should be an integer number, lower numbers will make this chart display first.  Higher numbers will display after.</i>
+        <br /><br />
+        When done, click the SAVE button.<br />
+        <br />
+    </p>
+
+    {% if error %}
+        <div style="color:orange;">
+            <h5>ERROR: The name you entered is already in use.<br />
+            Please enter a unique name!</h5><br /><br />
+        </div>
+    {% endif %}
+    
+    <div class="row">
+        <div class="col s9">
+            <div class="input-field">
+                <input style="font-size:24px !important;" type="text" name="{{ form.name.name }}" value="{{form.name.value}}" class="dummyvalidate"
+                        required id="{{form.name.auto_id}}">
+                
+                {{ form.name.label_tag }}
+                <div class="error-text">{{ form.name.errors }}</div>
+                <span class="helper-text">{{ form.name.help_text }}</span>
+            </div>
+            </div>
+            <div class="col s3">
+            <div class="input-field">
+                <input style="font-size:24px !important;" type="text" name="{{ form.importance.name }}" 
+                    value="{{form.importance.value|default:"1"}}" class="dummyvalidate"
+                        required id="{{form.importance.auto_id}}">
+                
+                {{ form.importance.label_tag }}
+                <div class="error-text">{{ form.importance.errors }}</div>
+                <span class="helper-text">{{ form.importance.help_text }}</span>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div class="">
+        <table class="highlight">
+            <col style="width:20% !important;">
+            <col style="width:20% !important;">
+            <col style="width:20% !important;">
+            <col style="width:20% !important;">
+            <col style="width:20% !important;">
+            <thead>
+                <tr>
+                    <th style="color:blue;">
+                           Group
+                    </th>
+                    <th style="color:blue;">
+                           1 Hour
+                    </th>
+                    <th style="color:blue;">
+                           2 Hours
+                    </th>
+                    <th style="color:blue;">
+                           3 Hours
+                    </th>
+                    <th style="color:blue;">
+                           4 Hours
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="color:blue;">
+                           Solo
+                    </td>
+                    <td class="ratechange">
+                           {{ form.solo }}
+                    </td>
+                    <td class="ratechange">
+                            {{ form.two_solo }}
+                    </td>
+                    <td class="ratechange">
+                            {{ form.three_solo }}
+                    </td>
+                    <td class="ratechange">
+                            {{ form.four_solo }}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="color:blue;">
+                           Duo
+                    </td>
+                    <td class="ratechange">
+                           {{ form.duo }}
+                    </td>
+                    <td class="ratechange">
+                            {{ form.two_duo }}
+                    </td>
+                    <td class="ratechange">
+                            {{ form.three_duo }}
+                    </td>
+                    <td class="ratechange">
+                            {{ form.four_duo }}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="color:blue;">
+                           Trio
+                    </td>
+                    <td class="ratechange">
+                           {{ form.trio }}
+                    </td>
+                    <td class="ratechange">
+                            {{ form.two_trio }}
+                    </td>
+                    <td class="ratechange">
+                            {{ form.three_trio }}
+                    </td>
+                    <td class="ratechange">
+                            {{ form.four_trio }}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="color:blue;">
+                           Quartet
+                    </td>
+                    <td class="ratechange">
+                           {{ form.quartet }}
+                    </td>
+                    <td class="ratechange">
+                            {{ form.two_quartet }}
+                    </td>
+                    <td class="ratechange">
+                            {{ form.three_quartet }}
+                    </td>
+                    <td class="ratechange">
+                            {{ form.four_quartet }}
+                    </td>
+                </tr>
+                <tr valign=top style="height:80px !important;vertical-align:top !important;">
+                    <td valign=top style="height:80px !important;vertical-align:top !important;">Musician Pay</td>
+                    <td valign=top class="ratechange" style="height:80px !important;vertical-align:top !important;">{{ form.musician }}</td>
+                    <td valign=top class="ratechange" style="height:80px !important;vertical-align:top !important;">{{ form.two_musician }}</td>
+                    <td valign=top class="ratechange" style="height:80px !important;vertical-align:top !important;">{{ form.three_musician }}</td>
+                    <td valign=top class="ratechange" style="height:80px !important;vertical-align:top !important;">{{ form.four_musician }}</td>
+                </tr>
+                <tr style="color:#999999 !important;">
+                    <td>Contracting</td>
+                    <td>
+                        <input style="color:#999999 !important;height:inherit !important;box-shadow:none !important;border-bottom:none !important;" 
+                            readonly type="text" name="{{ form.cont_1s.name }}" 
+                            value="{{form.cont_1s.value|default:'?'}}" required id="{{form.cont_1s.auto_id}}">
+                        <input style="color:#999999 !important;height:inherit !important;box-shadow:none !important;border-bottom:none !important;" 
+                            readonly type="text" name="{{ form.cont_1d.name }}" 
+                            value="{{form.cont_1d.value|default:'?'}}" required id="{{form.cont_1d.auto_id}}">
+                        <input style="color:#999999 !important;height:inherit !important;box-shadow:none !important;border-bottom:none !important;" 
+                            readonly type="text" name="{{ form.cont_1t.name }}" 
+                            value="{{form.cont_1t.value|default:'?'}}" required id="{{form.cont_1t.auto_id}}">
+                        <input style="color:#999999 !important;height:inherit !important;box-shadow:none !important;border-bottom:none !important;" 
+                            readonly type="text" name="{{ form.cont_1q.name }}" 
+                            value="{{form.cont_1q.value|default:'?'}}" required id="{{form.cont_1q.auto_id}}">
+                    </td>
+                    <td>
+                        <input style="color:#999999 !important;height:inherit !important;box-shadow:none !important;border-bottom:none !important;" 
+                            readonly type="text" name="{{ form.cont_2s.name }}" 
+                            value="{{form.cont_2s.value|default:'?'}}" required id="{{form.cont_2s.auto_id}}">
+                        <input style="color:#999999 !important;height:inherit !important;box-shadow:none !important;border-bottom:none !important;" 
+                            readonly type="text" name="{{ form.cont_2d.name }}" 
+                            value="{{form.cont_2d.value|default:'?'}}" required id="{{form.cont_2d.auto_id}}">
+                        <input style="color:#999999 !important;height:inherit !important;box-shadow:none !important;border-bottom:none !important;" 
+                            readonly type="text" name="{{ form.cont_2t.name }}" 
+                            value="{{form.cont_2t.value|default:'?'}}" required id="{{form.cont_2t.auto_id}}">
+                        <input style="color:#999999 !important;height:inherit !important;box-shadow:none !important;border-bottom:none !important;" 
+                            readonly type="text" name="{{ form.cont_2q.name }}" 
+                            value="{{form.cont_2q.value|default:'?'}}" required id="{{form.cont_2q.auto_id}}">
+                    </td>
+                    <td>
+                        <input style="color:#999999 !important;height:inherit !important;box-shadow:none !important;border-bottom:none !important;" 
+                            readonly type="text" name="{{ form.cont_3s.name }}" 
+                            value="{{form.cont_3s.value|default:'?'}}" required id="{{form.cont_3s.auto_id}}">
+                        <input style="color:#999999 !important;height:inherit !important;box-shadow:none !important;border-bottom:none !important;" 
+                            readonly type="text" name="{{ form.cont_3d.name }}" 
+                            value="{{form.cont_3d.value|default:'?'}}" required id="{{form.cont_3d.auto_id}}">
+                        <input style="color:#999999 !important;height:inherit !important;box-shadow:none !important;border-bottom:none !important;" 
+                            readonly type="text" name="{{ form.cont_3t.name }}" 
+                            value="{{form.cont_3t.value|default:'?'}}" required id="{{form.cont_3t.auto_id}}">
+                        <input style="color:#999999 !important;height:inherit !important;box-shadow:none !important;border-bottom:none !important;" 
+                            readonly type="text" name="{{ form.cont_3q.name }}" 
+                            value="{{form.cont_3q.value|default:'?'}}" required id="{{form.cont_3q.auto_id}}">
+                    </td>
+                    <td>
+                        <input style="color:#999999 !important;height:inherit !important;box-shadow:none !important;border-bottom:none !important;" 
+                            readonly type="text" name="{{ form.cont_4s.name }}" 
+                            value="{{form.cont_4s.value|default:'?'}}" required id="{{form.cont_4s.auto_id}}">
+                        <input style="color:#999999 !important;height:inherit !important;box-shadow:none !important;border-bottom:none !important;" 
+                            readonly type="text" name="{{ form.cont_4d.name }}" 
+                            value="{{form.cont_4d.value|default:'?'}}" required id="{{form.cont_4d.auto_id}}">
+                        <input style="color:#999999 !important;height:inherit !important;box-shadow:none !important;border-bottom:none !important;" 
+                            readonly type="text" name="{{ form.cont_4t.name }}" 
+                            value="{{form.cont_4t.value|default:'?'}}" required id="{{form.cont_4t.auto_id}}">
+                        <input style="color:#999999 !important;height:inherit !important;box-shadow:none !important;border-bottom:none !important;" 
+                            readonly type="text" name="{{ form.cont_4q.name }}" 
+                            value="{{form.cont_4q.value|default:'?'}}" required id="{{form.cont_4q.auto_id}}">
+                    </td>
+                </tr>        
+            </tbody>
+        </table>
+    </div>
+
+
+    <br /><br />
+        
+    <button id="submitbtn_editratecharts" type="submit" name="_submit"
+            class="btn btn-large z-depth-3 right">SAVE</button>
+    <br /><br />
+    
+    </form>
+    
+    <br /><br /><br />
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+    <!-- custom js for the home page -->
+    <script src="{% static 'js/events_home.js' %}"></script>
+{% endblock %}
+
+

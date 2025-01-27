@@ -1,0 +1,60 @@
+{% extends "events/base2.html" %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block content %}
+<div class = "container">
+    <h3>Edit Contact:</h3>
+    <form method = 'POST' action= '' enctype = "multipart/form-data" novalidate id = "contact-form">{% csrf_token %}
+        <div class="input-field ev-lessshortline">
+            <i class="material-icons prefix">person</i>
+            {{ form.name|add_class:"validate" }}
+            {{ form.name.label_tag }}
+            <div class="error-text">{{ form.name.errors }}</div>
+            <span class="helper-text">{{ form.name.help_text }}</span>
+        </div> 
+        <div class="input-field ev-lessshortline">
+            <i class="material-icons prefix">person</i>
+            {{ form.friendlyname|add_class:"validate" }}
+            {{ form.friendlyname.label_tag }}
+            <div class="error-text">{{ form.friendlyname.errors }}</div>
+            <span class="helper-text">{{ form.friendlyname.help_text }}</span>
+        </div> 
+        <div class="input-field ev-lessshortline">
+            <i class="material-icons prefix">location_city</i>
+            {{ form.agency|add_class:"validate" }}
+            {{ form.agency.label_tag }}
+            <div class="error-text">{{ form.agency.errors }}</div>
+            <span class="helper-text">{{ form.agency.help_text }}</span>
+        </div>
+        <div class="input-field ev-lessshortline">
+            <i class="material-icons prefix">email</i>
+            {{ form.email|add_class:"validate" }}
+            {{ form.email.label_tag }}
+            <div class="error-text">{{ form.email.errors }}</div>
+            <span class="helper-text">{{ form.email.help_text }}</span>
+        </div>
+        <div class="input-field ev-lessshortline">
+            <i class="material-icons prefix">phone</i>
+            <input type="text" class="validate" id="id_phone_0"
+                    {% if form.phone.value %}
+                        value="{{form.phone.value}}"
+                    {% endif %}
+                    name="phone_0" maxlength="100" />
+            {{ form.phone.label_tag }}
+            <div class="error-text">{{ form.phone.errors }}</div>
+            <span class="helper-text">{{form.phone.help_text }}</span>
+        </div>
+        <div class="input-field ev-lessshortline">
+            <i class="material-icons prefix">list</i>
+            {{ form.order|add_class:"validate" }}
+            {{ form.order.label_tag }}
+            <div class="error-text">{{ form.order.errors }}</div>
+            <span class="helper-text">{{ form.order.help_text }}</span>
+        </div>
+
+        <input type="submit" value = "Submit" />
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends "events/base2.html" %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block content %}
+<div class = "container">
+    <h3>Edit Musician:</h3>
+    <form method = 'POST' action= '' enctype = "multipart/form-data" novalidate id = "musician-form">{% csrf_token %}
+        
+        <div class="input-field ev-lessshortline">
+            <i class="material-icons prefix">person</i>
+            {{ form.name|add_class:"validate" }}
+            {{ form.name.label_tag }}
+            <div class="error-text">{{ form.name.errors }}</div>
+            <span class="helper-text">{{ form.name.help_text }}</span>
+        </div> 
+        <div class="input-field ev-lessshortline">
+            <i class="material-icons prefix">play_arrow</i>
+            {{ form.instrument|add_class:"validate" }}
+            {{ form.instrument.label_tag }}
+            <div class="error-text">{{ form.instrument.errors }}</div>
+            <span class="helper-text">{{ form.instrument.help_text }}</span>
+        </div>
+        <div class="input-field ev-lessshortline">
+            <i class="material-icons prefix">play_arrow</i>
+            {{ form.instrument2|add_class:"validate" }}
+            {{ form.instrument2.label_tag }}
+            <div class="error-text">{{ form.instrument2.errors }}</div>
+            <span class="helper-text">{{ form.instrument2.help_text }}</span>
+        </div>
+        <div class="input-field ev-lessshortline">
+            <i class="material-icons prefix">email</i>
+            {{ form.email|add_class:"validate" }}
+            {{ form.email.label_tag }}
+            <div class="error-text">{{ form.email.errors }}</div>
+            <span class="helper-text">{{ form.email.help_text }}</span>
+        </div>
+        <div class="input-field ev-lessshortline">
+            <i class="material-icons prefix">phone</i>
+            <input type="text" class="validate" id="id_phone_0"
+                    {% if form.phone.value %}
+                        value="{{form.phone.value}}"
+                    {% endif %}
+                    name="phone_0" maxlength="100" />
+            {{ form.phone.label_tag }}
+            <div class="error-text">{{ form.phone.errors }}</div>
+            <span class="helper-text">{{form.phone.help_text }}</span>
+        </div>
+        <div class="input-field ev-lessshortline">
+            <i class="material-icons prefix">list</i>
+            {{ form.order|add_class:"validate" }}
+            {{ form.order.label_tag }}
+            <div class="error-text">{{ form.order.errors }}</div>
+            <span class="helper-text">{{ form.order.help_text }}</span>
+        </div>
+        
+        <button id="submitbtn2" type="submit" name="_submit"
+            class="btn z-depth-3">Save Changes</button>
+        
+    </form>
+</div>
+
+
+{% endblock %}
+
+{% block scripts %}
+    <!-- custom js for the home page -->
+    <script src="{% static 'js/events2.js' %}"></script>
+{% endblock %}

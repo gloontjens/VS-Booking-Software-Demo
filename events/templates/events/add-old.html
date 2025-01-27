@@ -1,0 +1,569 @@
+    {% form %}
+    
+        {% part form.type prefix %}<i class="material-icons prefix">report</i>{% endpart %}
+        {% part form.name prefix %}<i class="material-icons prefix">account_circle</i>{% endpart %}
+        {% part form.friendly_name prefix %}<i class="material-icons prefix">accessibility</i>{% endpart %}
+        {% attr form.date 'group' class append %}datepicker{% endattr %}
+        {% attr form.date 'widget' value %}{{form.date.value|date:'l, F j, Y'}}{% endattr %}
+    
+    {% endform %}
+
+
+
+
+
+
+
+
+
+
+
+
+{% extends 'events/base.html' %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load static %}
+
+
+<!-- if Hold, auto-hide/show date or hold until field -->
+<!-- if Agency booking, add options to waive deposit/payment,waive contract -->
+<!-- if ensemble_choices sq, st, sd, vs, os auto-add ensemble_number entry
+            add option to choose instruments for all these choices except sq? -->
+<!-- popup rate charts button -->
+
+{% block content %}
+
+<div class="addPage container" style="width:90%">
+
+    <br /><br /><br /><br />
+    
+    
+<!-- <button onClick="alert('You clicked the button using Javascript.');">
+       Click Me - I run Javascript
+</button>
+<button id="about-btn"> Click Me - I'm Javascript on Speed</button>
+
+<p>This is a example</p>
+
+<p>This is another example</p> -->
+
+
+<!--     <h4>Please fill out the following:</h4><br /><br /> -->
+    
+    <form method="POST" class="" autocomplete="off">
+    {% csrf_token %}
+
+               
+    <div class="row">
+    
+        <div class="fieldError">{{ form.non_field_errors }}</div>
+        <div class="col m12 l3 xl3 ev-round z-depth-1 ev-shaded"><div class="ev-pad"><br /></div>
+            <div class="col m6 l6 xl6" style="padding-left:0px;">
+                <div class="input-field ev-shortline">
+                    <i class="material-icons prefix">report</i>
+                    {{ form.type|add_class:"validate" }}
+                    {{ form.type.label_tag }}
+                    <div class="error-text">{{ form.type.errors }}</div>
+                    <span class="helper-text">{{ form.type.help_text }}</span>
+                </div>
+            </div>
+            <div class="col m6 l6 xl6">
+                <div class="input-field col xl12 datepicker ev-shortline" id="toggle_hold" style="display: none">
+                    {{ form.hold_until|add_class:"validate" }}
+                    {{ form.hold_until.label_tag }}
+                    <div class="error-text">{{ form.hold_until.errors }}</div>
+                    <span class="helper-text">{{ form.hold_until.help_text }}</span>
+                </div>
+            </div>
+            <div class="col m6 l6 xl6" id="toggle_agency_booking" style="display: none">
+                <div class="col xl12">
+                    <br />
+                    <label for="{{ form.waive_contract.auto_id }}" style="margin-left:-15px;">
+                    <input type="checkbox" class="filled-in" name="waive_contract"
+                    id="{{ form.waive_contract.auto_id }}" />
+                    <span style="font-size:13px; padding-left:24px;margin-right:-40px">{{ form.waive_contract.label }}</span>
+                    </label>
+                    <br />
+                    <div class="error-text">{{ form.waive_contract.errors }}</div>
+                    <label for="{{ form.waive_payment.auto_id }}" style="margin-left:-15px;">
+                        <input type="checkbox" class="filled-in" name="waive_payment"
+                                id="{{ form.waive_payment.auto_id }}" />
+                        <span style="font-size:13px; padding-left:24px;margin-right:-40px">{{ form.waive_payment.label }}</span>
+                    </label>
+                    <div class="error-text">{{ form.waive_payment.errors }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col m12 l1 xl1"></div>
+        
+        <div class="col m6 l4 xl4 ev-round z-depth-1 ev-shaded"><div class="ev-pad"><br /></div>
+            <div class="col m12 l12 xl12" style="padding-left:0px;">
+                <div class="input-field ev-shortline">
+                    <i class="material-icons prefix">account_circle</i>
+                    {{ form.name|add_class:"validate" }}{{ form.name.label_tag }}
+                    <div class="error-text">{{ form.name.errors }}</div>
+                    <span class="helper-text">{{ form.name.help_text }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col m1 l1 xl1"></div>
+        
+        <div class="col m5 l3 xl3 ev-round z-depth-1 ev-shaded"><div class="ev-pad"><br /></div>
+            <div class="col m12 l12 xl12" style="padding-left:0px;">
+                <div class="input-field ev-shortline">
+                    <i class="material-icons prefix">accessibility</i>
+                    {{ form.friendly_name|add_class:"validate" }}
+                    {{ form.friendly_name.label_tag }}
+                    <div class="error-text">{{ form.friendly_name.errors }}</div>
+                    <span class="helper-text">{{ form.friendly_name.help_text }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row ev-round z-depth-1 ev-shaded2"><div class="ev-pad"><br /></div>
+        <div class="input-field col xl5 datepicker ev-shortline">
+            <i class="material-icons prefix">event</i>
+            {{ form.date|add_class:"validate" }}
+            {{ form.date.label_tag }}
+            <div class="error-text">{{ form.date.errors }}</div>
+            <span class="helper-text">{{ form.date.help_text }}</span>
+        </div>
+        <div class="col xl1p5">
+        </div>    
+        <div class="input-field col xl2 timepicker ev-shortline">
+            <i class="material-icons prefix">access_time</i>
+            {{ form.start_time|add_class:"validate" }}
+            {{ form.start_time.label_tag }}
+            <div class="error-text">{{ form.start_time.errors }}</div>
+            <span class="helper-text">{{ form.start_time.help_text }}</span>
+        </div>    
+        <div class="input-field col xl1p5 timepicker ev-shortline">
+            {{ form.end_time|add_class:"validate" }}
+            {{ form.end_time.label_tag }}
+            <div class="error-text">{{ form.end_time.errors }}</div>
+            <span class="helper-text">{{ form.end_time.help_text }}</span>
+        </div>    
+        <div class="input-field col xl1p5 timepicker ev-shortline">
+            {{ form.ceremony_time|add_class:"validate" }}
+            {{ form.ceremony_time.label_tag }}
+            <div class="error-text">{{ form.ceremony_time.errors }}</div>
+            <span class="helper-text">{{ form.ceremony_time.help_text }}</span>
+        </div>    
+    </div>
+    
+    <div class="row">
+        <div class="col xl5p9 ev-round z-depth-1 ev-shaded" id="event_type_box"><div class="ev-pad"><br /></div>
+            <div class="input-field ev-shortline" style="z-index:0;">
+                <i class="material-icons prefix">stars</i>
+                {{ form.event_type|add_class:"validate" }}
+                <!-- <input type="text" name="{{ form.event_type.name }}"
+                    id="{{ form.event_type.id_for_label }}"
+                    {% if form.event_type.value != None %}value="{{ form.event_type.value|stringformat:'s' }}"{% endif %}
+                    maxlength="{{ form.event_type.field.max_length }}"
+                    {% if form.event_type.field.required %}required{% endif %}> -->
+                {{ form.event_type.label_tag }}
+                <div class="error-text">{{ form.event_type.errors }}</div>
+                <span class="helper-text" style="z-index:-1;">{{ form.event_type.help_text }}</span>
+            </div>
+        </div>
+        <div class="col xl0p2"></div>
+        <div class="col xl5p9 ev-round z-depth-1 ev-shaded"><div class="ev-pad"><br /></div>
+            <div class="col xl10" style="padding-left:0px;">
+                <div class="input-field ev-shortline" style="z-index:0;">
+                    <i class="material-icons prefix">group</i>
+                    {{ form.ensemble|add_class:"validate" }}
+                    {{ form.ensemble.label_tag }}
+                    <div class="error-text">{{ form.ensemble.errors }}</div>
+                    <span class="helper-text" style="z-index:-1;">{{ form.ensemble.help_text }}</span>
+                </div>
+            </div>
+            <div class="col xl2">
+                <div class="input-field ev-shortline">
+                    {{ form.ensemble_number|add_class:"validate" }}
+                    {{ form.ensemble_number.label_tag }}
+                    <div class="error-text">{{ form.ensemble_number.errors }}</div>
+                    <span class="helper-text">{{ form.ensemble_number.help_text }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+      <div class="col xl5p9 ev-round z-depth-1 ev-shaded2"><div class="ev-pad"><br /></div>
+        <div class="col xl6p5" style="padding-left:0px;">
+            <div class="input-field ev-shortline" style="z-index:0;">
+                <i class="material-icons prefix">contacts</i>
+                {{ form.contact|add_class:"validate" }}              
+                {{ form.contact.label_tag }}
+                <div class="error-text">{{ form.contact.errors }}</div>
+                <span class="helper-text" style="z-index:-1;">{{ form.contact.help_text }}</span>
+            </div>
+        </div>
+        <div class="col xl1p5 ev-shortline" style="padding-left:0px">
+            <br /><span class="ev-helper-text ev-pad">Details</span>
+            <div class="switch">
+                <label><input type="checkbox" id="contact_button"><span class="lever"></span></label>
+            </div>
+        </div>
+        <div class="col xl4">
+            <div class="input-field ev-shortline">
+                {{ form.contact_details|add_class:"validate materialize-textarea" }}              
+                {{ form.contact_details.label_tag }}
+                <div class="error-text">{{ form.contact_details.errors }}</div>
+                <span class="helper-text">{{ form.contact_details.help_text }}</span>
+            </div>
+        </div>
+        
+        <div class="col xl12 ev-slider ev-closed" id="toggle_contact_add">
+            <div class="col xl2 ev-veryshortline">
+            </div>
+            <div class="input-field col xl4 ev-veryshortline">
+                {{ form.contact_agency|add_class:"validate" }}
+                {{ form.contact_agency.label_tag }}
+                <div class="error-text">{{ form.contact_agency.errors }}</div>
+                <span class="helper-text">{{form.contact_agency.help_text }}</span>
+            </div>
+            <div class="input-field col xl3 ev-veryshortline">
+                <input type="text" class="validate" id="id_contact_phone_0"
+                        name="contact_phone_0" maxlength="100" />
+                {{ form.contact_phone.label_tag }}
+                <div class="error-text">{{ form.contact_phone.errors }}</div>
+                <span class="helper-text">{{form.contact_phone.help_text }}</span>
+            </div>
+            <div class="input-field col xl3 ev-veryshortline">
+                {{ form.contact_email|add_class:"validate" }}
+                {{ form.contact_email.label_tag }}
+                <div class="error-text">{{ form.contact_email.errors }}</div>
+                <span class="helper-text">{{form.contact_email.help_text }}</span>
+            </div>
+            <div class="col xl2">
+            </div>
+            <div class="col xl10">
+                <label for="{{ form.contact_add.auto_id }}">
+                    <input type="checkbox" class="filled-in" name="contact_add"
+                            id="{{ form.contact_add.auto_id }}" />
+                    <span>{{ form.contact_add.label }}</span>
+                </label>
+                <div class="error-text">{{ form.contact_add.errors }}</div>
+            </div>
+        </div>
+            
+        <div class="col xl12 ev-slider ev-closed" id="toggle_contact_show">
+            <div class="col xl2">
+            </div>
+            <div class="col xl4">
+                <label>Agency:</label><br />
+                <div class="truncate" id="contact_show_agency"></div>
+            </div>
+            <div class="col xl2">
+                <label>Phone:</label><br />
+                <div class="truncate" id="contact_show_phone"></div>
+            </div>
+            <div class="col xl3">
+                <label>Email:</label><br />
+                <div class="truncate" id="contact_show_email"></div>
+            </div>
+            <div class="col xl1">
+                <a id="edit_contact" style="cursor: pointer; cursor: hand;">
+                <img style="width:100%;height:100%;vertical-align:-19px;border:1px solid orange;"
+                     src = "{% static '/images/icon-changelink.svg' %}"></a>
+                <div class="ev-pad"><br />&nbsp;</div>       
+            </div>
+        </div>
+      </div> 
+      
+      <div class="col xl0p2"></div>
+       
+      <div class="col xl5p9 ev-round z-depth-1 ev-shaded2"><div class="ev-pad"><br /></div>
+        <div class="col xl6p5" style="padding-left:0px;">
+            <div class="input-field ev-shortline" style="z-index:0;">
+                <i class="material-icons prefix">contact_phone</i>
+                {{ form.dayofcontact|add_class:"validate" }}              
+                {{ form.dayofcontact.label_tag }}
+                <div class="error-text">{{ form.dayofcontact.errors }}</div>
+                <span class="helper-text" style="z-index:-1;">{{ form.dayofcontact.help_text }}</span>
+            </div>
+        </div>
+        <div class="col xl1p5 ev-shortline" style="padding-left:0px">
+            <br /><span class="ev-helper-text ev-pad">Details</span>
+            <div class="switch">
+                <label><input type="checkbox" id="dayofcontact_button"><span class="lever"></span></label>
+            </div>
+        </div>
+        <div class="col xl4">
+            <div class="input-field ev-shortline">
+                {{ form.dayofcontact_details|add_class:"validate materialize-textarea" }}              
+                {{ form.dayofcontact_details.label_tag }}
+                <div class="error-text">{{ form.dayofcontact_details.errors }}</div>
+                <span class="helper-text">{{ form.dayofcontact_details.help_text }}</span>
+            </div>
+        </div>
+                
+        <div class="col xl12 ev-slider ev-closed" id="toggle_dayofcontact_add">
+            <div class="col xl4 ev-veryshortline">
+            </div>
+            <div class="input-field col xl4 ev-veryshortline">
+                <input type="text" class="validate" id="id_dayofcontact_phone_0"
+                        name="dayofcontact_phone_0" maxlength="100" />
+                {{ form.dayofcontact_phone.label_tag }}
+                <div class="error-text">{{ form.dayofcontact_phone.errors }}</div>
+                <span class="helper-text">{{form.dayofcontact_phone.help_text }}</span>
+            </div>
+            <div class="input-field col xl4 ev-veryshortline">
+                {{ form.dayofcontact_email|add_class:"validate" }}
+                {{ form.dayofcontact_email.label_tag }}
+                <div class="error-text">{{ form.dayofcontact_email.errors }}</div>
+                <span class="helper-text">{{form.dayofcontact_email.help_text }}</span>
+            </div>
+            <div class="col xl4">
+            </div>
+            <div class="col xl8">
+                <label for="{{ form.dayofcontact_add.auto_id }}">
+                    <input type="checkbox" class="filled-in" name="dayofcontact_add"
+                            id="{{ form.dayofcontact_add.auto_id }}" />
+                    <span>{{ form.dayofcontact_add.label }}</span>
+                </label>
+                <div class="error-text">{{ form.dayofcontact_add.errors }}</div>
+            </div>
+        </div>
+        
+        <div class="col xl12 ev-slider ev-closed" id="toggle_dayofcontact_show">
+            <div class="col xl3">
+            </div>
+            <div class="col xl4">
+                <label>Phone:</label><br />
+                <div class="truncate" id="dayofcontact_show_phone"></div>
+            </div>
+            <div class="col xl4">
+                <label>Email:</label><br />
+                <div class="truncate" id="dayofcontact_show_email"></div>
+            </div>
+            <div class="col xl1">
+                <a id="edit_dayofcontact" style="cursor: pointer; cursor: hand;">
+                <img style="width:100%;height:100%;vertical-align:-19px;border:1px solid orange;"
+                     src = "{% static '/images/icon-changelink.svg' %}"></a> 
+                <div class="ev-pad"><br />&nbsp;</div>       
+            </div>
+        </div>
+      </div>     
+    </div>
+    
+    <div class="row">
+        <div class="col xl5p9 ev-round z-depth-1 ev-shaded"><div class="ev-pad"><br /></div>
+            <div class="col xl6p5" style="padding-left:0px;">
+                <div class="input-field ev-shortline" style="z-index:0;">    
+                    <i class="material-icons prefix">add_location</i>
+                    {{ form.location|add_class:"validate" }}              
+                    {{ form.location.label_tag }}
+                    <div class="error-text">{{ form.location.errors }}</div>
+                    <span class="helper-text" style="z-index:-1;">{{ form.location.help_text }}</span>
+                </div>
+            </div>
+            <div class="col xl1p5 ev-shortline" style="padding-left:0px">
+                <br /><span class="ev-helper-text ev-pad">Details</span>
+                <div class="switch">
+                    <label><input type="checkbox" id="location_button"><span class="lever"></span></label>
+                </div>
+                <div style="line-height: 18px;"><br /></div>
+                <label for="{{ form.location_outdoors.auto_id }}" style="margin-left:75px;">
+                    <input type="checkbox" class="filled-in" checked="checked" name="location_outdoors"
+                            id="{{ form.location_outdoors.auto_id }}" />
+                    <span style="font-size:14px; padding-left:24px;z-index:1">{{ form.location_outdoors.label }}</span>
+                </label>
+                <div class="error-text">{{ form.location_add.errors }}</div>
+            </div>
+            <div class="col xl4">
+                <div class="input-field ev-shortline" style="z-index:0;">
+                    {{ form.location_details|add_class:"validate materialize-textarea" }}              
+                    {{ form.location_details.label_tag }}
+                    <div class="error-text">{{ form.location_details.errors }}</div>
+                    <span class="helper-text" style="z-index:-1">{{ form.location_details.help_text }}</span>
+                </div>
+            </div>
+            
+            <div class="col xl12 ev-slider ev-closed" id="toggle_location_add">
+                <div class="input-field col xl3 ev-veryshortline">
+                    {{ form.location_address|add_class:"validate" }}
+                    {{ form.location_address.label_tag }}
+                    <div class="error-text">{{ form.location_address.errors }}</div>
+                    <span class="helper-text">{{form.location_address.help_text }}</span>
+                </div>
+                <div class="input-field col xl3 ev-veryshortline">
+                    {{ form.location_link|add_class:"validate" }}
+                    {{ form.location_link.label_tag }}
+                    <div class="error-text">{{ form.location_link.errors }}</div>
+                    <span class="helper-text">{{form.location_link.help_text }}</span>
+                </div>
+                <div class="input-field col xl3 ev-veryshortline">
+                    <input type="text" class="validate" id="id_location_phone_0"
+                            name="location_phone_0" maxlength="100" />
+                    {{ form.location_phone.label_tag }}
+                    <div class="error-text">{{ form.location_phone.errors }}</div>
+                    <span class="helper-text">{{form.location_phone.help_text }}</span>
+                </div>
+                <div class="input-field col xl3 ev-veryshortline">
+                    {{ form.location_email|add_class:"validate" }}
+                    {{ form.location_email.label_tag }}
+                    <div class="error-text">{{ form.location_email.errors }}</div>
+                    <span class="helper-text">{{form.location_email.help_text }}</span>
+                </div>
+                <div class="col xl12">
+                    <label for="{{ form.location_add.auto_id }}">
+                        <input type="checkbox" class="filled-in" name="location_add"
+                                id="{{ form.location_add.auto_id }}" />
+                        <span>{{ form.location_add.label }}</span>
+                    </label>
+                    <div class="error-text">{{ form.location_add.errors }}</div>
+                </div>
+            </div>
+            
+            <div class="col xl12 ev-slider ev-closed" id="toggle_location_show">
+                <div class="col xl3">
+                    <label>Address:</label><br />
+                    <div class="truncate" id="location_show_address"></div>
+                </div>
+                <div class="col xl3">
+                    <label>Link:</label><br />
+                    <div class="truncate" id="location_show_link"></div>
+                </div>
+                <div class="col xl2">
+                    <label>Phone:</label><br />
+                    <div class="truncate" id="location_show_phone"></div>
+                </div>
+                <div class="col xl3">
+                    <label>Email:</label><br />
+                    <div class="truncate" id="location_show_email"></div>
+                </div>
+                <div class="col xl1">
+                    <a id="edit_venue" style="cursor: pointer; cursor: hand;">
+                    <img style="width:100%;height:100%;vertical-align:-19px;border:1px solid orange;"
+                         src = "{% static '/images/icon-changelink.svg' %}"></a>
+                    <div class="ev-pad"><br />&nbsp;</div>        
+                </div>
+            </div>
+        </div>
+        
+        <div class="col xl0p2"></div>
+        
+        <div class="col xl5p9 ev-round z-depth-1 ev-shaded"><div class="ev-pad"><br /></div> 
+        
+            <div class="col xl4" style="padding-left:0px;">
+                <div class="input-field ev-shortline" style="z-index: 0;">
+                    <i class="material-icons prefix">attach_money</i>
+                    {{ form.fee|add_class:"validate" }}
+                    {{ form.fee.label_tag }}
+                    <div class="error-text">{{ form.fee.errors }}</div>
+                    <span class="helper-text">{{ form.fee.help_text }}</span>
+                </div>
+            </div>
+            <div class="col xl1" style="padding-left:0px; margin-left:-7px;margin-right:4px;">
+                <div class="ev-pad"><br /><br /><br /></div>
+                <button class="btn ev-btn modal-trigger" data-target="ratechartmodal" style="z-index: 9999;position: relative;"></button>
+            </div> 
+            <div class="col xl3">
+                <div class="input-field ev-shortline">
+                    {{ form.musician_fee|add_class:"validate" }}
+                    {{ form.musician_fee.label_tag }}
+                    <div class="error-text">{{ form.musician_fee.errors }}</div>
+                    <span class="helper-text">{{ form.musician_fee.help_text }}</span>
+                </div>
+            </div>    
+            <div class="col xl2 ev-shortline" style="padding-left:0px">
+                <br /><span class="ev-helper-text ev-pad">Details</span>
+                <div class="switch">
+                    <label><input type="checkbox" id="fee_button"><span class="lever"></span></label>
+                </div>
+            </div>
+            <div class="col xl2">
+                <div class="input-field ev-shortline">
+                    <input disabled placeholder="$160" id="{{ form.contracting_fee.autoid }}" type="text" class="validate">
+                    {{ form.contracting_fee.label_tag }}
+                    <div class="error-text">{{ form.contracting_fee.errors }}</div>
+                    <span class="helper-text">{{ form.contracting_fee.help_text }}</span>
+                </div>
+            </div>
+                
+            <div class="col xl12 ev-slider ev-closed" id="toggle_fee">   
+                <div class="col xl2p5">
+                    <div class="input-field ev-shortline">
+                        {{ form.deposit_fee|add_class:"validate" }}
+                        {{ form.deposit_fee.label_tag }}
+                        <div class="error-text">{{ form.deposit_fee.errors }}</div>
+                        <span class="helper-text">{{ form.deposit_fee.help_text }}</span>
+                    </div>
+                </div>    
+                <div class="col xl2p5">
+                    <div class="input-field ev-shortline datepicker">
+                        {{ form.deposit_date|add_class:"validate" }}
+                        {{ form.deposit_date.label_tag }}
+                        <div class="error-text">{{ form.deposit_date.errors }}</div>
+                        <span class="helper-text">{{ form.deposit_date.help_text }}</span>
+                    </div>
+                </div>    
+                <div class="col xl2p5">
+                    <div class="input-field ev-shortline">
+                        {{ form.final_fee|add_class:"validate" }}
+                        {{ form.final_fee.label_tag }}
+                        <div class="error-text">{{ form.final_fee.errors }}</div>
+                        <span class="helper-text">{{ form.final_fee.help_text }}</span>
+                    </div>
+                </div>    
+                <div class="col xl2p5">
+                    <div class="input-field ev-shortline datepicker">
+                        {{ form.final_date|add_class:"validate" }}
+                        {{ form.final_date.label_tag }}
+                        <div class="error-text">{{ form.final_date.errors }}</div>
+                        <span class="helper-text">{{ form.final_date.help_text }}</span>
+                    </div>
+                </div>    
+                <div class="col xl1p5">
+                    <br /><div class="ev-pad"><br /></div>
+                    <label for="{{ form.cash_fee.auto_id }}" class="ev-shortline" style="margin-left:-7px">
+                        <input type="checkbox" class="filled-in" name="cash_fee"
+                                id="{{ form.cash_fee.auto_id }}" />
+                        <span style="padding-left:25px">{{ form.cash_fee.label }}</span>
+                    </label>
+                </div> 
+                   
+                
+            
+            </div>
+        
+        
+        
+        </div> 
+        
+    </div>
+    
+    
+    <div class="" id="" style="display:none">
+        {{ form.event_type_name }}
+        {{ form.ensemble_name }}
+        {{ form.contact_name }}
+        {{ form.dayofcontact_name }}
+        {{ form.location_name }}
+    </div>
+
+    
+    <button id="submitbtn" type="submit" name="_submit" class="btn btn-primary">Submit</button>
+        
+    </form>    
+
+</div> 
+
+
+<div id="ratechartmodal" class="modal">
+    <div class="modal-content">
+        <h4>Modal Header</h4>
+        <p>A bunch of text</p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+    </div>
+</div>
+  
+          
+{% endblock %}

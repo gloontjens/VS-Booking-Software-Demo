@@ -1,0 +1,93 @@
+{% extends "events/base3.html" %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block content %}
+
+
+
+<div class="center" style="padding-left:0px;padding-right:0px;margin-left:-20px;margin-right:-20px;">
+    <br /><br />
+    <div class="mytitle">The Vanderbilt Strings</div>
+    <br />
+</div>
+
+
+<div class="mybackground-login row valign-wrapper">
+&nbsp;<br /><br /><br /><br />
+ <div class="card mycol-panel col s10 m10 l8 xl6 offset-s1 offset-m1 offset-l2 offset-xl3">
+  <div class="card-content mycol-subtext center">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- <h3>Vanderbilt Strings Confirmation Page</h3> -->
+    <br />
+    <div class="row" style="color: black;">
+        
+        {% if not error %}
+            <h5>Thanks! We're looking forward to playing for you on {{event.date|date:'F jS'}}.</h5><div style="line-height:8px;"><br /></div>
+            <h6>
+            Since you've confirmed all the details, there's nothing else to think about and we're all set for a great day.<br />
+            </h6>
+        {% else %}
+            <br /><br />
+            <h5 style="color:red">
+                Unfortunately, there was an error.<br />Please reply to the email manually to let us know
+                your event details confirmation.<br />Thank you and we apologize for the inconvenience!<br />
+            </h5>
+        {% endif %}
+        <br />
+    </div>
+    
+        
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+ </div>
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
+
+{% block scripts %}
+    <!-- custom js for the home page -->
+    <script src="{% static 'js/events2.js' %}"></script>
+{% endblock %}
+

@@ -1,0 +1,482 @@
+/* variables */
+:root {
+    /* --col2: #99bcc5; */
+    --btn-norm-hover: #aaaaaa;
+    --btn-norm: #dddddd;
+    --btn-norm-text: #000000;
+    
+    --btn-dark-hover: #aaaaaa;
+    --btn-dark: #dddddd;
+    --btn-dark-text: #000000;
+    
+    --btn-submit-hover: #aaaaaa;
+    --btn-submit: #dddddd;
+    --btn-submit-text: #000000;
+    
+    --checkfine: #e49e7c;
+    
+    --maincolor: #e49e7c;
+    
+    --btn-fine-hover: #aaaaaa;
+    --btn-fine: #dddddd;
+    --btn-fine-text: #000000;
+    --btn-email: #666666;
+}
+
+
+
+.mycol-indextext {
+    color: #000000 !important;
+}
+.mycol-maintext {
+    color: var(--maincolor) !important;
+}
+.mycol-maintext-rev {
+    color: #fffaed !important;
+    text-shadow: 0 0 10px rgba(0,0,0,0.95);
+}
+.mycol-subtext {
+    color: #000000 !important;
+}
+.mycol-notimptext {
+    color: #999999 !important;
+}
+.mycol-imptext {
+    color: #a59f6a !important;
+}
+
+
+.mysize-xlarge {
+    font-size: 32px;
+    letter-spacing: 0.02em;
+}
+.mysize-large {
+    font-size: 26px;
+    letter-spacing: 0.02em;
+}
+.mysize-norm {
+    font-size: 22px;
+    letter-spacing: 0.02em;
+}
+.mysize-small {
+    font-size: 17px;
+    letter-spacing: 0.02em;
+}
+
+
+.mytitle {
+    font-family: 'Poppins', sans-serif;
+    /* font-size: 36px; */
+    color: black;
+    font-weight: bold;
+}
+.myindex {
+    font-family: 'Poppins', sans-serif;
+    font-size: 26px;
+    color: black;
+}
+
+
+.linkish {
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+    display: inline;
+    margin: 0;
+    outline: none;
+    padding: 4px;
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif !important;
+    /* font-size: 36px !important; */
+    color: black;
+    font-weight: bold !important;
+}
+
+@media only screen and (max-width: 474px) {
+    .mytitle {
+        font-size: 28px;
+    }
+    .linkish {
+        font-size: 28px !important;
+    }
+}
+@media only screen and (min-width: 475px) {
+    .mytitle {
+        font-size: 36px;
+    }
+    .linkish {
+        font-size: 36px !important;
+    }
+}
+
+
+
+
+
+.mycol-panel {
+    /* background-color: #fefefe !important; */
+    background: -moz-linear-gradient(rgba(255,255,255,.95),rgba(255,255,255,.95));
+    background: -webkit-linear-gradient(rgba(255,255,255,.95),rgba(255,255,255,.95));
+    background: linear-gradient(rgba(255,255,255,.95),rgba(255,255,255,.95));
+    filter: unquote("progid:DXImageTransform.Microsoft.gradient( startColorstr='#b3000000', endColorstr='#b3000000',GradientType=0 )");
+    
+}
+.mycol-panelhome {
+    /* background-color: #fefefe !important; */
+    background: -moz-linear-gradient(rgba(255,255,255,.825),rgba(255,255,255,.825));
+    background: -webkit-linear-gradient(rgba(255,255,255,.825),rgba(255,255,255,.825));
+    background: linear-gradient(rgba(255,255,255,.825),rgba(255,255,255,.825));
+    filter: unquote("progid:DXImageTransform.Microsoft.gradient( startColorstr='#b3000000', endColorstr='#b3000000',GradientType=0 )");
+}
+
+.mycol-panelplain {
+    background-color: #fbfbfb !important;
+}
+.mycol-panel-btmfix {
+    padding-bottom: 25px;
+    padding-top: 5px;
+}
+.mycol-panel-btmfix2 {
+    padding-bottom: 10px;
+    padding-top: 0px;
+}
+.mycol-panel-pad {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+@media only screen and (max-width: 1050px) {
+    .mybackground-login {
+        background-image: url(/static/images/cocktails.webp);
+        overflow: auto;
+        height: 600px !important;
+        background-position-x: 35%;
+        background-size: cover;
+    }
+    .mybackground-login2 {
+        background-image: url(/static/images/cocktails.webp);
+        overflow: auto;
+        height: 500px !important;
+        background-position-x: 35%;
+        background-size: cover;
+        padding-top:20px;
+        padding-bottom:12px;
+    }
+}
+@media only screen and (min-width: 1051px) {
+    .mybackground-login {
+        background-image: url(/static/images/cocktails.webp);
+        overflow: auto;
+        background-position-x: 13%;
+        background-size: cover;
+    }
+    .mybackground-login2 {
+        background-image: url(/static/images/cocktails.webp);
+        overflow: auto;
+        background-position-x: 13%;
+        background-size: cover;
+        padding-top:20px;
+        padding-bottom:12px;
+    }
+}
+.mybackground-home {
+    background-image: url(/static/images/palmtrees.jpg);
+    background-size: cover;
+}
+
+
+
+
+
+
+.panel-action-fix {
+    padding-bottom: 10px;
+}
+
+@media only screen and (max-width: 1349px) {
+    .mybtn-floating {
+        background-color: var(--btn-fine) !important;
+        position: fixed;
+        bottom: 50px;
+        right: 20px;
+        width: 70px !important;
+        height: 70px !important;
+        padding-top: 8px !important;
+        border-radius: 50px !important;
+    }
+    .myicon-floating {
+        font-size: 50px !important;
+        color: var(--btn-email) !important;
+    }
+    .mybtn-floatingb {
+        background-color: transparent !important;
+        position: fixed;
+        bottom: 50px;
+        right: 20px;
+        width: 70px !important;
+        height: 70px !important;
+        padding-top: 8px !important;
+        border-radius: 50px !important;
+        color: white !important;
+        z-index: 1;
+    }
+    .myicon-floatingb {
+        font-size: 37px !important;
+        padding-top: 10px;
+        padding-left: 30px;
+    }
+}
+@media only screen and (min-width: 1350px) {
+    .mybtn-floating {
+        background-color: var(--btn-fine) !important;
+        position: fixed;
+        bottom: 70px;
+        right: 90px;
+        width: 90px !important;
+        height: 90px !important;
+        padding-top: 17px !important;
+        border-radius: 50px !important;
+    }
+    .mybtn-floatingb {
+        background-color: transparent !important;
+        position: fixed;
+        bottom: 70px;
+        right: 90px;
+        width: 90px !important;
+        height: 90px !important;
+        padding-top: 17px !important;
+        border-radius: 50px !important;
+        color: white !important;
+        z-index: 1;
+    }
+    .myicon-floating {
+        font-size: 70px !important;
+        color: var(--btn-email) !important;
+    }
+    .myicon-floatingb {
+        font-size: 50px !important;
+        padding-top:12px;
+        padding-left:40px;
+    }
+}
+
+
+.mybtn-submit:hover {
+    background-color: var(--btn-fine-hover) !important;
+}
+.mybtn-submit {
+    /* background-color: #78878f !important; */
+    background-color: var(--btn-fine) !important;
+    color: var(--btn-fine-text);
+    transition: 0.5s;
+    text-transform: capitalize;
+    font-size: 17px;
+}
+
+.ccol4:hover {
+    background-color: var(--btn-submit-hover) !important;
+}
+.ccol4 {
+    /* background-color: #78878f !important; */
+    background-color: var(--btn-submit) !important;
+    color: var(--btn-submit-text);
+    transition: 0.5s;
+}
+
+
+
+
+
+
+.mylogincenterfix {
+    position:relative;
+    left:-36px;
+    padding-left:25px;
+    padding-right:25px;
+}
+
+.mybullets {
+    text-align: left !important;
+    display: inline-flex;
+}
+
+
+.mysignout {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+}
+.mysmbtn {
+    padding: 6px 14px 6px 14px;
+    margin: auto;
+    text-transform: capitalize;
+    height: 34px;
+    line-height: 18px;
+    border: 1px solid #777777;
+    border-radius: 5px;
+    background-color: #777777;
+    transition: 0.5s;
+}
+.mysmbtn:hover {
+    background-color: #999999;
+}
+
+
+
+
+
+.reqcard-title {
+    text-align: center !important;
+    color: var(--maincolor) !important;
+    font-size: 24px !important;
+    font-weight: bold !important;
+    background-color: #000000cc !important;
+    width: 100% !important;
+    padding: 0px 10px 0px 10px !important;
+}
+.reqcard-btn {
+    background-color: #eeeeee !important;
+    width: 70px !important;
+    height: 70px !important;
+    border-radius: 50px !important;
+    right: 16px !important;
+    bottom: 30px !important;
+}
+.reqcard-icon {
+    font-size: 50px !important;
+    margin-top: 14px !important;
+    color: var(--maincolor) !important;
+}
+.reqcard-content {
+    min-height: 148px !important;
+}
+
+
+.client-noshow {
+    display: none;
+}
+
+.reqerror.ui-state-error {
+    background: white !important;
+}
+
+.reqredbox {
+    border: 2px solid red !important;
+}
+
+.reqcustomentry {
+    /* display: block !important; */
+    font-size: 15px !important;
+    color: #333333 !important;
+}
+.reqnotinlibrary {
+    /* display: block !important; */
+    font-size: 15px !important;
+    color: var(--maincolor) !important;
+}
+
+.reqselect {
+    /* color: white; */
+    height: 36px;
+    font-size: 16px;
+    width: 98%;
+}
+.reqselect:focus {
+    outline: 3px solid black
+}
+.reqinput {
+    height: 36px;
+    font-size: 16px;
+    padding-left: 5px;
+    padding-right: 5px;
+    width: 72.5%;
+}
+.reqinputshort {
+    height: 26px;
+    font-size: 14px;
+    padding-left: 5px;
+    padding-right: 5px;
+    width: 100%;
+}
+.reqinputshortnum {
+    height: 26px;
+    font-size: 14px;
+    padding-left: 5px;
+    padding-right: 5px;
+    width: 25%;
+}
+.reqinputshortnum-nojs {
+    height: 30px;
+    font-size: 14px;
+    padding-left: 5px;
+    padding-right: 5px;
+    width: 25%;
+}
+
+.reqother {
+    width: 25%;
+
+}
+.reqinline {
+    display: inline !important;
+}
+.reqlabel {
+    font-size: 18px;
+    /* color: white; */
+    padding-top: 2px;
+}
+.reqlabelsmall {
+    /* color: white; */
+    font-size: 13px;
+}
+.reqlabelmed {
+    /* color: white; */
+    font-size: 15px;
+}
+.reqlabelsingle {
+    /* color: white; */
+    padding-top: 9px;
+}
+.cocktail-box {
+    font-size: 14.5px;
+    line-spacing: 5px;
+    border: 2px solid gray;
+    color: #BBB;
+    /* margin: 5px; */
+    padding: 5px;
+}
+.test {
+    padding-bottom: 4px;
+    padding-top: 4px;
+}
+
+@media only screen and (max-width: 600px) {
+    .cardheight {
+        max-height: 140px !important;
+        min-height: 140px !important;
+        overflow-y: auto !important;
+    }
+}
+@media only screen and (min-width: 601px) and (max-width: 992px) {
+    .cardheight {
+        max-height: 200px !important;
+        min-height: 200px !important;
+        overflow-y: auto !important;
+    }
+}
+@media only screen and (min-width: 993px) and (max-width: 1200px) {
+    .cardheight {
+        max-height: 200px !important;
+        min-height: 200px !important;
+        overflow-y: auto !important;
+    }
+}
+@media only screen and (min-width: 1201px) {
+    .cardheight {
+        max-height: 160px !important;
+        min-height: 160px !important;
+        overflow-y: auto !important;
+    }
+}
+
+

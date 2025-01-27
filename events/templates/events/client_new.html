@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+{% extends 'events/base4.html' %}
+{% load static %}
+{% load selectable_tags %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+    
+{% block content %}
+<form method = 'POST' action= ''  id="test_form" enctype = "multipart/form-data" novalidate>
+{% csrf_token %}
+
+<div style="padding-left:0px;padding-right:0px;margin-left:-20px;margin-right:-20px;">
+    <br /><br />
+    <div class="mytitle">The Vanderbilt Strings</div>
+    <!-- <br /> -->
+</div>
+
+
+<div class="col s12 center">
+    {% if firsttime %}
+        <h5 class="mycol-indextext myindex">Welcome!</h5><br />
+    {% else %}
+        <!-- <h5 class="mycol-indextext myindex">Done!</h5><br /> -->
+    {% endif %}
+</div>
+
+<!-- <button class="btn-floating mybtn-floating btn-large tooltipped" data-position="left" data-tooltip="Contact Us" type="submit" name="goto_questions">
+  <i class="material-icons large client-fine myicon-floating">email</i></button> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br /><br />
+<div style="color: black">
+{% if error %}<a href="/events/client_home/{{event.id}}/">Click here to login please!</a>{% else %}
+
+
+
+
+    <div class="row">
+        <div class="col s12 center">
+            <div class="card mycol-panelplain">
+                <div class="mycol-panel-pad2">
+                    <br />
+                    {% if firsttime %}
+                    <span class="mycol-subtext mysize-large">Glad we'll be playing for you!</span>
+                    {% else %}
+                    <span class="mycol-subtext mysize-large">All set!</span>
+                    {% endif %}
+                    <br /><br />
+                    
+                    
+                    <div class="row mybackground-login2 valign-wrapper">
+                    <div class="col card center mycol-panel col s10 m10 l8 xl6 offset-s1 offset-m1 offset-l2 offset-xl3">
+                    <span class="mycol-subtext mysize-large">
+                          <br />
+                          Check out your new Client Home
+                          <h6 class="mycol-subtext mysize-norm">We're thrilled to be playing for you,
+                          <br /> and to help keep track of things and see what's next, we've made a page just for you.</h6><br />
+                          <span class="mycol-subtext mysize-norm">You can bookmark this link:</span><br />
+                          <a href="{{client_home_path}}" class="mysize-norm mycol-maintext"><span style="word-wrap:break-word;overflow-wrap:break-word;">{{client_home_path}}</span></a><br />
+                          <br />
+                          <h6 class="mycol-subtext mysize-norm">Or click below to check out your page right now!</h6><br />
+                    </span>
+                    </div>
+                    </div>
+
+
+
+
+                    <div class="col s12"></div>                   
+
+                    <!-- <h5 class="mycol-subtext mysize-large"><i style="position:relative;top:11px;" 
+                        class="icon-shift-sp material-icons medium mycol-maintext">home</i>&nbsp;&nbsp; -->
+                        
+                    <button id="goto_home" type="submit" name="goto_home_firsttime"
+                        class="btn btn-large ev-submitbtn z-depth-2 mybtn-submit">
+                        <i class="material-icons left mycol-maintext">home</i>HOME</button>
+                    <div class="row"><br /><br /></div>
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="" id="" style="display:none">
+        
+    </div>    
+
+
+{% endif %}
+</div>
+</form>
+
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/events_clients.js' %}"></script>
+<script src="{%  static 'js/jSignature.min.js' %}"></script>    
+{% endblock %}
+

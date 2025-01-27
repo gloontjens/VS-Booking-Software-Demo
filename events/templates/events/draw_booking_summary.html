@@ -1,0 +1,72 @@
+
+{% load humanize %}
+<div class="row">
+    <a href="/events/{{ reminder.event.id }}/edit" style="color: inherit">
+    <div class="col s12 m10 offset-m1 ev-rounded-only z-depth-1 evx-panelbackgroundlight" id="ev-pad-right">
+        <table class="homepagetable" style="border:none !important;">
+            <col width="25%">
+            <col width="37.5%">
+            <col width="37.5%">
+            {% if reminder.done %}
+                <tr>
+                    <td>{% if reminder.event.event_archived %}<span style=""><b>[ARCHIVED] </b></span>{% endif %}
+                        <i><span style="color:#333333;">
+                            {% if reminder.auto %}[AUTO] {% endif %}Done {{reminder.donedt|naturalday:'D n/j'|title}}
+                        </span><i>
+                    </td>
+                        
+                    <td class="center" style="color:#333333;">
+                        {{ reminder.name }}
+                    </td>
+                    
+                    <td class="center">
+                        <span class="evx-main-subline-extra evx-rounded-only {% if reminder.event.date_ispast or reminder.event.event_archived %}evx-panelbackgroundold-subline{% else %}evx-panelbackground-subline{% endif %}">
+                            <span class="{% if reminder.event.date_ispast or reminder.event.event_archived %}evx-tinyold{% else %}evx-tiny{% endif %}">
+                                {{ reminder.event.date|date:"M j, 'y" }}:&nbsp;&nbsp;
+                            </span>
+                            <span class="{% if reminder.event.date_ispast or reminder.event.event_archived %}evx-tinyeventold{% else %}evx-tinyevent{% endif %}">
+                                <b>{% if reminder.event.type == "HD" %}[HOLD]: {% endif %}{{ reminder.event.name }}</b>
+                           </span>
+                        </span>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td class="evx-remactdatetext">
+                        {% if reminder.auto %}
+                            <b>[AUTO]</b> 
+                        {% else %}
+                        {% endif %}
+                        {% if reminder.done %}
+                        <span class="evx-reminder-done">&nbsp;&nbsp;Done {{reminder.date|naturalday:'D n/j'|title}}
+                        {% elif reminder.is_past_due %}
+                        <span class="evx-reminder-past-due">&nbsp;&nbsp;Past-Due ({{reminder.date|naturalday:'D n/j'|title}})
+                        {% elif reminder.is_this_week %}
+                        <span class="evx-reminder-this-week">&nbsp;&nbsp;Due {{reminder.date|naturalday:'D n/j'|title}}
+                        {% else %}
+                        <span class="evx-reminder-not-past-due">&nbsp;&nbsp;Due {{reminder.date|naturalday:'D n/j'|title}}
+                        {% endif %}
+                        </span>
+                    </td>
+                    
+                    <td class="center evx-remactdatetext">{{reminder.name}}</td>
+                    
+                    <td class="center"> 
+                        <span class="evx-main-subline-extra evx-rounded-only {% if reminder.event.date_ispast or reminder.event.event_archived %}evx-panelbackgroundold-subline{% else %}evx-panelbackground-subline{% endif %}">
+                            <span class="{% if reminder.event.date_ispast or reminder.event.event_archived %}evx-tinyold{% else %}evx-tiny{% endif %}">
+                                {{ reminder.event.date|date:"M j, 'y" }}:&nbsp;&nbsp;
+                            </span>
+                            <span class="{% if reminder.event.date_ispast or reminder.event.event_archived %}evx-tinyeventold{% else %}evx-tinyevent{% endif %}">
+                                <b>{% if reminder.event.type == "HD" %}[HOLD]: {% endif %}{{ reminder.event.name }}</b>
+                           </span>
+                        </span>
+                    </td>
+                </tr>
+            {% endif %}
+        </table>
+    </div>
+    </a>
+</div>
+
+
+
